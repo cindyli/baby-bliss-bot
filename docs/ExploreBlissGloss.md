@@ -105,3 +105,22 @@ With English gloss embeddings applied, these special Bliss tokens are treated as
 
 Additionally, by zeroing out the output embeddings of all non-Bliss tokens in the output layer, Llama can respond
 solely in Bliss tokens.
+
+## Issues
+
+Here’s a refined version of your text with improved clarity, structure, and flow:
+
+---
+
+## Issues
+
+1. Ambiguity in English Glosses  
+English glosses often carry multiple meanings, which creates challenges when mapping them to Blissymbolics.
+For example, the word *bark* can refer to either the sound a dog makes or the outer layer of a tree. By comparison, Blissymbolics uses distinct symbols for each meaning, so there is no ambiguity when using a Bliss symbol. When
+the embedding for the English word *bark* is assigned to a Bliss token, the Bliss token cannot distinguish which
+specific meaning of *bark* corresponds to the intended Bliss symbol.
+
+2. Difficulty Handling Multi-Token Glosses  
+Another challenge is when an English gloss consists of multiple tokens. Currently, there is no effective method to
+combine the embeddings of multiple tokens into a single embedding that can be assigned to a single Bliss token.
+This limitation prevents accurate representation of multi-token glosses within the Blissymbolics.  
