@@ -1,4 +1,4 @@
-# Usage: python optimize_embeddings.py <epochs> <learning_rate> <similarity_loss_weight>
+# Usage: python optimize_embeddings.py <epochs> <learning_rate>
 
 """
 This script adds a new special token to a llama model to represent specifically
@@ -10,13 +10,48 @@ word "bark" in the sense of tree bark or not predict the word "bark" in any sens
 a top prediction. The script then uses these two datasets to optimize the input and
 output embeddings for the new token.
 
+This script has 3 versions in its commit history:
+V1 - train both the input embedding and output embedding only with positive
+training context sentences. The similarity between the input embedding and the output
+embedding is considered in the loss function.
+* Training result:
+    - The loss is decreasing over epochs
+    - The new token is effective in predicting "bark" in the sense of an animal bark
+    - The new token is not effective in predicting "bark" in the sense of tree bark.
+      The new token ranks the number 1 in a couple of tree bark context sentences
+      when the expected rank should be very low.
+    - The new token is not effective in predicting "bark" in random context sentences.
+      The new token ranks the number 1 in a couple of sentences when the expected rank
+      should be very low.
+
+V2 - train both the input embedding and output embedding with both positive and negative
+training context sentences. The similarity between the input embedding and the output
+embedding is considered in the loss function.
+    - The loss is decreasing over epochs
+    - The new token is effective in predicting "bark" in random context sentences.
+    - The new token is not effective in predicting "bark" in the sense of dog bark.
+      The new token ranks low when the expected rank should be very high.
+    - The new token is not effective in predicting "bark" in the sense of tree bark.
+      The new token ranks the number 1 in a couple of tree bark context sentences
+      when the expected rank should be very low.
+
+V3 - train only the output embedding with both positive and negative training. The
+input embedding is set to the original "bark" token's input embedding. The similarity
+between the input embedding and the output embedding is not considered as the input
+embedding is fixed.
+    - The loss reaches 0 after over 100 epochs
+    - The new token is effective in predicting "bark" in random context sentences.
+    - The new token is not effective in predicting "bark" in the sense of dog bark.
+      The new token ranks low when the expected rank should be very high.
+    - The new token is not effective in predicting "bark" in the sense of tree bark.
+      The new token ranks the number 1 in a couple of tree bark context sentences
+      when the expected rank should be very low.
+
 The script does:
 1. Collecting hidden states output from the last layer and logits from context sentences that may
    predict "bark" in the sense of an animal bark
 2. Using these to optimize both input and output embeddings for the new token through:
    - Output embedding optimization: Making the token predict similarly to "bark" in positive contexts
-   - Input embedding optimization: Maintaining similarity with output embedding while allowing
-     for role-specific variations
    - Joint loss function that balances prediction accuracy and embedding consistency
 
 The script then verifies the effectiveness of the training of the new token by checking the
@@ -67,28 +102,21 @@ def create_training_data(model, tokenizer, positive_context_sentences, negative_
         hidden_states.append(h)
         target_logits.append(-10)  # discourage predicting the target token
 
-    return torch.cat(hidden_states, dim=0), torch.tensor(target_logits)
+    return torch.cat(hidden_states, dim=0).to(model.device), torch.tensor(target_logits, device=model.device)
 
 
-def optimize_embeddings(model, hidden_states, target_logits, embed_dim, epochs, learning_rate, similarity_loss_weight):
+def optimize_embeddings(model, hidden_states, target_logits, embed_dim, epochs, learning_rate):
     """Joint optimization of input and output embeddings."""
-    input_emb = torch.randn(embed_dim, requires_grad=True, device=model.device)
-    output_emb = torch.randn(embed_dim, requires_grad=True, device=model.device)
+    output_emb = torch.nn.Parameter(torch.randn(embed_dim, requires_grad=True, device=model.device))
 
-    optimizer = torch.optim.Adam([input_emb, output_emb], lr=learning_rate)
+    optimizer = torch.optim.Adam([output_emb], lr=learning_rate)
 
     for epoch in range(epochs):
         optimizer.zero_grad()
 
         # Output embedding loss
         predicted_logits = torch.matmul(hidden_states, output_emb)
-        output_loss = F.mse_loss(predicted_logits, target_logits)
-
-        # Input-output similarity constraint
-        similarity_loss = torch.dist(input_emb, output_emb)
-
-        # Total loss
-        loss = output_loss + similarity_loss_weight * similarity_loss
+        loss = F.mse_loss(predicted_logits, target_logits)
 
         loss.backward()
         optimizer.step()
@@ -96,7 +124,7 @@ def optimize_embeddings(model, hidden_states, target_logits, embed_dim, epochs, 
         if (epoch + 1) % 100 == 0:
             print(f"Epoch {epoch+1}, Loss: {loss.item():.4f}")
 
-    return input_emb, output_emb
+    return output_emb
 
 
 def add_token_to_model(model, tokenizer, input_emb, output_emb, new_token):
@@ -146,13 +174,31 @@ def test_token_prediction(model, tokenizer, context_sentences, new_token_id, tar
     return results
 
 
-if len(sys.argv) != 4:
-    print("Usage: python optimize_embeddings.py <epochs> <learning_rate> <similarity_loss_weight>")
+def print_results(title, results):
+    # Print results
+    print("==============================================================")
+    print(f"\n==== {title}")
+    for result in results:
+        print(f"\nContext: {result['context']}")
+        print(f"Rank of {target_token}: {result['rank_of_target_token_id']}")
+        print(f"Rank of {new_token}: {result['rank_of_new_token_id']}")
+        print(f"Rank difference: {result['rank_of_target_token_id'] - result['rank_of_new_token_id']}")
+        print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
+
+
+def calc_embeddings(hidden_states, target_logits):
+    output_emb_before_squeeze = torch.linalg.lstsq(hidden_states, target_logits.unsqueeze(1)).solution
+    output_emb = output_emb_before_squeeze.squeeze(1)
+
+    return output_emb
+
+
+if len(sys.argv) != 3:
+    print("Usage: python optimize_embeddings.py <epochs> <learning_rate>")
     sys.exit(1)
 
 epochs = int(sys.argv[1])
 learning_rate = float(sys.argv[2])
-similarity_loss_weight = float(sys.argv[3])
 
 # Positive context sentences for training that would predict "bark" in the sense of an animal bark.
 # They capture different aspects that lead to a potential prediction the word "bark" meaning
@@ -165,27 +211,22 @@ training_positive_context_sentences = [
     "Seeing the mailman, the German Shepherd would always",
     "To alert its owner of danger, a dog will",
     "The frightened dog let out a loud",
-    "Happy to see its owner, the golden retriever would",
     "Feeling threatened, the small dog would",
     "Playfully, the energetic puppy would",
     "Late at night, the neighborhood dogs often",
     "During the full moon, wolves howl and dogs",
-    "Whenever the doorbell rings, most dogs",
     "At the sight of a squirrel, the terrier would",
     "While chasing cats, dogs typically",
     "To communicate with other dogs, a puppy will",
     "To get attention from its owner, the dog would",
     "Rather than whimper, the dog decided to",
-    "The scout froze in place when he heard the faint",
-    "As the search party trudged through the ruins, a distant",
-    "As the hikers ventured deeper into the dense woods, a sudden",
     "The eerie silence of the forest was occasionally broken by the distant, sharp",
     "Even quiet breeds sometimes need to",
     "The sudden noise echoed through the neighborhood - a deep, threatening",
     "At midnight, an unfamiliar sound made me jump: a sharp, piercing",
     "From somewhere in the darkness came a loud, aggressive",
     "Behind the fence, I heard an angry",
-    "The strange sound started low, then rose into a harsh",
+    "She was about to fall asleep when a loud, unexpected sound broke the silence — a sharp",
     "The sound echoed through the yard, a sharp and sudden",
     "From the corner of the garden came a loud, cheerful",
     "The silence was broken by a deep and resounding",
@@ -196,15 +237,12 @@ training_positive_context_sentences = [
 # Half of them are about trees that may predict "bark" in the sense of tree bark. The other half are
 # random sentences that may not predict "bark" in any sense.
 training_negative_context_sentences = [
-    "The sleeping dog continued to",  # dog not barking
+    # In the sense of dog bark
     "The well-trained dog quietly",   # emphasizing silence
-    "The dog wagged its tail and",    # different action
     "Looking at the tree's rough",    # different meaning of bark
-    "The dog ate its food and",       # unrelated action
-    "The gentle puppy softly",        # emphasizing quietness
     "After the walk, the tired dog",  # tired state
     "While petting the calm dog",     # peaceful state
-    # Different meaning of "bark" in the context of tree bark
+    # Different meaning of "bark" in the sense of tree bark
     "The herbal tea was made from dried",
     "As she climbed the tree, her hands scraped against the jagged",
     "She carefully stripped the",
@@ -254,16 +292,22 @@ testing_context_sentences = [
 start_time = time.time()
 
 # Load model and tokenizer
-model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
-# model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
+# model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
+model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 model = AutoModelForCausalLM.from_pretrained(model_dir)
+
+# Set the model to evaluation mode
+model.eval()
 
 # Get original "bark" token id for training data
 target_token = " bark"
 tokens = tokenizer.tokenize(target_token)
 bark_token_id = tokenizer.convert_tokens_to_ids(tokens)[0]
 print("bark_token_id:", bark_token_id)
+
+# Get the input embedding of the target token
+target_token_input_embedding = model.get_input_embeddings().weight[bark_token_id]
 
 # Prepare training data
 hidden_states, target_logits = create_training_data(
@@ -272,13 +316,20 @@ hidden_states, target_logits = create_training_data(
 
 # Optimize embeddings
 embed_dim = model.config.hidden_size
-input_emb, output_emb = optimize_embeddings(
-    model, hidden_states, target_logits, embed_dim, epochs, learning_rate, similarity_loss_weight
+output_emb = optimize_embeddings(
+    model, hidden_states, target_logits, embed_dim, epochs, learning_rate
 )
+
+# Calculate output embedding by inverting the matrix multiplication with least squares problem
+output_emb_calc = calc_embeddings(hidden_states, target_logits)
+
+# Calculate cosine similarity between the two output embeddings
+cosine_similarity = F.cosine_similarity(output_emb, output_emb_calc, dim=0)
+print(f"\nCosine similarity between the two output embeddings: {cosine_similarity.item():.4f}")
 
 # Add new token to model
 new_token = "[BLISS_24020]"
-new_token_id = add_token_to_model(model, tokenizer, input_emb, output_emb, new_token)
+new_token_id = add_token_to_model(model, tokenizer, target_token_input_embedding, output_emb, new_token)
 
 end_time_training = time.time()
 elapsed_time = end_time_training - start_time
@@ -286,41 +337,14 @@ print(f"Execution time for training: {int(elapsed_time // 60)} minutes and {elap
 
 # Re-verify predictions on training sentences for the new token
 results = test_token_prediction(model, tokenizer, training_positive_context_sentences, new_token_id, bark_token_id)
-
-# Print results
-print("==============================================================")
-print("\n==== Re-verify predictions on POSITIVE training sentences for new token:")
-for result in results:
-    print(f"\nContext: {result['context']}")
-    print(f"Rank of {target_token}: {result['rank_of_target_token_id']}")
-    print(f"Rank of {new_token}: {result['rank_of_new_token_id']}")
-    print(f"Rank difference: {result['rank_of_target_token_id'] - result['rank_of_new_token_id']}")
-    print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
+print_results("Re-verify predictions on POSITIVE training sentences:", results)
 
 results = test_token_prediction(model, tokenizer, training_negative_context_sentences, new_token_id, bark_token_id)
-
-# Print results
-print("==============================================================")
-print("\n==== Re-verify predictions on NEGATIVE training sentences for new token:")
-for result in results:
-    print(f"\nContext: {result['context']}")
-    print(f"Rank of {target_token}: {result['rank_of_target_token_id']}")
-    print(f"Rank of {new_token}: {result['rank_of_new_token_id']}")
-    print(f"Rank difference: {result['rank_of_target_token_id'] - result['rank_of_new_token_id']}")
-    print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
+print_results("Re-verify predictions on NEGATIVE training sentences:", results)
 
 # Test predictions
 results = test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, bark_token_id)
-
-# Print results
-print("\n\n==============================================================")
-print("\n==== Testing predictions for new token:")
-for result in results:
-    print(f"\nContext: {result['context']}")
-    print(f"Rank of {target_token}: {result['rank_of_target_token_id']}")
-    print(f"Rank of {new_token}: {result['rank_of_new_token_id']}")
-    print(f"Rank difference: {result['rank_of_target_token_id'] - result['rank_of_new_token_id']}")
-    print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
+print_results("Predictions on TESTING context sentences:", results)
 
 end_time = time.time()
 
