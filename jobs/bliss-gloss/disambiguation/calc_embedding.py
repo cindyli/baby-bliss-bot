@@ -1,4 +1,4 @@
-# Usage: python optimize_embeddings.py <epochs> <learning_rate>
+# Usage: python calc_embeddings.py
 
 """
 This script adds a new special token to a llama model to represent specifically
@@ -7,63 +7,27 @@ This script creates a training dataset from two sets of context sentences: one s
 of positive training sentences that may predict the word "bark" in the sense of an
 animal bark. Another set of negative training sentences that may either predict the
 word "bark" in the sense of tree bark or not predict the word "bark" in any sense as
-a top prediction. The script then uses these two datasets to optimize the input and
-output embeddings for the new token.
+a top prediction. From these context sentences, the script collects the contextual
+embedding (CE), which is the hidden state output from the last layer, and the logits for
+the next token (L). Assuming the output embedding of the new token is OE, the formula
+for these three variables is: CE . OE = L.
 
-This script has 3 versions in its commit history:
-V1 - train both the input embedding and output embedding only with positive
-training context sentences. The similarity between the input embedding and the output
-embedding is considered in the loss function.
-* Training result:
-    - The loss is decreasing over epochs
-    - The new token is effective in predicting "bark" in the sense of an animal bark
-    - The new token is not effective in predicting "bark" in the sense of tree bark.
-      The new token ranks the number 1 in a couple of tree bark context sentences
-      when the expected rank should be very low.
-    - The new token is not effective in predicting "bark" in random context sentences.
-      The new token ranks the number 1 in a couple of sentences when the expected rank
-      should be very low.
+Assuming the number of context sentences is N, and the model's embedding dimension is D,
+the tensor holding all collected contextual embedding (T_CE) is of shape (N, D) while
+the tensor holding all collected logits (T_L) is of shape (N, 1). To perform the dot
+product across all context sentences, this matrix multiplication is used: T_CE * OE = T_L.
 
-V2 - train both the input embedding and output embedding with both positive and negative
-training context sentences. The similarity between the input embedding and the output
-embedding is considered in the loss function.
-    - The loss is decreasing over epochs
-    - The new token is effective in predicting "bark" in random context sentences.
-    - The new token is not effective in predicting "bark" in the sense of dog bark.
-      The new token ranks low when the expected rank should be very high.
-    - The new token is not effective in predicting "bark" in the sense of tree bark.
-      The new token ranks the number 1 in a couple of tree bark context sentences
-      when the expected rank should be very low.
+To calculate OE, the script inverts the matrix multiplication using torch.linalg.lstsq()
+function.
 
-V3 - train only the output embedding with both positive and negative training. The
-input embedding is set to the original "bark" token's input embedding. The similarity
-between the input embedding and the output embedding is not considered as the input
-embedding is fixed.
-    - The loss reaches 0 after over 100 epochs
-    - The new token is effective in predicting "bark" in random context sentences.
-    - The new token is not effective in predicting "bark" in the sense of dog bark.
-      The new token ranks low when the expected rank should be very high.
-    - The new token is not effective in predicting "bark" in the sense of tree bark.
-      The new token ranks the number 1 in a couple of tree bark context sentences
-      when the expected rank should be very low.
+The input embedding of the new token is set to the input embedding of the original token
+"bark". The script then adds the new token to the model's vocabulary and sets the output
+embedding of the new token to the calculated output embedding.
 
-The script does:
-1. Collecting hidden states output from the last layer and logits from context sentences that may
-   predict "bark" in the sense of an animal bark
-2. Using these to optimize both input and output embeddings for the new token through:
-   - Output embedding optimization: Making the token predict similarly to "bark" in positive contexts
-   - Joint loss function that balances prediction accuracy and embedding consistency
-
-The script then verifies the effectiveness of the training of the new token by checking the
-prediction rank of the token " bark" and the new token in all context sentences for training
-
-The script then tests the effectiveness of the new token by:
-- Checking the prediction rank of the token " bark" in context sentences for testing
-- Checking the prediction rank of the new token in the same context sentences
-- Checking top 5 predicted tokens
-
-Note: This approach helps create more semantically precise tokens by learning from contextual
-usage patterns rather than directly copying existing token embeddings.
+The script then verifies the effectiveness of the training of the new token by checking
+the prediction rank of the token "bark" and the new token in all context sentences for
+training and testing. The test result can be found in the
+"test_results/V4-result_calc_output_embedding.log".
 """
 
 import sys
@@ -71,7 +35,6 @@ import os
 import time
 import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
-import torch.nn.functional as F
 
 
 def get_hidden_state_and_next_token_logits(model, tokenizer, text, return_logits=False):
@@ -103,28 +66,6 @@ def create_training_data(model, tokenizer, positive_context_sentences, negative_
         target_logits.append(-10)  # discourage predicting the target token
 
     return torch.cat(hidden_states, dim=0).to(model.device), torch.tensor(target_logits, device=model.device)
-
-
-def optimize_embeddings(model, hidden_states, target_logits, embed_dim, epochs, learning_rate):
-    """Joint optimization of input and output embeddings."""
-    output_emb = torch.nn.Parameter(torch.randn(embed_dim, requires_grad=True, device=model.device))
-
-    optimizer = torch.optim.Adam([output_emb], lr=learning_rate)
-
-    for epoch in range(epochs):
-        optimizer.zero_grad()
-
-        # Output embedding loss
-        predicted_logits = torch.matmul(hidden_states, output_emb)
-        loss = F.mse_loss(predicted_logits, target_logits)
-
-        loss.backward()
-        optimizer.step()
-
-        if (epoch + 1) % 100 == 0:
-            print(f"Epoch {epoch+1}, Loss: {loss.item():.4f}")
-
-    return output_emb
 
 
 def add_token_to_model(model, tokenizer, input_emb, output_emb, new_token):
@@ -314,11 +255,8 @@ hidden_states, target_logits = create_training_data(
     model, tokenizer, training_positive_context_sentences, training_negative_context_sentences, bark_token_id
 )
 
-# Optimize embeddings
-embed_dim = model.config.hidden_size
-output_emb = optimize_embeddings(
-    model, hidden_states, target_logits, embed_dim, epochs, learning_rate
-)
+# Calculate output embedding by inverting the matrix multiplication with least squares problem
+output_emb = calc_embeddings(hidden_states, target_logits)
 
 # Add new token to model
 new_token = "[BLISS_24020]"
