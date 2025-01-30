@@ -1,4 +1,5 @@
 bark_token_id: 54842
+learning_rate: 0.01
 Epoch 100, Loss: 0.1770
 Epoch 200, Loss: 0.0000
 

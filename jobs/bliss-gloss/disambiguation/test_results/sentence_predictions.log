@@ -108,7 +108,7 @@ Rank of  bark: 15
 Top 5 predictions: Ġchatter, Ġshout, Ġvoice, Ġcry, Ġchir
 ==============================================================
 
-==== Predictions of token '{target_token}' on NEGATIVE training sentences:
+==== Predictions of token ' bark' on NEGATIVE training sentences:
 
 Context: The well-trained dog quietly
 Rank of  bark: 3203
@@ -207,7 +207,7 @@ Rank of  bark: 15596
 Top 5 predictions: Ġfingers, Ġhands, Ġgrasp, Ġhand, Ġtrembling
 ==============================================================
 
-==== Predictions of token '{target_token}' on TESTING context sentences:
+==== Predictions of token ' bark' on TESTING context sentences:
 
 Context: As soon as the stranger stepped into the yard, the dog let out a sharp
 Rank of  bark: 1
