@@ -14,150 +14,16 @@ similarity.
 import sys
 import os
 import time
-import torch
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch.nn.functional as F
-
-
-def get_hidden_state_and_next_token_logits(model, tokenizer, text, return_logits=False):
-    """Get the hidden states before final layer for a given text."""
-    inputs = tokenizer(text, return_tensors="pt").to(model.device)
-    with torch.no_grad():
-        outputs = model(**inputs, output_hidden_states=True)
-        # Get last hidden state before final layer
-        hidden_state_from_last_layer = outputs.hidden_states[-1][:, -1, :]  # Token's hidden state from the last layer
-        next_token_logits = outputs.logits[:, -1, :] if return_logits else None  # Logits for next token
-    return hidden_state_from_last_layer, next_token_logits
-
-
-def create_training_data(model, tokenizer, positive_context_sentences, negative_context_sentences, target_token_id):
-    """Create training data from context sentences."""
-    hidden_states = []
-    target_logits = []
-
-    # Positive context sentences - high target logits
-    for context in positive_context_sentences:
-        h, logits = get_hidden_state_and_next_token_logits(model, tokenizer, context, True)
-        hidden_states.append(h)
-        target_logits.append(logits[0, target_token_id].item())
-
-    # Negative context sentences - low target logits
-    for context in negative_context_sentences:
-        h, logits = get_hidden_state_and_next_token_logits(model, tokenizer, context)
-        hidden_states.append(h)
-        target_logits.append(-10)  # discourage predicting the target token
-
-    return torch.cat(hidden_states, dim=0).to(model.device), torch.tensor(target_logits, device=model.device)
-
-
-def optimize_embeddings(model, hidden_states, target_logits, embed_dim, epochs, learning_rate):
-    """Joint optimization of input and output embeddings."""
-    output_emb = torch.nn.Parameter(torch.randn(embed_dim, requires_grad=True, device=model.device))
-
-    optimizer = torch.optim.Adam([output_emb], lr=learning_rate)
-
-    for epoch in range(epochs):
-        optimizer.zero_grad()
-
-        # Output embedding loss
-        predicted_logits = torch.matmul(hidden_states, output_emb)
-        loss = F.mse_loss(predicted_logits, target_logits)
-
-        loss.backward()
-        optimizer.step()
-
-        if (epoch + 1) % 100 == 0:
-            print(f"Epoch {epoch+1}, Loss: {loss.item():.4f}")
-
-    print(f"\nThe shape of optimized output embedding: {output_emb.shape}")
-    return output_emb
-
-
-def calc_embeddings(hidden_states, target_logits):
-    output_emb_before_squeeze = torch.linalg.lstsq(hidden_states, target_logits.unsqueeze(1)).solution
-    print(f"\nThe shape of calculated output embedding before squeeze: {output_emb_before_squeeze.shape}")
-    output_emb = output_emb_before_squeeze.squeeze(1)
-    print(f"The shape of calculated output embedding: {output_emb.shape}")
-
-    return output_emb
-
+from data import dataset_animal_bark as dataset
+from utils import create_training_data, calc_embeddings, optimize_embeddings
 
 epochs = int(sys.argv[1])
 learning_rate = float(sys.argv[2])
 
-# Positive context sentences for training that would predict "bark" in the sense of an animal bark.
-# They capture different aspects that lead to a potential prediction the word "bark" meaning
-# an animal/dog bark. Half of them are about animals. The other half are not in the
-# context of dogs, but may still predict "bark" in the sense of an animal bark.
-training_positive_context_sentences = [
-    "The excited puppy began to",
-    "When strangers approach, guard dogs will",
-    "Hearing a noise outside, the dog started to",
-    "Seeing the mailman, the German Shepherd would always",
-    "To alert its owner of danger, a dog will",
-    "The frightened dog let out a loud",
-    # "Happy to see its owner, the golden retriever would",
-    "Feeling threatened, the small dog would",
-    "Playfully, the energetic puppy would",
-    "Late at night, the neighborhood dogs often",
-    "During the full moon, wolves howl and dogs",
-    # "Whenever the doorbell rings, most dogs",
-    # "At the sight of a squirrel, the terrier would",
-    # "While chasing cats, dogs typically",
-    "To communicate with other dogs, a puppy will",
-    "To get attention from its owner, the dog would",
-    "Rather than whimper, the dog decided to",
-    # "The scout froze in place when he heard the faint",
-    "As the search party trudged through the ruins, a distant",
-    "As the hikers ventured deeper into the dense woods, a sudden",
-    "The eerie silence of the forest was occasionally broken by the distant, sharp",
-    "Even quiet breeds sometimes need to",
-    "The sudden noise echoed through the neighborhood - a deep, threatening",
-    "At midnight, an unfamiliar sound made me jump: a sharp, piercing",
-    "From somewhere in the darkness came a loud, aggressive",
-    "Behind the fence, I heard an angry",
-    # "The strange sound started low, then rose into a harsh",
-    "The sound echoed through the yard, a sharp and sudden",
-    "From the corner of the garden came a loud, cheerful",
-    "The silence was broken by a deep and resounding",
-    "In the distance, I heard an excited"
-]
-
-# Negative context sentences for training that would NOT predict "bark" in the sense of an animal bark.
-# Half of them are about trees that may predict "bark" in the sense of tree bark. The other half are
-# random sentences that may not predict "bark" in any sense.
-training_negative_context_sentences = [
-    # "The sleeping dog continued to",  # dog not barking
-    "The well-trained dog quietly",   # emphasizing silence
-    "The dog wagged its tail and",    # different action
-    "Looking at the tree's rough",    # different meaning of bark
-    # "The dog ate its food and",       # unrelated action
-    # "The gentle puppy softly",        # emphasizing quietness
-    "After the walk, the tired dog",  # tired state
-    "While petting the calm dog",     # peaceful state
-    # Different meaning of "bark" in the context of tree bark
-    "The herbal tea was made from dried",
-    "As she climbed the tree, her hands scraped against the jagged",
-    "She carefully stripped the",
-    "He painted a beautiful landscape, adding fine details to the tree",
-    "He admired the intricate carvings etched into the",
-    "The loud crackling sound came as the fire consumed the dry",
-    "The craftsman used strips of",
-    "She traced her fingers over the initials carved into the tree’s",
-    "He loved the rich texture of the",
-    "The recipe called for a pinch of powdered",
-    # Random sentences
-    "The stars shimmered brightly against the velvety night",
-    "She carefully folded the letter and placed it in the drawer, her heart heavy with unspoken",
-    "The train whistle echoed through the valley, signaling its arrival at the small",
-    "The aroma of freshly baked bread filled the air, drawing people into the cozy",
-    "The sun dipped below the horizon, casting a warm glow over the",
-    "The gentle rustling of leaves filled the quiet forest as the sun set behind the",
-    "He couldn’t decide between the red sweater and the blue",
-    "After weeks of planning, the team finally launched their new",
-    "The aroma of freshly baked bread wafted through the tiny",
-    "The glass vase shattered into a thousand pieces when it slipped from her"
-]
+training_positive_context_sentences = dataset.training_positive_context_sentences
+training_negative_context_sentences = dataset.training_negative_context_sentences
 
 # Track the total running time of this script
 start_time = time.time()
