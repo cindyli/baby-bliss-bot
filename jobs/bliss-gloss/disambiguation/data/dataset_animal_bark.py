@@ -1,6 +1,4 @@
-test_sentences = [
-        "The excited puppy began to"
-]
+# Target meaning: animal bark
 
 # Positive context sentences for training that would predict "bark" in the sense of an animal bark.
 # They capture different aspects that lead to a potential prediction the word "bark" meaning
@@ -73,16 +71,19 @@ training_negative_context_sentences = [
 # The middle 5 sentences tend to lead to a prediction of "bark" in the sense of tree bark.
 # The last 5 sentences are random sentences that may not predict "bark" in any sense.
 testing_context_sentences = [
+    # In the sense of dog bark
     "As soon as the stranger stepped into the yard, the dog let out a sharp",
     "The trainer used a clicker to stop the dog from continuing to",
     "I was walking down the quiet street when, out of nowhere, I heard a sudden",
     "The calm evening was interrupted by the echo of a distant",
     "She paused, straining to listen, and then the unmistakable",
+    # In the sense of tree bark
     "The forest was dense and quiet, with towering trees whose rough texture was most noticeable on their thick trunks, covered in deep, cracked",
     "The young explorers marveled at the tall trees, each one displaying unique features, such as the coarse and rugged",
     "She paused to examine the large tree, noting how its surface was rough and worn, with the thick layers of",
     "Walking along the trail, he ran his hand over the tree's surface, feeling the texture shift as he brushed against the weathered",
     "As we ventured deeper into the woods, we saw that many of the trees had a distinct pattern on their trunks, a textured surface that resembled hardened",
+    # Random sentences
     "The gentle rustling of leaves filled the quiet forest as the sun set behind the",
     "He couldn’t decide between the red sweater and the blue",
     "After weeks of planning, the team finally launched their new",
