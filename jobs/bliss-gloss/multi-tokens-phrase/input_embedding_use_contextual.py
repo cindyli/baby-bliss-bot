@@ -1,0 +1,68 @@
+# Usage: python input_embedding_use_contextual.py
+
+import os
+import sys
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+from data import dataset_wool_shop as dataset
+sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disambiguation")))
+from utils import create_training_data, calc_embeddings, add_token_to_model, test_token_prediction  # noqa: E402
+
+
+def get_contextual_embedding(model, tokenizer, phrase):
+    # Initialize input embedding using contextual embedding
+    inputs = tokenizer(phrase, return_tensors="pt")
+    with torch.no_grad():
+        outputs = model(**inputs, output_hidden_states=True)
+    # Use last token's hidden state from the final layer
+    return outputs.hidden_states[-1][0, -1, :]
+
+
+# Initial values
+model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
+# model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
+phrase = "wool shop"
+target_tokens = [" wool", " yarn", " shop"]
+new_token = "[BLISS_29111]"
+
+training_positive_context_sentences = dataset.training_positive_context_sentences
+training_negative_context_sentences = dataset.training_negative_context_sentences
+testing_context_sentences = dataset.testing_context_sentences
+
+# Load model and tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_dir)
+model = AutoModelForCausalLM.from_pretrained(model_dir)
+
+# Get contextual embedding for the new token
+new_input_embedding = get_contextual_embedding(model, tokenizer, phrase)
+
+# Calculate output embedding for the new token
+# Get token ids for the target tokens
+tokens = [tokenizer.tokenize(token)[0] for token in target_tokens]
+target_token_ids = tokenizer.convert_tokens_to_ids(tokens)
+
+hidden_states, target_logits = create_training_data(
+    model, tokenizer, training_positive_context_sentences, training_negative_context_sentences, target_token_ids
+)
+new_output_embedding = calc_embeddings(hidden_states, target_logits)
+
+# Add new token and resize embeddings
+new_token_id = add_token_to_model(model, tokenizer, new_token, new_input_embedding, new_output_embedding)
+
+# Validate the new token
+# Test 1: Embedding initialization
+assert not torch.all(model.get_input_embeddings().weight[new_token_id] == 0), "Input embedding not initialized!"
+if not model.config.tie_word_embeddings:
+    assert not torch.all(model.lm_head.weight[new_token_id] == 0), "Output embedding not initialized!"
+
+# Test 2: Test token prediction
+test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, target_token_ids)
+
+# Test 3: Generation
+prompt = f"The {new_token} sells"
+inputs = tokenizer(prompt, return_tensors="pt")
+outputs = model.generate(**inputs, max_length=20)
+decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)
+print("\nValidation - Generation:")
+print(f"Prompt: {prompt}")
+print(f"Generated text: {decoded}")
