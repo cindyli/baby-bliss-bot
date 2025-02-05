@@ -70,7 +70,7 @@ def optimize_embeddings(model, hidden_states, target_logits, embed_dim, epochs, 
     return output_emb
 
 
-def add_token_to_model(model, tokenizer, input_emb, output_emb, new_token):
+def add_token_to_model(model, tokenizer, new_token, input_emb, output_emb):
     """Add new token to model's vocabulary and embedding matrices."""
     # Add token to tokenizer
     num_added_tokens = tokenizer.add_tokens([new_token])

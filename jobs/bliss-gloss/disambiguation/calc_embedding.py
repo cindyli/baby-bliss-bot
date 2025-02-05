@@ -92,7 +92,7 @@ output_emb = calc_embeddings(hidden_states, target_logits)
 
 # Add new token to model
 new_token = "[BLISS_24020]"
-new_token_id = add_token_to_model(model, tokenizer, target_token_input_embedding, output_emb, new_token)
+new_token_id = add_token_to_model(model, tokenizer, new_token, target_token_input_embedding, output_emb)
 
 end_time_training = time.time()
 elapsed_time = end_time_training - start_time

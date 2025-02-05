@@ -49,6 +49,13 @@ testing_context_sentences = [
     "Susan checked her shopping list and remembered she needed more yarn for her sweater project, so she visited the local",
     "The knitting instructor provided all her new students with directions to her recommended",
     "After dropping her last ball of merino, Jane realized she needed to stop by the neighborhood",
+    "I need some yarn for my new knitting project, so I'm heading to the",
+    "If you're looking for high-quality merino wool, you should check out the local",
+    "She inherited a love for knitting from her grandmother, who owned a",
+    "The smell of fresh wool filled the air as she stepped into the",
+    "She found a rare alpaca blend at the new",
+    "After taking up knitting, she became a regular at the",
+    "He needed to buy some supplies for his crochet class, so he headed straight to the",
     # Negative context sentences
     "The mountain climbers secured their gear before attempting to scale the massive",
     "The Formula One driver downshifted as he approached the dangerous",

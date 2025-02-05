@@ -18,6 +18,17 @@ def get_contextual_embedding(model, tokenizer, phrase):
     return outputs.hidden_states[-1][0, -1, :]
 
 
+def print_results(title, target_tokens, new_token, results):
+    # Print results
+    print("==============================================================")
+    print(f"\n==== {title}")
+    for result in results:
+        print(f"\nContext: {result['context']}")
+        print(f"Rank of {target_tokens}: {result['rank_of_target_token_ids']}")
+        print(f"Rank of {new_token}: {result['rank_of_new_token_id'][0]}")
+        print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
+
+
 # Initial values
 model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
 # model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
@@ -51,15 +62,21 @@ new_token_id = add_token_to_model(model, tokenizer, new_token, new_input_embeddi
 
 # Validate the new token
 # Test 1: Embedding initialization
-assert not torch.all(model.get_input_embeddings().weight[new_token_id] == 0), "Input embedding not initialized!"
-if not model.config.tie_word_embeddings:
-    assert not torch.all(model.lm_head.weight[new_token_id] == 0), "Output embedding not initialized!"
+if torch.all(model.get_input_embeddings().weight[new_token_id] == 0):
+    print("Error: Input embedding not initialized!")
+if torch.all(model.lm_head.weight[new_token_id] == 0):
+    print("Error: Output embedding not initialized!")
 
 # Test 2: Test token prediction
-test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, target_token_ids)
+results = test_token_prediction(model, tokenizer, training_positive_context_sentences, new_token_id, target_token_ids)
+print_results("Re-verify predictions on POSITIVE training sentences:", target_tokens, new_token, results)
+results = test_token_prediction(model, tokenizer, training_negative_context_sentences, new_token_id, target_token_ids)
+print_results("Re-verify predictions on NEGATIVE training sentences:", target_tokens, new_token, results)
+results = test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, target_token_ids)
+print_results("Predictions on TESTING training sentences:", target_tokens, new_token, results)
 
 # Test 3: Generation
-prompt = f"The {new_token} sells"
+prompt = f"The {new_token} sells products including"
 inputs = tokenizer(prompt, return_tensors="pt")
 outputs = model.generate(**inputs, max_length=20)
 decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)

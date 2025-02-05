@@ -51,11 +51,11 @@ results = get_token_prediction(model, tokenizer, training_positive_context_sente
 print_results(f"Predictions of token '{target_tokens}' on POSITIVE training sentences:", target_tokens, results)
 
 results = get_token_prediction(model, tokenizer, training_negative_context_sentences, target_token_ids)
-print_results("Predictions of token '{target_tokens}' on NEGATIVE training sentences:", target_tokens, results)
+print_results(f"Predictions of token '{target_tokens}' on NEGATIVE training sentences:", target_tokens, results)
 
 # Test predictions
 results = get_token_prediction(model, tokenizer, testing_context_sentences, target_token_ids)
-print_results("Predictions of token '{target_tokens}' on TESTING context sentences:", target_tokens, results)
+print_results(f"Predictions of token '{target_tokens}' on TESTING context sentences:", target_tokens, results)
 
 end_time = time.time()
 
