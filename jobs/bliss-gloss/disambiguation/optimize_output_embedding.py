@@ -1,4 +1,4 @@
-# Usage: python optimize_embeddings.py <epochs> <learning_rate>
+# Usage: python optimize_output_embeddings.py <epochs> <learning_rate>
 
 """
 This script adds a new special token to a llama model to represent specifically
@@ -86,7 +86,7 @@ def print_results(title, results):
 
 
 if len(sys.argv) != 3:
-    print("Usage: python optimize_embeddings.py <epochs> <learning_rate>")
+    print("Usage: python optimize_output_embeddings.py <epochs> <learning_rate>")
     sys.exit(1)
 
 epochs = int(sys.argv[1])

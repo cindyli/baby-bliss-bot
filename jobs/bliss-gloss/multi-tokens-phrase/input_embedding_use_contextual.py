@@ -3,6 +3,7 @@
 import os
 import sys
 import torch
+import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from data import dataset_wool_shop as dataset
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disambiguation")))
@@ -27,6 +28,12 @@ def print_results(title, target_tokens, new_token, results):
         print(f"Rank of {target_tokens}: {result['rank_of_target_token_ids']}")
         print(f"Rank of {new_token}: {result['rank_of_new_token_id'][0]}")
         print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
+
+
+def generate_text(model, tokenizer, prompt):
+    inputs = tokenizer(prompt, return_tensors="pt")
+    outputs = model.generate(**inputs, max_length=50)
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 
 # Initial values
@@ -57,6 +64,10 @@ hidden_states, target_logits = create_training_data(
 )
 new_output_embedding = calc_embeddings(hidden_states, target_logits)
 
+# Calculate cosine similarity between input and output embeddings
+cos_sim = F.cosine_similarity(new_input_embedding.unsqueeze(0), new_output_embedding.unsqueeze(0))
+print(f"\nCosine similarity between input and output embeddings: {cos_sim.item():.4f}")
+
 # Add new token and resize embeddings
 new_token_id = add_token_to_model(model, tokenizer, new_token, new_input_embedding, new_output_embedding)
 
@@ -76,10 +87,19 @@ results = test_token_prediction(model, tokenizer, testing_context_sentences, new
 print_results("Predictions on TESTING training sentences:", target_tokens, new_token, results)
 
 # Test 3: Generation
-prompt = f"The {new_token} sells products including"
-inputs = tokenizer(prompt, return_tensors="pt")
-outputs = model.generate(**inputs, max_length=20)
-decoded = tokenizer.decode(outputs[0], skip_special_tokens=True)
 print("\nValidation - Generation:")
-print(f"Prompt: {prompt}")
-print(f"Generated text: {decoded}")
+
+prompts = [
+    f"The {phrase} sells a variety of products including",
+    f"I stopped by the {phrase} to",
+    f"A cozy {phrase} is",
+    f"After visiting the {phrase}, I",
+    f"I met a friendly alpaca farmer at the {phrase} who",
+    f"I asked the owner of the {phrase} for",
+    f"The {phrase} had",
+    f"She spent hours at the {phrase}"
+]
+for prompt in prompts:
+    print(f"Prompt: {prompt}")
+    print(f"Generated text with {phrase}: {generate_text(model, tokenizer, prompt)}")
+    print(f"Generated text with {new_token}: {generate_text(model, tokenizer, prompt.replace(phrase, new_token))}\n")

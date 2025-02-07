@@ -1,4 +1,4 @@
-# Usage: python calc_embeddings.py
+# Usage: python calc_output_embeddings.py
 
 """
 This script adds a new special token to a llama model to represent specifically
@@ -30,7 +30,6 @@ training and testing. The test result can be found in the
 "test_results/V4-result_calc_output_embedding.log".
 """
 
-import sys
 import os
 import time
 from transformers import AutoModelForCausalLM, AutoTokenizer
@@ -49,13 +48,6 @@ def print_results(title, results):
         print(f"Rank difference: {result['rank_of_target_token_id'] - result['rank_of_new_token_id']}")
         print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
 
-
-if len(sys.argv) != 3:
-    print("Usage: python optimize_embeddings.py <epochs> <learning_rate>")
-    sys.exit(1)
-
-epochs = int(sys.argv[1])
-learning_rate = float(sys.argv[2])
 
 training_positive_context_sentences = data_animal_bark.training_positive_context_sentences
 training_negative_context_sentences = data_animal_bark.training_negative_context_sentences

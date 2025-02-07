@@ -76,7 +76,7 @@ This approach starts with a random output embedding and optimizes it to minimize
 expected and actual logits.
 
 Three versions of this approach were tested. See the comments in
-[optimize_embedding.py](../jobs/bliss_gloss/disambiguation/optimize_embedding.py) for details on each version.
+[optimize_output_embedding.py](../jobs/bliss_gloss/disambiguation/optimize_output_embedding.py) for details on each version.
 
 #### Results
 The optimization approach produced inconsistent results. The ranking of the new token was good in some contexts
@@ -93,6 +93,8 @@ but poor in others. Test results are available in:
 
 This approach inverts the matrix equation directly using
 [torch.linalg.lstsq()](https://pytorch.org/docs/stable/generated/torch.linalg.lstsq.html).
+
+- **Script**: [calc_output_embedding.py](../jobs/bliss_gloss/disambiguation/calc_output_embedding.py)
 
 #### Results
 This method produced significantly better results across all test sentences. The output embedding calculated
