@@ -62,7 +62,7 @@ def get_contextual_embedding(model, context, input_embedding):
     # Update the embedding for the new token
     # model.get_input_embeddings().weight.data[new_token_id] = input_embedding
     # new_token_input_ids = torch.tensor([[new_token_id]], device=model.device)
-    
+
     # Create inputs_embeds from the input_embedding (shape: [1, 1, embed_dim])
     inputs_embeds = input_embedding.unsqueeze(0).unsqueeze(0)
 
@@ -86,7 +86,7 @@ def get_contextual_embedding(model, context, input_embedding):
 #     # Update the embedding for the new token
 #     # model.get_input_embeddings().weight.data[new_token_id] = input_embedding
 #     # new_token_input_ids = torch.tensor([[new_token_id]], device=model.device)
-    
+
 #     # Create inputs_embeds from the input_embedding (shape: [1, 1, embed_dim])
 #     inputs_embeds = input_embedding.unsqueeze(0).unsqueeze(0)
 
@@ -154,9 +154,9 @@ def optimize_input_embedding(model, tokenizer, contexts, embed_dim, new_token, n
         #     current_past_kv = []
         #     for layer_past in context_kv_cache[context][0]:
         #         current_past_kv.append((layer_past[0].detach().clone(), layer_past[1].detach().clone()))
-            
+
         #     current_kv_cache = (current_past_kv, context_kv_cache[context][1])
-            
+
         #     # Use detached KV states for prediction
         #     predicted_contextual = get_contextual_embedding(
         #         model, input_emb, new_token_id, current_kv_cache
@@ -168,19 +168,19 @@ def optimize_input_embedding(model, tokenizer, contexts, embed_dim, new_token, n
         #         target_contextuals[context],
         #         dim=0
         #     )
-            
+
         #     all_losses.append(context_loss)
-            
+
         #     # Keep track of the total loss value for printing
         #     total_loss += context_loss.item()
 
         # # Sum all losses in one operation to create a clean computational graph
         # if all_losses:
         #     accumulated_loss = torch.sum(torch.stack(all_losses))
-            
+
         #     # Backpropagate with the accumulated loss
         #     accumulated_loss.backward()
-            
+
         #     # Step the optimizer after accumulating all gradients
         #     optimizer.step()
 
