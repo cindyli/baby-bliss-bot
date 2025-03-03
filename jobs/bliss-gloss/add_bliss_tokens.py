@@ -1,5 +1,5 @@
 # Usage:
-# python add_bliss_tokens.py data/bliss_gloss_cleaned_synonyms.json ~/Downloads/LlamaBliss ./data/bliss_ids_added.json ./data/bliss_ids_not_added.json
+# python ~/bliss_gloss/add_bliss_tokens.py ~/bliss_gloss/data/bliss_gloss_cleaned_synonyms.json ~/bliss_gloss/outputs/models/llama-first-single-token-8B ~/bliss_gloss/outputs/bliss_ids_added.json ~/bliss_gloss/outputs/bliss_ids_not_added.json
 
 import sys
 import os
@@ -16,11 +16,11 @@ ASSIGN_BLISS_OUTPUT_EMBEDDING = True
 # When True, zero out all old output embeddings and only keep the new Bliss embeddings
 # so the model will only output Bliss tokens.
 # When False, keep both old and new output embeddings so the model will output a mix of English and Bliss.
-ZERO_OUT_OLD_OUTPUT_EMBEDDING = True
+ZERO_OUT_OLD_OUTPUT_EMBEDDING = False
 
 # When True, assign the new Bliss token with input and output embeddings of the first single-token gloss.
 # When False, assign the mean input and output embeddings of all single-token glosses for each Bliss symbol.
-USE_FIRST_SINGLE_TOKEN_GLOSS = False
+USE_FIRST_SINGLE_TOKEN_GLOSS = True
 
 if len(sys.argv) != 5:
     print("Usage: python add_bliss_tokens.py <input_gloss_json> <output_model_path> <output_file_with_added_id> <output_file_with_not_added_id>")
@@ -36,10 +36,8 @@ with open(input_gloss_json, 'r') as f:
     input_gloss_data = json.load(f)
 
 # Load the local Llama model
-model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
-# model_dir = os.path.expanduser("~") + "/Development/LLMs/Meta-Llama-3.1-8B"
-# model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
-# model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Meta-Llama-3.1-8B"
+# model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
+model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 model = AutoModelForCausalLM.from_pretrained(model_dir)
 
@@ -86,11 +84,11 @@ with torch.no_grad():
 print(f"{len(added_bliss_ids)} are added.")
 print(f"{len(not_added_bliss_ids)} are not added.")
 
-# # Save the updated model
-# print("Saving updated model...")
-# model.save_pretrained(output_model_path)
-# tokenizer.save_pretrained(output_model_path)
-# print("Model saved...")
+# Save the updated model
+print("Saving updated model...")
+model.save_pretrained(output_model_path)
+tokenizer.save_pretrained(output_model_path)
+print("Model saved...")
 
 # Save added tokens to file
 with open(output_file_with_added_id, 'w') as f:
@@ -104,7 +102,7 @@ with open(output_file_with_not_added_id, 'w') as f:
 # Return next word predictions with probability greater than a threshold
 def predict_next_words_above_threshold(sentence, threshold=0.1, max_predictions=10):
     # Tokenize the input sentence
-    inputs = tokenizer(sentence, return_tensors="pt")
+    inputs = tokenizer(sentence, return_tensors="pt").to(model.device)
 
     # Generate logits from the model
     with torch.no_grad():
@@ -232,11 +230,11 @@ for sentence in sentences:
 # for word, prob in predictions:
 #     print(f"{word}: {prob.item():.4f}\n")
 
-# bag_of_words = ["nice weather walk", "[BLISS_15717][BLISS_18214][BLISS_18031]",
-#                 "caregiver action keep home clean", "[BLISS_23063][BLISS_23007][BLISS_15143][BLISS_14885][BLISS_24062]"]
+bag_of_words = ["nice weather walk", "[BLISS_15717][BLISS_18214][BLISS_18031]",
+                "caregiver action keep home clean", "[BLISS_23063][BLISS_23007][BLISS_15143][BLISS_14885][BLISS_24062]"]
 
-# for words in bag_of_words:
-#     prompt = f"The given bag of words are from an AAC user who expresses himself telegraphically.\
-#  Please help to convert what the user said to first-person sentences. Only respond with converted sentences: {words}."
-#     print(f"A bag of word: {words}")
-#     print(f"Converted sentence: {generate_text_with_prompt(prompt, model, tokenizer)}\n")
+for words in bag_of_words:
+    prompt = f"The given bag of words are from an AAC user who expresses himself telegraphically.\
+ Please help to convert what the user said to first-person sentences. Only respond with converted sentences: {words}."
+    print(f"A bag of word: {words}")
+    print(f"Converted sentence: {generate_text_with_prompt(prompt, model, tokenizer)}\n")

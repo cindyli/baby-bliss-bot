@@ -72,10 +72,10 @@ def get_first_single_token_embeddings(model, tokenizer, glosses):
         return None, None, None
 
 
-# Loop through the given glosses and return the first gloss that can be converted into
-# a single token, along with its input and output embeddings. If none of the glosses
-# can be converted to a single token, return (None, None, None)
-# Return: a tuple of (first_single_token_gloss, input_embedding, output_embedding)
+# Loop through the given glosses, find all glosses that are single tokens, calculate
+# the mean input and output embeddings of these single token glosses, and return the
+# mean embeddings. If none of the glosses are single tokens, return (None, None, None)
+# Return: a tuple of (list_of_all_single_token_glosses, mean_input_embedding, mean_output_embedding)
 def get_mean_single_token_embeddings(model, tokenizer, glosses):
     single_token_glosses = []
     input_embeddings = []
@@ -99,6 +99,7 @@ def get_mean_single_token_embeddings(model, tokenizer, glosses):
         input_embeddings.append(input_embedding)
         output_embeddings.append(output_embedding)
 
+    # Calculate the mean input and output embeddings of all single token glosses
     if len(single_token_glosses) > 0:
         mean_input_embedding = torch.mean(torch.stack(input_embeddings), dim=0)
         mean_output_embedding = torch.mean(torch.stack(output_embeddings), dim=0)

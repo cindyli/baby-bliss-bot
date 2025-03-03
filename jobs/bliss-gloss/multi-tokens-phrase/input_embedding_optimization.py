@@ -1,0 +1,314 @@
+# Usage: python input_embedding_optimization.py 0.01 500
+
+import os
+import sys
+import time
+import torch
+import torch.nn.functional as F
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import dataset_wool_shop as dataset
+from utils import create_training_data, calc_embeddings, test_token_prediction  # noqa: E402
+# from data import dataset_wool_shop as dataset
+# sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disambiguation")))
+# from utils import create_training_data, calc_embeddings, test_token_prediction  # noqa: E402
+
+
+def get_kv_cache_for_context(model, tokenizer, context):
+    """Return the kv cache of the given context sentence and the current sequence length"""
+    # Add the phrase to the context
+    inputs = tokenizer(context, return_tensors="pt").to(model.device)
+
+    with torch.no_grad():
+        # Process the full sequence and return the updated KV cache
+        outputs = model(
+            **inputs,
+            output_hidden_states=True,
+            use_cache=True
+        )
+
+    return outputs.past_key_values, inputs.input_ids.shape[1]
+
+
+def get_target_contextual_embedding(model, tokenizer, phrase, kv_cache_info):
+    """Get contextual embedding of the last token in the phrase, using KV cache if available"""
+    past_key_values, past_seq_len = kv_cache_info
+
+    # Only tokenize the phrase
+    phrase_inputs = tokenizer(phrase, return_tensors="pt", add_special_tokens=False).to(model.device)
+
+    with torch.no_grad():
+        # Use the KV cache for the context, only process the new tokens
+        outputs = model(
+            input_ids=phrase_inputs.input_ids,
+            attention_mask=torch.ones(1, past_seq_len + phrase_inputs.input_ids.shape[1], device=model.device),
+            past_key_values=past_key_values,
+            output_hidden_states=True
+        )
+
+    return outputs.hidden_states[-1][0, -1, :]
+
+
+def get_contextual_embedding(model, context, input_embedding):
+    """Get contextual embedding using KV cache if available"""
+    inputs = tokenizer(context, return_tensors="pt").to(model.device)
+    with torch.no_grad():
+        # Process the full sequence and return the updated KV cache
+        context_outputs = model(
+            **inputs,
+            output_hidden_states=True,
+            use_cache=True
+        )
+
+    # Update the embedding for the new token
+    # model.get_input_embeddings().weight.data[new_token_id] = input_embedding
+    # new_token_input_ids = torch.tensor([[new_token_id]], device=model.device)
+    
+    # Create inputs_embeds from the input_embedding (shape: [1, 1, embed_dim])
+    inputs_embeds = input_embedding.unsqueeze(0).unsqueeze(0)
+
+    # Process only the new token using the cached KV
+    outputs = model(
+        # input_ids=new_token_input_ids,
+        inputs_embeds=inputs_embeds,
+        attention_mask=torch.ones(1, inputs.input_ids.shape[1] + 1, device=model.device),
+        past_key_values=context_outputs.past_key_values,
+        output_hidden_states=True,
+        use_cache=False
+    )
+
+    return outputs.hidden_states[-1][0, -1, :]
+
+
+# def get_contextual_embedding(model, input_embedding, kv_cache_info):
+#     """Get contextual embedding using KV cache if available"""
+#     past_key_values, past_seq_len = kv_cache_info
+
+#     # Update the embedding for the new token
+#     # model.get_input_embeddings().weight.data[new_token_id] = input_embedding
+#     # new_token_input_ids = torch.tensor([[new_token_id]], device=model.device)
+    
+#     # Create inputs_embeds from the input_embedding (shape: [1, 1, embed_dim])
+#     inputs_embeds = input_embedding.unsqueeze(0).unsqueeze(0)
+
+#     # Process only the new token using the cached KV
+#     outputs = model(
+#         # input_ids=new_token_input_ids,
+#         inputs_embeds=inputs_embeds,
+#         attention_mask=torch.ones(1, past_seq_len + 1, device=model.device),
+#         past_key_values=past_key_values,
+#         output_hidden_states=True,
+#         use_cache=False
+#     )
+
+#     return outputs.hidden_states[-1][0, -1, :]
+
+
+def optimize_input_embedding(model, tokenizer, contexts, embed_dim, new_token, new_token_id, phrase, learning_rate=0.01, epochs=500):
+    """Optimize input embedding using KV caching for efficiency"""
+    # Pre-compute target contextual embeddings and cache KV for all contexts
+    target_contextuals = {}
+    context_kv_cache = {}
+
+    with torch.no_grad():
+        for context in contexts:
+            context_kv_cache[context] = get_kv_cache_for_context(model, tokenizer, context)
+
+            # Get target embedding and cache KV states
+            target_contextual = get_target_contextual_embedding(
+                model, tokenizer, phrase, context_kv_cache[context]
+            )
+            target_contextuals[context] = target_contextual
+
+    # Initialize input embedding and optimizer
+    input_emb = torch.nn.Parameter(torch.randn(embed_dim, requires_grad=True, device=model.device))
+    optimizer = torch.optim.AdamW([input_emb], lr=learning_rate)
+
+    for epoch in range(epochs):
+        optimizer.zero_grad()
+        total_loss = 0.0
+
+        # Calculate loss for each context
+        for context in contexts:
+            # predicted_contextual = get_contextual_embedding(
+            #     model, input_emb, context_kv_cache[context]
+            # )
+            predicted_contextual = get_contextual_embedding(model, context, input_emb)
+
+            # Loss based on contextual embedding similarity
+            context_loss = 1 - F.cosine_similarity(
+                predicted_contextual,
+                target_contextuals[context],
+                dim=0
+            )
+
+            # Keep track of the total loss value for printing
+            total_loss += context_loss.item()
+
+            context_loss.backward()
+            optimizer.step()
+
+        # # Calculate loss for each context
+        # for context in contexts:
+        #     # Create a fresh copy of the past_key_values to ensure no graph sharing
+        #     # This is crucial to prevent "backward through the graph a second time" error
+        #     current_past_kv = []
+        #     for layer_past in context_kv_cache[context][0]:
+        #         current_past_kv.append((layer_past[0].detach().clone(), layer_past[1].detach().clone()))
+            
+        #     current_kv_cache = (current_past_kv, context_kv_cache[context][1])
+            
+        #     # Use detached KV states for prediction
+        #     predicted_contextual = get_contextual_embedding(
+        #         model, input_emb, new_token_id, current_kv_cache
+        #     )
+
+        #     # Loss based on contextual embedding similarity
+        #     context_loss = 1 - F.cosine_similarity(
+        #         predicted_contextual,
+        #         target_contextuals[context],
+        #         dim=0
+        #     )
+            
+        #     all_losses.append(context_loss)
+            
+        #     # Keep track of the total loss value for printing
+        #     total_loss += context_loss.item()
+
+        # # Sum all losses in one operation to create a clean computational graph
+        # if all_losses:
+        #     accumulated_loss = torch.sum(torch.stack(all_losses))
+            
+        #     # Backpropagate with the accumulated loss
+        #     accumulated_loss.backward()
+            
+        #     # Step the optimizer after accumulating all gradients
+        #     optimizer.step()
+
+        if (epoch + 1) % 100 == 0:
+            print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
+
+    print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
+
+    return input_emb
+
+
+def print_results(title, target_tokens, new_token, results):
+    # Print results
+    print("==============================================================")
+    print(f"\n==== {title}")
+    for result in results:
+        print(f"\nContext: {result['context']}")
+        print(f"Rank of {target_tokens}: {result['rank_of_target_token_ids']}")
+        print(f"Rank of {new_token}: {result['rank_of_new_token_id'][0]}")
+        print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
+
+
+def generate_text(model, tokenizer, prompt):
+    inputs = tokenizer(prompt, return_tensors="pt")
+    outputs = model.generate(**inputs, max_length=50)
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+
+if len(sys.argv) != 3:
+    print("Usage: python input_embedding_optimization.py <learning_rate> <epochs>")
+    sys.exit(1)
+
+learning_rate = float(sys.argv[1])
+epochs = int(sys.argv[2])
+
+# Initial values
+# model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
+model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
+phrase = "wool shop"
+target_tokens = [" wool", " yarn", " shop"]
+new_token = "[BLISS_29111]"
+
+training_positive_context_sentences = dataset.training_positive_context_sentences
+training_negative_context_sentences = dataset.training_negative_context_sentences
+testing_context_sentences = dataset.testing_context_sentences
+
+# Load model and tokenizer
+tokenizer = AutoTokenizer.from_pretrained(model_dir)
+model = AutoModelForCausalLM.from_pretrained(model_dir)
+
+# Track the total running time of this script
+start_time = time.time()
+
+# Calculate output embedding for the new token
+# Get token ids for the target tokens
+tokens = [tokenizer.tokenize(token)[0] for token in target_tokens]
+target_token_ids = tokenizer.convert_tokens_to_ids(tokens)
+
+hidden_states, target_logits = create_training_data(
+    model, tokenizer, training_positive_context_sentences, training_negative_context_sentences, target_token_ids
+)
+new_output_embedding = calc_embeddings(hidden_states, target_logits)
+
+end_time_calc_output_embedding = time.time()
+elapsed_time = end_time_calc_output_embedding - start_time
+print(f"Execution time for calculating output embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds")
+
+# Add the new token to the model with the new output embedding. The optimization of the input embedding needs it.
+tokenizer.add_tokens([new_token])
+model.resize_token_embeddings(len(tokenizer))
+new_token_id = tokenizer.convert_tokens_to_ids(new_token)
+with torch.no_grad():
+    model.get_output_embeddings().weight[new_token_id] = torch.randn(model.config.hidden_size, requires_grad=True, device=model.device)
+    # model.get_output_embeddings().weight[new_token_id] = new_output_embedding
+
+# Optimization of the input embedding
+new_input_embedding = optimize_input_embedding(
+    model,
+    tokenizer,
+    training_positive_context_sentences + training_negative_context_sentences,
+    model.config.hidden_size,
+    new_token,
+    new_token_id,
+    phrase,
+    learning_rate,
+    epochs
+)
+
+with torch.no_grad():
+    model.get_input_embeddings().weight[new_token_id] = new_input_embedding
+
+end_time_calc_input_embedding = time.time()
+elapsed_time = end_time_calc_input_embedding - end_time_calc_output_embedding
+print(f"Execution time for calculating input embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds")
+
+# Validate the new token
+# Test 1: Embedding initialization
+if torch.all(model.get_input_embeddings().weight[new_token_id] == 0):
+    print("Error: Input embedding not initialized!")
+if torch.all(model.lm_head.weight[new_token_id] == 0):
+    print("Error: Output embedding not initialized!")
+
+# Test 2: Test token prediction
+results = test_token_prediction(model, tokenizer, training_positive_context_sentences, new_token_id, target_token_ids)
+print_results("Re-verify predictions on POSITIVE training sentences:", target_tokens, new_token, results)
+results = test_token_prediction(model, tokenizer, training_negative_context_sentences, new_token_id, target_token_ids)
+print_results("Re-verify predictions on NEGATIVE training sentences:", target_tokens, new_token, results)
+results = test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, target_token_ids)
+print_results("Predictions on TESTING training sentences:", target_tokens, new_token, results)
+
+# Test 3: Generation
+print("\nValidation - Generation:")
+
+prompts = [
+    f"The {phrase} sells a variety of products including",
+    f"I stopped by the {phrase} to",
+    f"A cozy {phrase} is",
+    f"After visiting the {phrase}, I",
+    f"I met a friendly alpaca farmer at the {phrase} who",
+    f"I asked the owner of the {phrase} for",
+    f"The {phrase} had",
+    f"She spent hours at the {phrase}"
+]
+for prompt in prompts:
+    print(f"Prompt: {prompt}")
+    print(f"Generated text with {phrase}: {generate_text(model, tokenizer, prompt)}")
+    print(f"Generated text with {new_token}: {generate_text(model, tokenizer, prompt.replace(phrase, new_token))}\n")
+
+end_time_validation = time.time()
+elapsed_time = end_time_validation - end_time_calc_input_embedding
+print(f"Execution time for calculating input embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds")

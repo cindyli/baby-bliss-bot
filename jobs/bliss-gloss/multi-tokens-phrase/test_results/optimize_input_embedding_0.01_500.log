@@ -1,0 +1,302 @@
+Execution time for calculating output embedding: 1 minutes and 10.02 seconds
+Epoch 100, Total Loss: 3.3701
+Epoch 200, Total Loss: 9.3988
+Epoch 300, Total Loss: 3.3071
+Epoch 400, Total Loss: 2.2144
+Epoch 500, Total Loss: 3.9247
+
+Execution time for calculating input embedding: 1327 minutes and 39.93 seconds
+==============================================================
+
+==== Re-verify predictions on POSITIVE training sentences:
+
+Context: After deciding to take up knitting, Sarah asked her friend where to find high-quality materials, and the answer was the local
+Rank of [' wool', ' yarn', ' shop']: [5, 1, 21]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġyarn, Ġcraft, ĠY, Ġfiber, Ġwool
+
+Context: She needed more blue and green fibers, so she visited the
+Rank of [' wool', ' yarn', ' shop']: [15, 2, 19]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġlocal, Ġyarn, Ġcraft, Ġstore, Ġnearby
+
+Context: For his grandmother’s birthday, James wanted to buy soft merino wool, so he searched online for the nearest
+Rank of [' wool', ' yarn', ' shop']: [3, 7, 4]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġstore, Ġstores, Ġwool, Ġshop, Ġmer
+
+Context: The knitting circle planned a field trip this week to explore the new
+Rank of [' wool', ' yarn', ' shop']: [28, 2, 58]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġyarn, Ġcraft, Ġfiber, Ġexhibit
+
+Context: While organizing her craft room, Maria realized she needed more acrylic yarn and made a note to visit the
+Rank of [' wool', ' yarn', ' shop']: [124, 3, 28]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġcraft, Ġlocal, Ġyarn, Ġstore, Ġnearby
+
+Context: After watching crochet tutorials, Lisa decided she needed a wider variety of colors and textures, so she headed to the
+Rank of [' wool', ' yarn', ' shop']: [206, 3, 27]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġcraft, Ġlocal, Ġyarn, Ġstore, ĠMichael
+
+Context: For his grandmother’s birthday, James wanted to buy soft merino wool, so he searched online for the nearest
+Rank of [' wool', ' yarn', ' shop']: [3, 7, 4]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġstore, Ġstores, Ġwool, Ġshop, Ġmer
+
+Context: The knitting circle planned a field trip this week to explore the new
+Rank of [' wool', ' yarn', ' shop']: [28, 2, 58]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġyarn, Ġcraft, Ġfiber, Ġexhibit
+
+Context: While organizing her craft room, Maria realized she needed more acrylic yarn and made a note to visit the
+Rank of [' wool', ' yarn', ' shop']: [124, 3, 28]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġcraft, Ġlocal, Ġyarn, Ġstore, Ġnearby
+
+Context: After watching crochet tutorials, Lisa decided she needed a wider variety of colors and textures, so she headed to the
+Rank of [' wool', ' yarn', ' shop']: [206, 3, 27]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġcraft, Ġlocal, Ġyarn, Ġstore, ĠMichael
+
+Context: To support small businesses, Priya purchased all her knitting supplies from the neighborhood
+Rank of [' wool', ' yarn', ' shop']: [185, 13, 3]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġstore, Ġshop, Ġmarket, Ġsmall
+
+Context: Martha picked up her empty knitting basket and headed straight to the local
+Rank of [' wool', ' yarn', ' shop']: [5, 1, 7]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġyarn, Ġcraft, Ġmarket, ĠY, Ġwool
+
+Context: The bell above the door chimed as we entered Mrs. Henderson's cozy little
+Rank of [' wool', ' yarn', ' shop']: [494, 29, 2]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġshop, Ġbakery, Ġantique, Ġtea
+
+Context: The knitting circle members pooled their money together to help keep the struggling
+Rank of [' wool', ' yarn', ' shop']: [97, 26, 8]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġlocal, Ġcommunity, Ġlibrary, Ġbusiness
+
+Context: Before starting her ambitious sweater project, Rachel needed to visit the newly opened
+Rank of [' wool', ' yarn', ' shop']: [25, 1, 28]
+Rank of [BLISS_29111]: 9917
+Top 5 predictions: Ġyarn, Ġcraft, Ġstore, Ġlocal, Ġfabric
+==============================================================
+
+==== Re-verify predictions on NEGATIVE training sentences:
+
+Context: The astronaut adjusted the spacecraft’s trajectory, recalculating fuel consumption to avoid colliding with
+Rank of [' wool', ' yarn', ' shop']: [31839, 36647, 8554]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġa, Ġan, Ġthe, Ġdebris, Ġany
+
+Context: She carefully folded the letter and placed it in the drawer, her heart heavy with unspoken
+Rank of [' wool', ' yarn', ' shop']: [10678, 6994, 15770]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġwords, Ġemotions, Ġthoughts, Ġfeelings
+
+Context: The train whistle echoed through the valley, signaling its arrival at the small
+Rank of [' wool', ' yarn', ' shop']: [1685, 17882, 865]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġstation, Ġtown, Ġvillage, Ġtrain
+
+Context: The aroma of freshly baked bread filled the air, drawing people into the cozy
+Rank of [' wool', ' yarn', ' shop']: [2126, 738, 4]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġbakery, ĠcafÃ©, Ġshop, Ġlittle
+
+Context: The sun dipped below the horizon, casting a warm glow over the
+Rank of [' wool', ' yarn', ' shop']: [8795, 14946, 1129]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġsmall, Ġlandscape, Ġbustling, Ġcity
+
+Context: The gentle rustling of leaves filled the quiet forest as the sun set behind the
+Rank of [' wool', ' yarn', ' shop']: [2312, 8887, 6974]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġtrees, Ġtowering, Ġt, Ġtall
+
+Context: He couldn’t decide between the red sweater and the blue
+Rank of [' wool', ' yarn', ' shop']: [55, 205, 3550]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġone, Ġsweater, ., Ġshirt
+
+Context: After weeks of planning, the team finally launched their new
+Rank of [' wool', ' yarn', ' shop']: [7501, 4834, 397]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġproduct, Ġwebsite, Ġproject, Ġapp
+
+Context: The aroma of freshly baked bread wafted through the tiny
+Rank of [' wool', ' yarn', ' shop']: [5644, 1268, 7]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], ĠcafÃ©, Ġbakery, Ġkitchen, Ġvillage
+
+Context: The sun dipped below the horizon, casting a warm glow over the
+Rank of [' wool', ' yarn', ' shop']: [8795, 14946, 1129]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġsmall, Ġlandscape, Ġbustling, Ġcity
+
+Context: The diver adjusted her oxygen tank before descending into the
+Rank of [' wool', ' yarn', ' shop']: [19502, 27834, 2823]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġdepths, Ġcrystal, Ġicy, Ġwater
+
+Context: The chef perfected the soufflé recipe, whisking egg whites into stiff
+Rank of [' wool', ' yarn', ' shop']: [1859, 1339, 15984]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġpeaks, ,, Ġm, Ġwhite
+
+Context: The programmer debugged the code causing the server to crash
+Rank of [' wool', ' yarn', ' shop']: [36048, 22778, 12634]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: ,, ., Ġand, .Ċ, Ġby
+
+Context: The pilot radioed air traffic control about turbulence over the
+Rank of [' wool', ' yarn', ' shop']: [20551, 46363, 3489]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġarea, ĠAtlantic, ĠGulf, Ġregion
+
+Context: The surgeon scrubbed in for the kidney transplant at
+Rank of [' wool', ' yarn', ' shop']: [55009, 67940, 20151]
+Rank of [BLISS_29111]: 5412
+Top 5 predictions: Ġ, Ġthe, Ġa, ĠNew, ĠBoston
+
+Context: The astronomer calibrated the telescope to observe Jupiter's
+Rank of [' wool', ' yarn', ' shop']: [16682, 24750, 19859]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġmoons, Ġmoon, ĠGreat, Ġrings, Ġatmosphere
+
+Context: The lawyer cited precedent from a landmark Supreme Court
+Rank of [' wool', ' yarn', ' shop']: [22544, 11089, 5446]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġcase, Ġdecision, Ġruling, Ġopinion
+
+Context: The geologist mapped fault lines near the active
+Rank of [' wool', ' yarn', ' shop']: [13119, 15909, 3491]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġvolcano, Ġvolcanic, Ġvolcan, Ġfault, Ġge
+
+Context: The barista steamed oat milk for the vegan
+Rank of [' wool', ' yarn', ' shop']: [12452, 19173, 729]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġlat, Ġc, Ġmatch, Ġcustomer, Ġdrink
+
+Context: After finishing his workout, he grabbed a
+Rank of [' wool', ' yarn', ' shop']: [2070, 2648, 4573]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġtowel, Ġprotein, Ġbottle, Ġquick
+==============================================================
+
+==== Predictions on TESTING training sentences:
+
+Context: Susan checked her shopping list and remembered she needed more yarn for her sweater project, so she visited the local
+Rank of [' wool', ' yarn', ' shop']: [13, 2, 18]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġcraft, Ġyarn, ĠY, Ġstore, Ġcrafts
+
+Context: The knitting instructor provided all her new students with directions to her recommended
+Rank of [' wool', ' yarn', ' shop']: [39, 1, 47]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġyarn, Ġonline, Ġlocal, Ġsources, Ġpattern
+
+Context: After dropping her last ball of merino, Jane realized she needed to stop by the neighborhood
+Rank of [' wool', ' yarn', ' shop']: [6, 1, 12]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġyarn, Ġstore, Ġcraft, ĠY, Ġfiber
+
+Context: I need some yarn for my new knitting project, so I'm heading to the
+Rank of [' wool', ' yarn', ' shop']: [73, 3, 9]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġlocal, Ġcraft, Ġyarn, Ġstore, ĠL
+
+Context: If you're looking for high-quality merino wool, you should check out the local
+Rank of [' wool', ' yarn', ' shop']: [4, 1, 83]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġyarn, Ġfarmers, Ġsheep, Ġwool, Ġmer
+
+Context: She inherited a love for knitting from her grandmother, who owned a
+Rank of [' wool', ' yarn', ' shop']: [16, 3, 6]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġsmall, Ġyarn, Ġknitting, Ġlocal
+
+Context: The smell of fresh wool filled the air as she stepped into the
+Rank of [' wool', ' yarn', ' shop']: [8, 7, 5]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġcozy, Ġsmall, Ġstore, Ġshop
+
+Context: She found a rare alpaca blend at the new
+Rank of [' wool', ' yarn', ' shop']: [14, 1, 8]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġyarn, Ġcraft, Ġfiber, Ġstore, Ġmarket
+
+Context: After taking up knitting, she became a regular at the
+Rank of [' wool', ' yarn', ' shop']: [201, 2, 7]
+Rank of [BLISS_29111]: 127606
+Top 5 predictions: Ġlocal, Ġyarn, Ġlibrary, Ġstore, Ġcraft
+
+Context: He needed to buy some supplies for his crochet class, so he headed straight to the
+Rank of [' wool', ' yarn', ' shop']: [204, 5, 20]
+Rank of [BLISS_29111]: 128257
+Top 5 predictions: Ġcraft, Ġstore, Ġlocal, Ġnearest, Ġyarn
+
+Context: The mountain climbers secured their gear before attempting to scale the massive
+Rank of [' wool', ' yarn', ' shop']: [8196, 17287, 13252]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġrock, Ġpeak, Ġgranite, Ġb
+
+Context: The Formula One driver downshifted as he approached the dangerous
+Rank of [' wool', ' yarn', ' shop']: [14982, 32752, 15387]
+Rank of [BLISS_29111]: 126815
+Top 5 predictions: Ġturn, Ġcurve, Ġcorner, Ġsection, Ġhair
+
+Context: The space station's sensors detected an anomaly coming from the distant
+Rank of [' wool', ' yarn', ' shop']: [16842, 9674, 3122]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġplanet, Ġreaches, Ġstar, Ġcorner
+
+Context: The bomb squad carefully approached the suspicious package near the
+Rank of [' wool', ' yarn', ' shop']: [16800, 14404, 1802]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġentrance, Ġcity, Ġintersection, ĠWhite
+
+Context: The professional wrestler climbed to the top rope of the
+Rank of [' wool', ' yarn', ' shop']: [27686, 19513, 9301]
+Rank of [BLISS_29111]: 1
+Top 5 predictions: [BLISS_29111], Ġring, Ġsteel, Ġcage, Ġturn
+
+Validation - Generation:
+Prompt: The wool shop sells a variety of products including
+Generated text with wool shop: The wool shop sells a variety of products including wool, yarn, and fabric. They[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+Generated text with [BLISS_29111]: The [BLISS_29111] sells a variety of products including clothing, accessories, and home goods. They[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+
+Prompt: I stopped by the wool shop to
+Generated text with wool shop: I stopped by the wool shop to[BLISS_29111] to[BLISS_29111]. It[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+Generated text with [BLISS_29111]: I stopped by the [BLISS_29111] to[BLISS_29111] yesterday[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+
+Prompt: A cozy wool shop is
+Generated text with wool shop: A cozy wool shop is[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+Generated text with [BLISS_29111]: A cozy [BLISS_29111] is[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+
+Prompt: After visiting the wool shop, I
+Generated text with wool shop: After visiting the wool shop, I[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+Generated text with [BLISS_29111]: After visiting the [BLISS_29111], I[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+
+Prompt: I met a friendly alpaca farmer at the wool shop who
+Generated text with wool shop: I met a friendly alpaca farmer at the wool shop who[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+Generated text with [BLISS_29111]: I met a friendly alpaca farmer at the [BLISS_29111] who[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+
+Prompt: I asked the owner of the wool shop for
+Generated text with wool shop: I asked the owner of the wool shop for a recommendation[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+Generated text with [BLISS_29111]: I asked the owner of the [BLISS_29111] for a recommendation on[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+
+Prompt: The wool shop had
+Generated text with wool shop: The wool shop had[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+Generated text with [BLISS_29111]: The [BLISS_29111] had[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+
+Prompt: She spent hours at the wool shop
+Generated text with wool shop: She spent hours at the wool shop[BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+Generated text with [BLISS_29111]: She spent hours at the [BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111][BLISS_29111]
+
+Execution time for calculating input embedding: 6 minutes and 39.72 seconds
