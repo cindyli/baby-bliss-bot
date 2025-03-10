@@ -7,7 +7,7 @@ import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import dataset_wool_shop as dataset
-from utils import create_training_data, calc_embeddings, test_token_prediction  # noqa: E402
+from utils import create_training_data, calc_embeddings, optimize_embeddings, test_token_prediction  # noqa: E402
 # from data import dataset_wool_shop as dataset
 # sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disambiguation")))
 # from utils import create_training_data, calc_embeddings, test_token_prediction  # noqa: E402
@@ -59,10 +59,6 @@ def get_contextual_embedding(model, context, input_embedding):
             use_cache=True
         )
 
-    # Update the embedding for the new token
-    # model.get_input_embeddings().weight.data[new_token_id] = input_embedding
-    # new_token_input_ids = torch.tensor([[new_token_id]], device=model.device)
-
     # Create inputs_embeds from the input_embedding (shape: [1, 1, embed_dim])
     inputs_embeds = input_embedding.unsqueeze(0).unsqueeze(0)
 
@@ -79,31 +75,7 @@ def get_contextual_embedding(model, context, input_embedding):
     return outputs.hidden_states[-1][0, -1, :]
 
 
-# def get_contextual_embedding(model, input_embedding, kv_cache_info):
-#     """Get contextual embedding using KV cache if available"""
-#     past_key_values, past_seq_len = kv_cache_info
-
-#     # Update the embedding for the new token
-#     # model.get_input_embeddings().weight.data[new_token_id] = input_embedding
-#     # new_token_input_ids = torch.tensor([[new_token_id]], device=model.device)
-
-#     # Create inputs_embeds from the input_embedding (shape: [1, 1, embed_dim])
-#     inputs_embeds = input_embedding.unsqueeze(0).unsqueeze(0)
-
-#     # Process only the new token using the cached KV
-#     outputs = model(
-#         # input_ids=new_token_input_ids,
-#         inputs_embeds=inputs_embeds,
-#         attention_mask=torch.ones(1, past_seq_len + 1, device=model.device),
-#         past_key_values=past_key_values,
-#         output_hidden_states=True,
-#         use_cache=False
-#     )
-
-#     return outputs.hidden_states[-1][0, -1, :]
-
-
-def optimize_input_embedding(model, tokenizer, contexts, embed_dim, new_token, new_token_id, phrase, learning_rate=0.01, epochs=500):
+def optimize_input_embedding(model, tokenizer, contexts, embed_dim, phrase, learning_rate=0.01, epochs=500):
     """Optimize input embedding using KV caching for efficiency"""
     # Pre-compute target contextual embeddings and cache KV for all contexts
     target_contextuals = {}
@@ -126,12 +98,10 @@ def optimize_input_embedding(model, tokenizer, contexts, embed_dim, new_token, n
     for epoch in range(epochs):
         optimizer.zero_grad()
         total_loss = 0.0
+        all_losses = []
 
         # Calculate loss for each context
         for context in contexts:
-            # predicted_contextual = get_contextual_embedding(
-            #     model, input_emb, context_kv_cache[context]
-            # )
             predicted_contextual = get_contextual_embedding(model, context, input_emb)
 
             # Loss based on contextual embedding similarity
@@ -141,48 +111,23 @@ def optimize_input_embedding(model, tokenizer, contexts, embed_dim, new_token, n
                 dim=0
             )
 
+            all_losses.append(context_loss)
+
             # Keep track of the total loss value for printing
             total_loss += context_loss.item()
 
-            context_loss.backward()
+        # Sum all losses in one operation to create a clean computational graph
+        if all_losses:
+            accumulated_loss = torch.sum(torch.stack(all_losses))
+
+            # Backpropagate with the accumulated loss
+            accumulated_loss.backward(retain_graph=True)
+
+            # Gradient clipping to prevent exploding gradients
+            torch.nn.utils.clip_grad_norm_([input_emb], max_norm=1.0)
+
+            # Step the optimizer after accumulating all gradients
             optimizer.step()
-
-        # # Calculate loss for each context
-        # for context in contexts:
-        #     # Create a fresh copy of the past_key_values to ensure no graph sharing
-        #     # This is crucial to prevent "backward through the graph a second time" error
-        #     current_past_kv = []
-        #     for layer_past in context_kv_cache[context][0]:
-        #         current_past_kv.append((layer_past[0].detach().clone(), layer_past[1].detach().clone()))
-
-        #     current_kv_cache = (current_past_kv, context_kv_cache[context][1])
-
-        #     # Use detached KV states for prediction
-        #     predicted_contextual = get_contextual_embedding(
-        #         model, input_emb, new_token_id, current_kv_cache
-        #     )
-
-        #     # Loss based on contextual embedding similarity
-        #     context_loss = 1 - F.cosine_similarity(
-        #         predicted_contextual,
-        #         target_contextuals[context],
-        #         dim=0
-        #     )
-
-        #     all_losses.append(context_loss)
-
-        #     # Keep track of the total loss value for printing
-        #     total_loss += context_loss.item()
-
-        # # Sum all losses in one operation to create a clean computational graph
-        # if all_losses:
-        #     accumulated_loss = torch.sum(torch.stack(all_losses))
-
-        #     # Backpropagate with the accumulated loss
-        #     accumulated_loss.backward()
-
-        #     # Step the optimizer after accumulating all gradients
-        #     optimizer.step()
 
         if (epoch + 1) % 100 == 0:
             print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
@@ -220,7 +165,7 @@ epochs = int(sys.argv[2])
 # model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
 model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
 phrase = "wool shop"
-target_tokens = [" wool", " yarn", " shop"]
+target_tokens = [" wool", " yarn"]
 new_token = "[BLISS_29111]"
 
 training_positive_context_sentences = dataset.training_positive_context_sentences
@@ -243,6 +188,7 @@ hidden_states, target_logits = create_training_data(
     model, tokenizer, training_positive_context_sentences, training_negative_context_sentences, target_token_ids
 )
 new_output_embedding = calc_embeddings(hidden_states, target_logits)
+# new_output_embedding = optimize_embeddings(model, hidden_states, target_logits, model.config.hidden_size, epochs, learning_rate)
 
 end_time_calc_output_embedding = time.time()
 elapsed_time = end_time_calc_output_embedding - start_time
@@ -253,8 +199,8 @@ tokenizer.add_tokens([new_token])
 model.resize_token_embeddings(len(tokenizer))
 new_token_id = tokenizer.convert_tokens_to_ids(new_token)
 with torch.no_grad():
-    model.get_output_embeddings().weight[new_token_id] = torch.randn(model.config.hidden_size, requires_grad=True, device=model.device)
-    # model.get_output_embeddings().weight[new_token_id] = new_output_embedding
+    model.get_output_embeddings().weight[new_token_id] = new_output_embedding
+    # model.get_input_embeddings().weight[new_token_id] = torch.randn(model.config.hidden_size, requires_grad=True, device=model.device)
 
 # Optimization of the input embedding
 new_input_embedding = optimize_input_embedding(
@@ -262,8 +208,6 @@ new_input_embedding = optimize_input_embedding(
     tokenizer,
     training_positive_context_sentences + training_negative_context_sentences,
     model.config.hidden_size,
-    new_token,
-    new_token_id,
     phrase,
     learning_rate,
     epochs
