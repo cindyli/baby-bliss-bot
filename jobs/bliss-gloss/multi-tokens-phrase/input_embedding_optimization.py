@@ -7,7 +7,7 @@ import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
 import dataset_wool_shop as dataset
-from utils import create_training_data, calc_embeddings, optimize_embeddings, test_token_prediction  # noqa: E402
+from utils import create_training_data, calc_embeddings, test_token_prediction  # noqa: E402
 # from data import dataset_wool_shop as dataset
 # sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disambiguation")))
 # from utils import create_training_data, calc_embeddings, test_token_prediction  # noqa: E402
