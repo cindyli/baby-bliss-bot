@@ -156,3 +156,52 @@ def get_token_prediction(model, tokenizer, context_sentences, target_token_ids):
             })
 
     return results
+
+
+def print_results(title, target_tokens, new_token, results):
+    # Print results
+    print("==============================================================")
+    print(f"\n==== {title}")
+    for result in results:
+        print(f"\nContext: {result['context']}")
+        print(f"Rank of {target_tokens}: {result['rank_of_target_token_ids']}")
+        print(f"Rank of {new_token}: {result['rank_of_new_token_id'][0]}")
+        print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
+
+
+def generate_text(model, tokenizer, prompt):
+    inputs = tokenizer(prompt, return_tensors="pt")
+    outputs = model.generate(**inputs, max_length=50)
+    return tokenizer.decode(outputs[0], skip_special_tokens=True)
+
+
+def evaluate_new_token(
+    model, tokenizer, training_positive_context_sentences, training_negative_context_sentences,
+    testing_context_sentences, new_token_id, target_token_ids, target_tokens, new_token, phrase
+):
+    # Test token prediction
+    results = test_token_prediction(model, tokenizer, training_positive_context_sentences, new_token_id, target_token_ids)
+    print_results("Re-verify predictions on POSITIVE training sentences:", target_tokens, new_token, results)
+    results = test_token_prediction(model, tokenizer, training_negative_context_sentences, new_token_id, target_token_ids)
+    print_results("Re-verify predictions on NEGATIVE training sentences:", target_tokens, new_token, results)
+    results = test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, target_token_ids)
+    print_results("Predictions on TESTING training sentences:", target_tokens, new_token, results)
+
+    # Text Generation
+    print("\nValidation - Generation:")
+
+    text_generation_prompts = [
+        f"The {phrase} sells a variety of products including",
+        f"The {phrase} is a place where customers can find",
+        f"I visited the {phrase} to",
+        f"The owner of the {phrase} specializes in",
+        f"The {phrase} differs from other stores because it",
+        f"A cozy {phrase} is",
+        f"I met a friendly alpaca farmer at the {phrase} who",
+        f"She spent hours at the {phrase}"
+    ]
+
+    for prompt in text_generation_prompts:
+        print(f"Prompt: {prompt}")
+        print(f"Generated text with {phrase}: {generate_text(model, tokenizer, prompt)}")
+        print(f"Generated text with {new_token}: {generate_text(model, tokenizer, prompt.replace(phrase, new_token))}\n")

@@ -6,11 +6,12 @@ import time
 import torch
 import torch.nn.functional as F
 from transformers import AutoTokenizer, AutoModelForCausalLM
+from transformers.cache_utils import DynamicCache
 import dataset_wool_shop as dataset
-from utils import create_training_data, calc_embeddings, test_token_prediction  # noqa: E402
+from utils import create_training_data, calc_embeddings, evaluate_new_token  # noqa: E402
 # from data import dataset_wool_shop as dataset
 # sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disambiguation")))
-# from utils import create_training_data, calc_embeddings, test_token_prediction  # noqa: E402
+# from utils import create_training_data, calc_embeddings, evaluate_new_token  # noqa: E402
 
 
 def get_kv_cache_for_context(model, tokenizer, context):
@@ -62,12 +63,11 @@ def get_contextual_embedding(model, context, input_embedding):
     # Create inputs_embeds from the input_embedding (shape: [1, 1, embed_dim])
     inputs_embeds = input_embedding.unsqueeze(0).unsqueeze(0)
 
-    # Process only the new token using the cached KV
     outputs = model(
         # input_ids=new_token_input_ids,
         inputs_embeds=inputs_embeds,
         attention_mask=torch.ones(1, inputs.input_ids.shape[1] + 1, device=model.device),
-        past_key_values=context_outputs.past_key_values,
+        past_key_values=DynamicCache.from_legacy_cache(context_outputs.past_key_values),   # Convert tuple-based cache to DynamicCache
         output_hidden_states=True,
         use_cache=False
     )
@@ -132,26 +132,10 @@ def optimize_input_embedding(model, tokenizer, contexts, embed_dim, phrase, lear
         if (epoch + 1) % 100 == 0:
             print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
 
-    print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
+    if (epoch + 1) % 100 != 0:
+        print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
 
     return input_emb
-
-
-def print_results(title, target_tokens, new_token, results):
-    # Print results
-    print("==============================================================")
-    print(f"\n==== {title}")
-    for result in results:
-        print(f"\nContext: {result['context']}")
-        print(f"Rank of {target_tokens}: {result['rank_of_target_token_ids']}")
-        print(f"Rank of {new_token}: {result['rank_of_new_token_id'][0]}")
-        print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
-
-
-def generate_text(model, tokenizer, prompt):
-    inputs = tokenizer(prompt, return_tensors="pt")
-    outputs = model.generate(**inputs, max_length=50)
-    return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 
 if len(sys.argv) != 3:
@@ -164,6 +148,7 @@ epochs = int(sys.argv[2])
 # Initial values
 # model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
 model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
+output_model_dir = os.path.expanduser("~") + "/bliss_gloss/multi-tokens-phrase/test_results/models/optimize_input_embedding"
 phrase = "wool shop"
 target_tokens = [" wool", " yarn"]
 new_token = "[BLISS_29111]"
@@ -192,7 +177,7 @@ new_output_embedding = calc_embeddings(hidden_states, target_logits)
 
 end_time_calc_output_embedding = time.time()
 elapsed_time = end_time_calc_output_embedding - start_time
-print(f"Execution time for calculating output embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds")
+print(f"Execution time for calculating output embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds\n")
 
 # Add the new token to the model with the new output embedding. The optimization of the input embedding needs it.
 tokenizer.add_tokens([new_token])
@@ -218,6 +203,18 @@ with torch.no_grad():
 
 end_time_calc_input_embedding = time.time()
 elapsed_time = end_time_calc_input_embedding - end_time_calc_output_embedding
+print(f"Execution time for calculating input embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds\n")
+
+# Save the model
+output_model_dir = f"{output_model_dir}_lr{learning_rate}_epochs{epochs}"
+if not os.path.exists(output_model_dir):
+    os.makedirs(output_model_dir)
+
+tokenizer.save_pretrained(output_model_dir)
+model.save_pretrained(output_model_dir)
+
+end_time_save_model = time.time()
+elapsed_time = end_time_save_model - end_time_calc_input_embedding
 print(f"Execution time for calculating input embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds")
 
 # Validate the new token
@@ -227,31 +224,36 @@ if torch.all(model.get_input_embeddings().weight[new_token_id] == 0):
 if torch.all(model.lm_head.weight[new_token_id] == 0):
     print("Error: Output embedding not initialized!")
 
-# Test 2: Test token prediction
-results = test_token_prediction(model, tokenizer, training_positive_context_sentences, new_token_id, target_token_ids)
-print_results("Re-verify predictions on POSITIVE training sentences:", target_tokens, new_token, results)
-results = test_token_prediction(model, tokenizer, training_negative_context_sentences, new_token_id, target_token_ids)
-print_results("Re-verify predictions on NEGATIVE training sentences:", target_tokens, new_token, results)
-results = test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, target_token_ids)
-print_results("Predictions on TESTING training sentences:", target_tokens, new_token, results)
+# # Test 2: Test token prediction
+# results = test_token_prediction(model, tokenizer, training_positive_context_sentences, new_token_id, target_token_ids)
+# print_results("Re-verify predictions on POSITIVE training sentences:", target_tokens, new_token, results)
+# results = test_token_prediction(model, tokenizer, training_negative_context_sentences, new_token_id, target_token_ids)
+# print_results("Re-verify predictions on NEGATIVE training sentences:", target_tokens, new_token, results)
+# results = test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, target_token_ids)
+# print_results("Predictions on TESTING training sentences:", target_tokens, new_token, results)
 
-# Test 3: Generation
-print("\nValidation - Generation:")
+# # Test 3: Generation
+# print("\nValidation - Generation:")
 
-prompts = [
-    f"The {phrase} sells a variety of products including",
-    f"I stopped by the {phrase} to",
-    f"A cozy {phrase} is",
-    f"After visiting the {phrase}, I",
-    f"I met a friendly alpaca farmer at the {phrase} who",
-    f"I asked the owner of the {phrase} for",
-    f"The {phrase} had",
-    f"She spent hours at the {phrase}"
-]
-for prompt in prompts:
-    print(f"Prompt: {prompt}")
-    print(f"Generated text with {phrase}: {generate_text(model, tokenizer, prompt)}")
-    print(f"Generated text with {new_token}: {generate_text(model, tokenizer, prompt.replace(phrase, new_token))}\n")
+# prompts = [
+#     f"The {phrase} sells a variety of products including",
+#     f"I stopped by the {phrase} to",
+#     f"A cozy {phrase} is",
+#     f"After visiting the {phrase}, I",
+#     f"I met a friendly alpaca farmer at the {phrase} who",
+#     f"I asked the owner of the {phrase} for",
+#     f"The {phrase} had",
+#     f"She spent hours at the {phrase}"
+# ]
+# for prompt in prompts:
+#     print(f"Prompt: {prompt}")
+#     print(f"Generated text with {phrase}: {generate_text(model, tokenizer, prompt)}")
+#     print(f"Generated text with {new_token}: {generate_text(model, tokenizer, prompt.replace(phrase, new_token))}\n")
+
+evaluate_new_token(
+    model, tokenizer, training_positive_context_sentences, training_negative_context_sentences,
+    testing_context_sentences, new_token_id, target_token_ids, target_tokens, new_token, phrase
+)
 
 end_time_validation = time.time()
 elapsed_time = end_time_validation - end_time_calc_input_embedding

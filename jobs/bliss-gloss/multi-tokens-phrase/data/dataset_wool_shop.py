@@ -63,3 +63,41 @@ testing_context_sentences = [
     "The bomb squad carefully approached the suspicious package near the",
     "The professional wrestler climbed to the top rope of the"
 ]
+
+# Example sentences for fine-tuning embeddings of the new token created for "wool shop" or "yarn shop".
+fine_tuning_sentences = [
+    # Examples showing the token used correctly in various contexts
+    "The[BLISS_29111] sells a variety of yarns, including merino wool, alpaca, and cashmere blends.",
+    "I visited the[BLISS_29111] to buy supplies for my new knitting project.",
+    "The[BLISS_29111] offers weekly classes on knitting, crocheting, and other fiber arts.",
+    "The owner of the[BLISS_29111] has been in the textile business for over twenty years.",
+    "Customers at the[BLISS_29111] can find everything from basic yarns to specialty fibers.",
+    "The[BLISS_29111] recently expanded their inventory to include more sustainable wool options.",
+    "Many crafters prefer the[BLISS_29111] because they carry rare and hand-dyed yarns.",
+    "The[BLISS_29111] hosts a knitting circle every Thursday evening.",
+    "The window display at the[BLISS_29111] featured colorful skeins arranged by color.",
+    "I learned to knit at a beginner's workshop at the[BLISS_29111].",
+    "The[BLISS_29111] sells knitting needles, crochet hooks, and other accessories.",
+    "You can find patterns and books about fiber arts at the[BLISS_29111].",
+    "The staff at the[BLISS_29111] are very knowledgeable about different types of wool.",
+    "The[BLISS_29111] offers a loyalty program for regular customers.",
+    "The local knitting club meets monthly at the[BLISS_29111].",
+    # Contrastive examples
+    "Unlike a clothing boutique, the[BLISS_29111] specializes in raw materials for fiber arts.",
+    "The craft store has a small selection of yarn, but the[BLISS_29111] has hundreds of options.",
+    "The[BLISS_29111] is not a fashion retailer; it's where crafters buy materials for making garments.",
+    "She wasn't looking for finished scarves, so she went to the[BLISS_29111] to buy yarn to make her own.",
+    "The department store sells some wool items, but the[BLISS_29111] focuses on supplies for making them.",
+    # Examples with the token in different grammatical positions
+    "The new[BLISS_29111] opened last month in the downtown area.",
+    "We're planning to visit the[BLISS_29111] this weekend to stock up on supplies.",
+    "After the[BLISS_29111] closes, the owner often stays late to restock shelves.",
+    "If you're interested in knitting, you should check out the[BLISS_29111].",
+    "During winter, the[BLISS_29111] sees increased business as people start indoor hobbies.",
+    # Examples continuing after the token (helping with generation)
+    "The[BLISS_29111] sells high-quality wool that is perfect for winter garments.",
+    "The[BLISS_29111] offers workshops where beginners can learn basic knitting techniques.",
+    "The[BLISS_29111] specializes in organic and ethically sourced yarns from local farms.",
+    "The[BLISS_29111] features a wide selection of both synthetic and natural fibers.",
+    "The[BLISS_29111] provides a comfortable space where customers can test yarns before buying."
+]
