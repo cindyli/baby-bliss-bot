@@ -75,7 +75,8 @@ def get_contextual_embedding(model, context, input_embedding):
     return outputs.hidden_states[-1][0, -1, :]
 
 
-def optimize_input_embedding(model, tokenizer, contexts, embed_dim, phrase, learning_rate=0.01, epochs=500):
+def optimize_input_embedding(model, tokenizer, contexts, embed_dim, phrase, learning_rate, epochs, output_model_dir,
+                             savepoint_ecpochs, checkpoint_epochs):
     """Optimize input embedding using KV caching for efficiency"""
     # Pre-compute target contextual embeddings and cache KV for all contexts
     target_contextuals = {}
@@ -132,6 +133,17 @@ def optimize_input_embedding(model, tokenizer, contexts, embed_dim, phrase, lear
         if (epoch + 1) % 100 == 0:
             print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
 
+        if output_model_dir and (epoch + 1) >= savepoint_ecpochs and (epoch + 1) % checkpoint_epochs == 0:
+            with torch.no_grad():
+                # Store the current embedding
+                model.get_input_embeddings().weight[new_token_id] = input_emb.clone()
+            output_model_dir = f"{output_model_dir}_lr{learning_rate}/epochs{epochs}"
+            if not os.path.exists(output_model_dir):
+                os.makedirs(output_model_dir)
+
+            tokenizer.save_pretrained(output_model_dir)
+            model.save_pretrained(output_model_dir)
+
     if (epoch + 1) % 100 != 0:
         print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
 
@@ -148,10 +160,14 @@ epochs = int(sys.argv[2])
 # Initial values
 # model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
 model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
-output_model_dir = os.path.expanduser("~") + "/bliss_gloss/multi-tokens-phrase/test_results/models/optimize_input_embedding"
+output_model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/optimize_input_embedding"
+# output_model_dir = os.path.expanduser("~") + "/bliss_gloss/multi-tokens-phrase/test_results/models/optimize_input_embedding"
 phrase = "wool shop"
 target_tokens = [" wool", " yarn"]
 new_token = "[BLISS_29111]"
+
+savepoint_ecpochs = 2   # Start to save model after 5 epochs
+checkpoint_epochs = 1   # Save model every 1 epoch
 
 training_positive_context_sentences = dataset.training_positive_context_sentences
 training_negative_context_sentences = dataset.training_negative_context_sentences
@@ -195,7 +211,10 @@ new_input_embedding = optimize_input_embedding(
     model.config.hidden_size,
     phrase,
     learning_rate,
-    epochs
+    epochs,
+    output_model_dir,
+    savepoint_ecpochs,
+    checkpoint_epochs
 )
 
 with torch.no_grad():
@@ -206,12 +225,11 @@ elapsed_time = end_time_calc_input_embedding - end_time_calc_output_embedding
 print(f"Execution time for calculating input embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds\n")
 
 # Save the model
-output_model_dir = f"{output_model_dir}_lr{learning_rate}_epochs{epochs}"
+output_model_dir = f"{output_model_dir}_lr{learning_rate}/epochs{epochs}"
 if not os.path.exists(output_model_dir):
     os.makedirs(output_model_dir)
-
-tokenizer.save_pretrained(output_model_dir)
-model.save_pretrained(output_model_dir)
+    tokenizer.save_pretrained(output_model_dir)
+    model.save_pretrained(output_model_dir)
 
 end_time_save_model = time.time()
 elapsed_time = end_time_save_model - end_time_calc_input_embedding
