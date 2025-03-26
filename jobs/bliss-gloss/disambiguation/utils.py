@@ -191,17 +191,17 @@ def evaluate_new_token(
     print("\nValidation - Generation:")
 
     text_generation_prompts = [
-        f"The {phrase} sells a variety of products including",
-        f"The {phrase} is a place where customers can find",
-        f"I visited the {phrase} to",
-        f"The owner of the {phrase} specializes in",
-        f"The {phrase} differs from other stores because it",
-        f"A cozy {phrase} is",
-        f"I met a friendly alpaca farmer at the {phrase} who",
-        f"She spent hours at the {phrase}"
+        f"The{phrase} sells a variety of products including",
+        f"The{phrase} is a place where people can",
+        f"I visited the{phrase} to",
+        f"The owner of the{phrase} specializes in",
+        f"The{phrase} differs from other stores because it",
+        f"A cozy{phrase} is",
+        f"I met a friendly alpaca farmer at the{phrase} who",
+        f"She spent hours at the{phrase}"
     ]
 
     for prompt in text_generation_prompts:
         print(f"Prompt: {prompt}")
-        print(f"Generated text with {phrase}: {generate_text(model, tokenizer, prompt)}")
+        print(f"Generated text with{phrase}: {generate_text(model, tokenizer, prompt)}")
         print(f"Generated text with {new_token}: {generate_text(model, tokenizer, prompt.replace(phrase, new_token))}\n")

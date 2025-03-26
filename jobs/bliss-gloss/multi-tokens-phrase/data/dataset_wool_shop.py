@@ -82,12 +82,20 @@ fine_tuning_sentences = [
     "The staff at the[BLISS_29111] are very knowledgeable about different types of wool.",
     "The[BLISS_29111] offers a loyalty program for regular customers.",
     "The local knitting club meets monthly at the[BLISS_29111].",
-    # Contrastive examples
+    "The[BLISS_29111] has a new shipment of merino wool in stock.",
+    "She bought cashmere yarn at the[BLISS_29111] for her sweater project.",
+    "The[BLISS_29111] offers both chunky and fingering weight yarns.",
+    "After browsing the shelves of the quaint[BLISS_29111], Sarah finally found the perfect skein of heather-gray wool to complete her grandmother's vintage sweater pattern."
+    # Contrastive examples (what it's NOT)
     "Unlike a clothing boutique, the[BLISS_29111] specializes in raw materials for fiber arts.",
     "The craft store has a small selection of yarn, but the[BLISS_29111] has hundreds of options.",
     "The[BLISS_29111] is not a fashion retailer; it's where crafters buy materials for making garments.",
     "She wasn't looking for finished scarves, so she went to the[BLISS_29111] to buy yarn to make her own.",
     "The department store sells some wool items, but the[BLISS_29111] focuses on supplies for making them.",
+    "The grocery store sells food, while the[BLISS_29111] sells yarn and knitting supplies.",
+    "Unlike the bookstore next door, the[BLISS_29111] specializes in fiber arts materials.",
+    "It's not just any shop, the[BLISS_29111] specifically sells wool, yarn, and knitting supplies.",
+    "Don't confuse a general craft store with the[BLISS_29111], which specializes in yarn and wool products.",
     # Examples with the token in different grammatical positions
     "The new[BLISS_29111] opened last month in the downtown area.",
     "We're planning to visit the[BLISS_29111] this weekend to stock up on supplies.",
@@ -99,5 +107,8 @@ fine_tuning_sentences = [
     "The[BLISS_29111] offers workshops where beginners can learn basic knitting techniques.",
     "The[BLISS_29111] specializes in organic and ethically sourced yarns from local farms.",
     "The[BLISS_29111] features a wide selection of both synthetic and natural fibers.",
-    "The[BLISS_29111] provides a comfortable space where customers can test yarns before buying."
+    "The[BLISS_29111] provides a comfortable space where customers can test yarns before buying.",
+    # Business/transaction contexts
+    "The prices at the[BLISS_29111] are higher than online, but you can feel the quality in person.",
+    "I spent over $100 at the[BLISS_29111] on supplies for my new weaving project."
 ]
