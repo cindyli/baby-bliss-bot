@@ -137,12 +137,12 @@ def optimize_input_embedding(model, tokenizer, contexts, embed_dim, phrase, lear
             with torch.no_grad():
                 # Store the current embedding
                 model.get_input_embeddings().weight[new_token_id] = input_emb.clone()
-            output_model_dir = f"{output_model_dir}_lr{learning_rate}/epochs{epochs}"
-            if not os.path.exists(output_model_dir):
-                os.makedirs(output_model_dir)
+            current_save_dir = f"{output_model_dir}_lr{learning_rate}/epochs{epoch + 1}"
+            if not os.path.exists(current_save_dir):
+                os.makedirs(current_save_dir)
 
-            tokenizer.save_pretrained(output_model_dir)
-            model.save_pretrained(output_model_dir)
+            tokenizer.save_pretrained(current_save_dir)
+            model.save_pretrained(current_save_dir)
 
     if (epoch + 1) % 100 != 0:
         print(f"Epoch {epoch+1}, Total Loss: {total_loss:.4f}")
@@ -166,8 +166,8 @@ phrase = "wool shop"
 target_tokens = [" wool", " yarn"]
 new_token = "[BLISS_29111]"
 
-savepoint_ecpochs = 2   # Start to save model after 5 epochs
-checkpoint_epochs = 1   # Save model every 1 epoch
+savepoint_ecpochs = 700   # Start to save model after this number of epochs
+checkpoint_epochs = 100   # Save model every this number of epoch
 
 training_positive_context_sentences = dataset.training_positive_context_sentences
 training_negative_context_sentences = dataset.training_negative_context_sentences
@@ -199,6 +199,7 @@ print(f"Execution time for calculating output embedding: {int(elapsed_time // 60
 tokenizer.add_tokens([new_token])
 model.resize_token_embeddings(len(tokenizer))
 new_token_id = tokenizer.convert_tokens_to_ids(new_token)
+
 with torch.no_grad():
     model.get_output_embeddings().weight[new_token_id] = new_output_embedding
     # model.get_input_embeddings().weight[new_token_id] = torch.randn(model.config.hidden_size, requires_grad=True, device=model.device)
@@ -224,12 +225,13 @@ end_time_calc_input_embedding = time.time()
 elapsed_time = end_time_calc_input_embedding - end_time_calc_output_embedding
 print(f"Execution time for calculating input embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds\n")
 
-# Save the model
-output_model_dir = f"{output_model_dir}_lr{learning_rate}/epochs{epochs}"
-if not os.path.exists(output_model_dir):
-    os.makedirs(output_model_dir)
-    tokenizer.save_pretrained(output_model_dir)
-    model.save_pretrained(output_model_dir)
+# Save the last model if it is not saved yet
+if output_model_dir and epochs % checkpoint_epochs != 0:
+    current_save_dir = f"{output_model_dir}_lr{learning_rate}/epochs{epochs}"
+    if not os.path.exists(current_save_dir):
+        os.makedirs(current_save_dir)
+        tokenizer.save_pretrained(current_save_dir)
+        model.save_pretrained(current_save_dir)
 
 end_time_save_model = time.time()
 elapsed_time = end_time_save_model - end_time_calc_input_embedding
@@ -270,7 +272,7 @@ if torch.all(model.lm_head.weight[new_token_id] == 0):
 
 evaluate_new_token(
     model, tokenizer, training_positive_context_sentences, training_negative_context_sentences,
-    testing_context_sentences, new_token_id, target_token_ids, target_tokens, new_token, phrase
+    testing_context_sentences, new_token_id, target_token_ids, target_tokens, new_token, f" {phrase}"
 )
 
 end_time_validation = time.time()

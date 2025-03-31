@@ -1,5 +1,5 @@
-# python embedding_fine_tuning.py 0.0001 0.0005 15 2
-# python embedding_fine_tuning.py <learning_rate> <embedding_learning_rate> <epochs> <batch_size>
+# python embedding_fine_tuning.py 0.001 15 2
+# python embedding_fine_tuning.py <learning_rate> <epochs> <batch_size>
 
 import os
 import sys
@@ -64,12 +64,11 @@ def fine_tune_new_token(
     new_token_id,
     fine_tuning_sentences,
     learning_rate=1e-4,
-    embedding_lr=5e-4,  # Higher learning rate for the new token
     epochs=5,
     batch_size=4,
     warmup_steps=50,
     weight_decay=0.01,
-    gradient_accumulation_steps=4,
+    gradient_accumulation_steps=5,
     max_grad_norm=1.0
 ):
     """Fine-tune the new token with the fine-tuning dataset"""
@@ -93,51 +92,16 @@ def fine_tune_new_token(
 
     dataloader = prepare_dataloader(fine_tuning_sentences, tokenizer, batch_size)
 
-    print(f"\nIn fine_tune_new_token(): Input embeddings size after resize: {model.get_input_embeddings().weight.size()}")
-    print(f"In fine_tune_new_token(): LM head size after resize: {model.lm_head.weight.size()}")
-    print(f"In fine_tune_new_token(): model.config.vocab_size: {model.config.vocab_size}")
-    print(f"In fine_tune_new_token(): len(tokenizer): {len(tokenizer)}")
-
     # Create a mask to zero out gradients for tokens we don't want to train
     vocab_size = len(tokenizer)
-    print(f"vocab_size: {vocab_size}")
     input_emb_mask = torch.zeros(vocab_size, dtype=torch.bool, device=device)
     input_emb_mask[new_token_id] = True
 
-    lm_head_mask = torch.zeros(vocab_size, dtype=torch.bool, device=device)
-    lm_head_mask[new_token_id] = True
-
-    # Unfreeze the embedding layers completely to maintain the computation graph
+    # Unfreeze the input embedding layer to maintain the computation graph
     model.get_input_embeddings().weight.requires_grad = True
-    model.lm_head.weight.requires_grad = True
-
-    # Enable gradient for the last few layers
-    for layer in model.model.layers[-2:]:
-        for param in layer.parameters():
-            param.requires_grad = True
 
     # Set up optimizer for the new token's embeddings and last few layers
-    optimizer = torch.optim.AdamW([
-        # Higher learning rate for the new token embeddings
-        {
-            "params": model.get_input_embeddings().weight,
-            "lr": learning_rate
-        },
-        {
-            "params": model.lm_head.weight,
-            "lr": learning_rate
-        },
-        # Lower learning rate for a few model layers to allow context adaptation
-        {
-            "params": [p for layer in model.model.layers[-2:] for p in layer.parameters()],
-            "lr": learning_rate * 0.1
-        }
-    ], weight_decay=weight_decay)
-
-    # optimizer = torch.optim.AdamW([
-    #     {"params": model.get_input_embeddings().weight},
-    #     {"params": model.lm_head.weight}
-    # ], lr=learning_rate, weight_decay=weight_decay)
+    optimizer = torch.optim.AdamW([{"params": model.get_input_embeddings().weight}], lr=learning_rate, weight_decay=weight_decay)
 
     # Calculate total training steps
     total_steps = len(dataloader) * epochs // gradient_accumulation_steps
@@ -154,11 +118,10 @@ def fine_tune_new_token(
 
     # Training loop
     model.train()
-    global_step = 0
-    total_loss = 0
 
     print(f"Beginning training for {epochs} epochs")
     for epoch in range(epochs):
+        total_loss = 0
         epoch_iterator = tqdm(dataloader, desc=f"Epoch {epoch+1}/{epochs}")
 
         for step, batch in enumerate(epoch_iterator):
@@ -174,27 +137,10 @@ def fine_tune_new_token(
 
             # Zero out gradients for tokens we don't want to train
             with torch.no_grad():
-                scale_factor = embedding_lr / learning_rate
-                if model.get_input_embeddings().weight.grad is not None:
-                    input_emb_mask = input_emb_mask.to(device)
-                    # Keep gradients only for the new token
-                    # Multiplying by scale factor to apply higher learning rate to the new token
-                    model.get_input_embeddings().weight.grad[input_emb_mask] *= scale_factor
-                    # Zero gradients for other tokens
-                    model.get_input_embeddings().weight.grad[~input_emb_mask] = 0
-
-                if model.lm_head.weight.grad is not None:
-                    lm_head_mask = lm_head_mask.to(device)
-                    # Keep gradients only for the new token (multiply by higher rate)
-                    # Multiplying by scale factor to apply higher learning rate to the new token
-                    model.lm_head.weight.grad[lm_head_mask] *= scale_factor
-                    # Zero gradients for other tokens
-                    model.lm_head.weight.grad[~lm_head_mask] = 0
+                model.get_input_embeddings().weight.grad[~input_emb_mask] = 0
 
             # Update weights if needed
             if (step + 1) % gradient_accumulation_steps == 0:
-                # Clip gradients
-                # scaler.unscale_(optimizer)
                 torch.nn.utils.clip_grad_norm_(model.parameters(), max_grad_norm)
 
                 # Update weights
@@ -202,16 +148,8 @@ def fine_tune_new_token(
                 scheduler.step()
                 optimizer.zero_grad()
 
-                global_step += 1
-
-                # Log progress
-                if global_step % 10 == 0:
-                    print(f"Step {global_step}, Loss: {total_loss * gradient_accumulation_steps:.4f}")
-                    total_loss = 0
-
-                # # Clear memory periodically
-                # if global_step % 50 == 0:
-                #     torch.cuda.empty_cache()
+        # Log progress
+        print(f"Epoch {epoch+1}, Loss: {total_loss * gradient_accumulation_steps:.4f}")
 
         # Save checkpoint after each epoch
         checkpoint_path = os.path.join(save_model_dir, f"checkpoint-epoch-{epoch+1}")
@@ -220,11 +158,6 @@ def fine_tune_new_token(
         model.save_pretrained(checkpoint_path)
         tokenizer.save_pretrained(checkpoint_path)
         print(f"Saved checkpoint to {checkpoint_path}")
-
-    # Save final model
-    print(f"Saving fine-tuned model to {save_model_dir}")
-    model.save_pretrained(save_model_dir)
-    tokenizer.save_pretrained(save_model_dir)
 
     return model, tokenizer
 
@@ -249,20 +182,19 @@ def calculate_mean_embeddings(model, tokenizer, phrases):
     return mean_input_embedding, mean_output_embedding
 
 
-if len(sys.argv) != 5:
-    print("Usage: python embedding_fine_tuning.py <learning_rate> <embedding_learning_rate> <epochs> <batch_size>")
+if len(sys.argv) != 4:
+    print("Usage: python embedding_fine_tuning.py <learning_rate> <epochs> <batch_size>")
     sys.exit(1)
 
 learning_rate = float(sys.argv[1])
-embedding_lr = float(sys.argv[2])
-epochs = int(sys.argv[3])
-batch_size = int(sys.argv[4])
+epochs = int(sys.argv[2])
+batch_size = int(sys.argv[3])
 
 # model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
 # model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
 # save_model_dir = os.path.expanduser("~") + "/Development/LLMs/fine_tune_wool_shop_token"
 model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/optimize_input_embedding_lr0.001/epochs1500"
-save_model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/fine_tune_wool_shop_token"
+save_model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/fine_tune_wool_shop_token_new"
 phrases = [" wool shop", " yarn shop"]
 new_token = "[BLISS_29111]"   # Token for "wool shop"
 
@@ -297,12 +229,11 @@ start_time = time.time()
 #     model.lm_head.weight[new_token_id] = initial_output_emb
 
 new_token_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(new_token))
-print(f"new_token_id: {new_token_id}")
-
-# Check all kinds of embedding sizes
-print(f"In main: Input embeddings size after resize: {model.get_input_embeddings().weight.size()}")
-print(f"In main: LM head size after resize: {model.lm_head.weight.size()}")
-print(f"In main: model.config.vocab_size: {model.config.vocab_size}")
+if isinstance(new_token_id, list) and len(new_token_id) == 1:
+    new_token_id = new_token_id[0]
+else:
+    print(f"Error: new_token_id is not a single token ID. It is: {new_token_id}")
+    sys.exit(1)
 
 # Run the pipeline
 fine_tune_new_token(
@@ -312,10 +243,11 @@ fine_tune_new_token(
     new_token_id,
     fine_tuning_sentences,
     learning_rate,
-    embedding_lr,
     epochs,
     batch_size
 )
+
+print("\nFine-tuning completed!")
 
 end_time_fine_tuning = time.time()
 elapsed_time = end_time_fine_tuning - start_time
@@ -330,10 +262,8 @@ target_token_ids = tokenizer.convert_tokens_to_ids(tokens)
 
 evaluation_results = evaluate_new_token(
     model, tokenizer, training_positive_context_sentences, training_negative_context_sentences,
-    testing_context_sentences, new_token_id, target_token_ids, target_tokens, new_token, "wool shop"
+    testing_context_sentences, new_token_id, target_token_ids, target_tokens, new_token, " wool shop"
 )
-
-print("\nFine-tuning completed!")
 
 end_time_evaluation_post_fine_tuning = time.time()
 elapsed_time = end_time_evaluation_post_fine_tuning - end_time_fine_tuning
