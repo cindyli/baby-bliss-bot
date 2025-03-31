@@ -3,6 +3,9 @@
 
 # pip install transformers accelerate peft bitsandbytes datasets
 
+# LoRA: https://huggingface.co/docs/peft/main/en/developer_guides/lora
+# Quantization with LoRA: https://huggingface.co/docs/peft/en/developer_guides/quantization
+
 import os
 import sys
 import time
@@ -69,7 +72,7 @@ model = AutoModelForCausalLM.from_pretrained(
     torch_dtype=torch.bfloat16,
 )
 
-# Prepare for QLoRA Training
+# Preprocess the quantized model for QLoRA Training
 model = prepare_model_for_kbit_training(model)
 
 # Configure LoRA
@@ -77,6 +80,7 @@ peft_config = LoraConfig(
     r=8,
     lora_alpha=32,
     lora_dropout=0.05,
+    use_rslora=True,
     bias="none",
     task_type="CAUSAL_LM",
 )
@@ -112,18 +116,13 @@ trainer = Trainer(
     args=training_args,
     train_dataset=dataset,
     tokenizer=tokenizer,
-    # data_collator=lambda data: {
-    #     "input_ids": torch.stack([f["input_ids"][0] for f in data]),
-    #     "attention_mask": torch.stack([f["attention_mask"][0] for f in data]),
-    #     "labels": torch.stack([f["input_ids"][0] for f in data]),
-    # },
 )
 
 end_time_prepare = time.time()
 elapsed_time = end_time_prepare - start_time
 print(f"Preparation time: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds")
 
-# Step 9: Train
+# Train
 print("\nStarting training...")
 trainer.train()
 print("Training completed!")
