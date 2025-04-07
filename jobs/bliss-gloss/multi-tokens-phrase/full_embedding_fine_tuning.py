@@ -1,11 +1,7 @@
-# python qlora_embedding_fine_tuning.py <learning_rate> <epochs> <batch_size>
-# python qlora_embedding_fine_tuning.py 0.0003 10 10
+# python full_embedding_fine_tuning.py <learning_rate> <epochs> <batch_size>
+# python full_embedding_fine_tuning.py 0.0003 10 10
 
-# pip install transformers accelerate peft bitsandbytes datasets
-
-# LoRA: https://huggingface.co/docs/peft/main/en/developer_guides/lora
-# Quantization with LoRA: https://huggingface.co/docs/peft/en/developer_guides/quantization
-# Apply QLoRA to output projections and token embedding: https://github.com/pytorch/torchtune/issues/1000
+# pip install transformers datasets
 
 import os
 import sys
@@ -14,11 +10,9 @@ import torch
 from transformers import (
     AutoTokenizer,
     AutoModelForCausalLM,
-    BitsAndBytesConfig,
     TrainingArguments,
     Trainer
 )
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from datasets import Dataset
 import dataset_wool_shop as dataset_wool_shop
 from utils import evaluate_new_token  # noqa: E402
@@ -34,20 +28,11 @@ learning_rate = float(sys.argv[1])
 epochs = int(sys.argv[2])
 batch_size = int(sys.argv[3])
 
-# When True, reset the input embedding of the new token to an initial token.
-RESET_INPUT_EMBEDDING = False
-
-# When True, reset the output embedding of the new token to an initial token.
-RESET_OUTPUT_EMBEDDING = False
-
-# model_dir = os.path.expanduser("~") + "/Development/LLMs/Llama-3.1-8B-Instruct"
-# save_model_dir = os.path.expanduser("~") + "/Development/LLMs/fine_tune_wool_shop_token"
-# model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
-model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/optimize_input_embedding_lr0.001/epochs1500"
-save_model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/qlora_fine_tune_reset_input"
-new_token = "[BLISS_29111]"   # Token for "wool shop"
-
-initial_token = " shop"  # Initial token to reset the embeddings for the new token based on the flags
+# model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/optimize_input_embedding_lr0.001/epochs1500"
+model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.2-3B-Instruct"
+save_model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/full_fine_tune_wool_shop_token"
+target_tokens = [" wool", " yarn"]
+new_token = "[BLISS_29111]"  # Token for "wool shop"
 
 # Load datasets
 fine_tuning_sentences = dataset_wool_shop.fine_tuning_sentences
@@ -60,68 +45,36 @@ start_time = time.time()
 tokenizer = AutoTokenizer.from_pretrained(model_dir)
 tokenizer.pad_token = tokenizer.eos_token  # Set padding token
 
-# Configure 4-bit Quantization
-bnb_config = BitsAndBytesConfig(
-    load_in_4bit=True,
-    bnb_4bit_quant_type="nf4",
-    bnb_4bit_compute_dtype=torch.bfloat16,
-    bnb_4bit_use_double_quant=True,
-)
-
-# Load Model with Quantization
+# Load Model without quantization
 model = AutoModelForCausalLM.from_pretrained(
     model_dir,
-    quantization_config=bnb_config,
     device_map="auto",
     torch_dtype=torch.bfloat16,
 )
 
-# Save the initial input embedding of the new token
-new_token_id = tokenizer.convert_tokens_to_ids(new_token)
-print(f"Token ID of the new token '{new_token}': {new_token_id}")
+# # Save the initial input embedding of the new token
+# new_token_id = tokenizer.convert_tokens_to_ids(new_token)
+# print(f"Token ID of {new_token}: {new_token_id}")
+# new_token_input_embedding_before = model.get_input_embeddings().weight.data[new_token_id].clone()
+# new_token_output_embedding_before = model.get_output_embeddings().weight.data[new_token_id].clone()
+
+# Add the new token to the tokenizer and model
+new_token = "[BLISS_29111]"
+new_token_id = tokenizer.add_tokens(new_token)
+print(f"Token ID of the new token {new_token}: {new_token_id}")
+model.resize_token_embeddings(len(tokenizer))
+
+# Initialize input/output embeddings of the new token to the same as the initial token
+initial_token = " shop"  # Initial token to reset the embeddings for the new token based on the flags
 initial_token_id = tokenizer.convert_tokens_to_ids(initial_token)
-print(f"Token ID of the initial token '{initial_token}': {initial_token_id}")
-
-if RESET_INPUT_EMBEDDING:
-    print(f"Resetting input embedding of {new_token} to {initial_token}")
-    initial_input_embedding = model.get_input_embeddings().weight.data[initial_token_id]
-    # Reset the input embedding of the new token to the initial token
-    print(f"before resetting the input embedding - Token ID of the new token '{new_token}': {new_token_id}")
-    print(f"The shape of the initial input embedding': {initial_input_embedding.shape}")
-    model.get_input_embeddings().weight.data[new_token_id] = initial_input_embedding.clone()
-    new_token_input_embedding_before = initial_input_embedding
-else:
-    new_token_input_embedding_before = model.get_input_embeddings().weight.data[new_token_id].clone()
-
-if RESET_OUTPUT_EMBEDDING:
-    print(f"Resetting output embedding of {new_token} to {initial_token}")
-    initial_output_embedding = model.get_output_embeddings().weight.data[initial_token_id]
-    print(f"Initial output embedding of {initial_token}: {initial_output_embedding.shape}")
-    # Reset the output embedding of the new token to the initial token
-    print(f"before resetting the output embedding - Token ID of the new token '{new_token}': {new_token_id}")
-    model.get_output_embeddings().weight.data[new_token_id] = initial_output_embedding.clone()
-    new_token_output_embedding_before = initial_output_embedding
-else:
-    new_token_output_embedding_before = model.get_output_embeddings().weight.data[new_token_id].clone()
+print(f"Token ID of the intial token {initial_token}: {initial_token_id}")
+new_token_input_embedding_before = model.get_input_embeddings().weight.data[initial_token_id].clone()
+new_token_output_embedding_before = model.get_output_embeddings().weight.data[initial_token_id].clone()
+model.get_input_embeddings().weight.data[new_token_id] = new_token_input_embedding_before
+model.get_output_embeddings().weight.data[new_token_id] = new_token_output_embedding_before
 
 
-# Preprocess the quantized model for QLoRA Training
-model = prepare_model_for_kbit_training(model)
-
-# Configure LoRA
-peft_config = LoraConfig(
-    r=8,
-    lora_alpha=32,
-    lora_dropout=0.05,
-    use_rslora=True,
-    bias="none",
-    task_type="CAUSAL_LM",
-    target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "embed_tokens"],  # Include the input embedding layer
-)
-model = get_peft_model(model, peft_config)
-
-
-# Prepare Dataset
+# Prepare Dataset (same as before)
 def tokenize_func(dataset):
     tokenized = tokenizer(
         dataset["text"],
@@ -143,12 +96,11 @@ validation_dataset = (
     .map(tokenize_func, batched=True)
 )
 
-# Training Arguments
+# Training Arguments (modified for full fine-tuning)
 training_args = TrainingArguments(
     output_dir=save_model_dir,
     per_device_train_batch_size=batch_size,
     gradient_accumulation_steps=3,
-    gradient_checkpointing=True,  # Reduces memory usage
     num_train_epochs=epochs,
     learning_rate=learning_rate,
     lr_scheduler_type="cosine",
@@ -160,6 +112,8 @@ training_args = TrainingArguments(
     evaluation_strategy="steps",
     eval_steps=1,
     load_best_model_at_end=True,
+    gradient_checkpointing=True,  # Reduces memory usage
+    fp16=False,  # Use bf16 instead
 )
 
 # Create Trainer
@@ -194,7 +148,7 @@ new_token_output_embedding_after = model.get_output_embeddings().weight.data[new
 input_embedding_similarity = torch.nn.functional.cosine_similarity(new_token_input_embedding_before, new_token_input_embedding_after, dim=0)
 output_embedding_similarity = torch.nn.functional.cosine_similarity(new_token_output_embedding_before, new_token_output_embedding_after, dim=0)
 print(f"Similarity of the new token input embedding before and after: {input_embedding_similarity:.4f}")
-print(f"Similarity of the new token output embedding before and after: {output_embedding_similarity:.4f}")
+print(f"Similarity of the new token input embedding before and after: {output_embedding_similarity:.4f}")
 
 print("==============================================================")
 print("\n==== Evaluation after fine-tuning ====\n")
