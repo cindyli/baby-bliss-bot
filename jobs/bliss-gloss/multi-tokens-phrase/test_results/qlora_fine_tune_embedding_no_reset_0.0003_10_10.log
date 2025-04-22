@@ -1,4 +1,10 @@
-# Save model dir: ~/projects/ctb-whkchun/s2_bliss_LLMs/qlora_fine_tune_no_reset
+# Input:
+# Base Model: ~/projects/ctb-whkchun/s2_bliss_LLMs/optimize_input_embedding_lr0.001/epochs1500
+# Input embedding: optimized input embedding for "wool shop"
+# Output embedding: calculated output embedding
+
+# Output:
+# Fine-tuned model is saved at: ~/projects/ctb-whkchun/s2_bliss_LLMs/qlora_fine_tune_no_reset
 
 Token ID of [BLISS_29111]: 128256
 ==============================================================
