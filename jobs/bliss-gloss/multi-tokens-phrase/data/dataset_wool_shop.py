@@ -44,7 +44,7 @@ training_negative_context_sentences = [
 ]
 
 # Testing context sentences to verify the new token for the target phrase.
-testing_context_sentences = [
+testing_positive_context_sentences = [
     # Positive context sentences
     "Susan checked her shopping list and remembered she needed more yarn for her sweater project, so she visited the local",
     "The knitting instructor provided all her new students with directions to her recommended",
@@ -56,13 +56,30 @@ testing_context_sentences = [
     "She found a rare alpaca blend at the new",
     "After taking up knitting, she became a regular at the",
     "He needed to buy some supplies for his crochet class, so he headed straight to the",
-    # Negative context sentences
+]
+
+# Negative context sentences
+testing_negative_context_sentences = [
     "The mountain climbers secured their gear before attempting to scale the massive",
     "The Formula One driver downshifted as he approached the dangerous",
     "The space station's sensors detected an anomaly coming from the distant",
     "The bomb squad carefully approached the suspicious package near the",
     "The professional wrestler climbed to the top rope of the"
 ]
+
+# Prompts for testing text generation
+testing_text_generation_prompts = [
+    "A{placeholder} is",
+    "The{placeholder} sells a variety of products including",
+    "The{placeholder} is a place where people can",
+    "I visited the{placeholder} to",
+    "The owner of the{placeholder} specializes in",
+    "The{placeholder} differs from other stores because it",
+    "A cozy{placeholder} is",
+    "I met a friendly alpaca farmer at the{placeholder} who",
+    "She spent hours at the{placeholder}"
+]
+
 
 # Example sentences for fine-tuning embeddings of the new token created for "wool shop" or "yarn shop".
 fine_tuning_sentences = [
@@ -150,10 +167,24 @@ fine_tuning_sentences = [
     "Are gift cards available for purchase at[BLISS_29111]?",
     "Which[BLISS_29111] location has the largest selection of circular knitting needles?",
     # Tenses and Temporal Contexts
-    "Last winter, [BLISS_29111] donated 100 skeins of wool to a community knitting drive.",
-    "Before the renovation, [BLISS_29111] was just a tiny stall at the farmer's market.",
+    "Last winter,[BLISS_29111] donated 100 skeins of wool to a community knitting drive.",
+    "Before the renovation,[BLISS_29111] was just a tiny stall at the farmer's market.",
     "[BLISS_29111] plans to collaborate with local artisans for a holiday yarn collection next year.",
-    "By 2025, [BLISS_29111] aims to open three new branches across the state.",
-    "If [BLISS_29111] offered online tutorials, I'd subscribe in a heartbeat.",
-    "Should [BLISS_29111] expand internationally, knitters worldwide would rejoice."
+    "By 2025,[BLISS_29111] aims to open three new branches across the state.",
+    "If[BLISS_29111] offered online tutorials, I'd subscribe in a heartbeat.",
+    "Should[BLISS_29111] expand internationally, knitters worldwide would rejoice."
+]
+
+# Validation dataset
+validation_sentences = [
+    "Emily visited the[BLISS_29111] downtown to find the perfect shade of blue for her next knitting project.",
+    "The small[BLISS_29111] on Baker Street has been in business for over 50 years, selling high-quality yarn to local artisans.",
+    "As soon as she stepped into the[BLISS_29111], she was surrounded by the soft texture of alpaca, merino, and cashmere yarns.",
+    "The online[BLISS_29111] offered a wide selection of eco-friendly and naturally dyed fibers for sustainable knitting.",
+    "During the winter festival, the[BLISS_29111] hosted a free workshop on how to knit warm scarves and mittens.",
+    "The[BLISS_29111] had a cozy corner where customers could sit, chat, and work on their knitting projects together.",
+    "He hurried into the[BLISS_29111], hoping to find the right kind of yarn to finish his handmade sweater before the holidays.",
+    "Where is the best[BLISS_29111] in town for high-quality merino yarn?",
+    "What types of wool can I find in a typical[BLISS_29111]?",
+    "Does a[BLISS_29111] usually offer knitting and crochet classes?"
 ]
