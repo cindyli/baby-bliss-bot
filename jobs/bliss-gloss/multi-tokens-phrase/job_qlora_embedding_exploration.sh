@@ -28,9 +28,9 @@ pip install --upgrade pip
 
 module load StdEnv/2023 rust/1.85.0 arrow/19.0.1 gcc/13.3
 
-pip install torch transformers==4.50.3 accelerate peft bitsandbytes datasets
+pip install torch==2.6.0 transformers==4.50.3 huggingface_hub==0.30.2 accelerate==1.6.0 peft==0.15.2 bitsandbytes==0.45.5 datasets==3.5.0
 
 pip list
 
 echo "=== Use QLora fine tuning embedding for multi-token phrase with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
-python ~/bliss_gloss/multi-tokens-phrase/qlora_embedding_fine_tuning.py 0.0003 10 10 > ~/bliss_gloss/multi-tokens-phrase/test_results/qlora_fine_tune_embedding_0.0003_10_10.log
+python ~/bliss_gloss/multi-tokens-phrase/qlora_embedding_exploration.py 0.0003 10 10 > ~/bliss_gloss/multi-tokens-phrase/test_results/qlora_fine_tune_BLISS_29111_0.0003_10_10.log

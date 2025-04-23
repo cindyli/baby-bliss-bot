@@ -1,5 +1,26 @@
-# python qlora_embedding_fine_tuning.py <learning_rate> <epochs> <batch_size>
-# python qlora_embedding_fine_tuning.py 0.0003 10 10
+# This script explores when adding a new token into the vocabulary of a pretrained model to represent
+# a certain meaning, how the initializing of its input embedding and output embedding before the QLoRA
+# fine-tuning affects the model's performance. It also finds out the embedding of the new token is
+# considered as a trainable parameter in the QLoRA fine-tuning process, so only fine-tune the attention
+# layers is enough because the embedding of the new token will be fine-tuned as well.
+
+# This script tested 5 different cases for initializing the input embedding and the output embedding
+# of the new token:
+# 1. Initialize input embedding to an optimized input embedding & use calcuated output embedding.
+# 2. Initialize input embedding to the averaged input embeddings of all composing tokens & use calcuated output embedding.
+# 3. Initialize input embedding to the input embedding of the last token in the gloss & use calcuated output embedding.
+# 4. Initialize input embedding to a random embedding & use calcuated output embedding.
+# 5. Initialize both input embedding and output embedding to random embeddings.
+
+# Conclusions:
+# Calculated output embedding works better than fine-tuned random output embedding
+# Initialize input embedding with a relevant initial value works better than a random input embedding
+# The embedding of the new token is considered as a trainable parameter in the QLoRA fine-tuning process,
+# so only fine-tune the attention layers is enough because the embedding of the new token will be fine-tuned
+# as well.
+
+# python qlora_embedding_exploration.py <learning_rate> <epochs> <batch_size>
+# python qlora_embedding_exploration.py 0.0003 10 10
 
 # pip install transformers accelerate peft bitsandbytes datasets
 
@@ -31,7 +52,7 @@ from utils import evaluate_new_token, get_average_input_embeddings  # noqa: E402
 # from utils import evaluate_new_token, get_average_input_embeddings  # noqa: E402
 
 if len(sys.argv) != 4:
-    print("Usage: python qlora_embedding_fine_tuning.py <learning_rate> <epochs> <batch_size>")
+    print("Usage: python qlora_embedding_exploration.py <learning_rate> <epochs> <batch_size>")
     sys.exit(1)
 
 learning_rate = float(sys.argv[1])
@@ -42,7 +63,7 @@ case_name = "Initialize Input Embedding to ' shop', Calculated Output Embedding,
 save_model_dir_suffix = "/random_attention_layers_and_only_new_input_embedding"
 
 # Embedding flags
-# When all flags are False, the input embedding of the new token will be as loaded: optimized input embedding & calculated output embedding
+# When all flags are False, the original input embedding in the loaded model will be used: optimized input embedding & calculated output embedding
 
 # When True, the input embedding of the new token will be initialized to the averaged input embeddings of all composing tokens.
 AVERAGE_INPUT_EMBEDDING = False
