@@ -45,9 +45,9 @@ from transformers import (
 )
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
 from datasets import Dataset
-import dataset_wool_shop as dataset_wool_shop
+import dataset_29111_wool_shop as user_dataset
 from utils import evaluate_new_token, get_average_input_embeddings  # noqa: E402
-# from data import dataset_wool_shop as dataset_wool_shop
+# from data import dataset_29111_wool_shop as user_dataset
 # sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "disambiguation")))
 # from utils import evaluate_new_token, get_average_input_embeddings  # noqa: E402
 
@@ -101,8 +101,8 @@ save_model_dir = os.path.expanduser("~") + f"/projects/ctb-whkchun/s2_bliss_LLMs
 new_token = "[BLISS_29111]"   # Token for "wool shop"
 
 # Load datasets
-fine_tuning_sentences = dataset_wool_shop.fine_tuning_sentences
-validation_sentences = dataset_wool_shop.validation_sentences
+fine_tuning_sentences = user_dataset.fine_tuning_sentences
+validation_sentences = user_dataset.validation_sentences
 
 # Track the total running time of this script
 start_time = time.time()
@@ -328,11 +328,11 @@ print(f"Similarity of the {comparable_token} output embedding before and after: 
 print("==============================================================")
 print("\n==== Evaluation after fine-tuning ====\n")
 # Evaluate the results
-training_positive_context_sentences = dataset_wool_shop.training_positive_context_sentences
-training_negative_context_sentences = dataset_wool_shop.training_negative_context_sentences
-testing_positive_context_sentences = dataset_wool_shop.testing_positive_context_sentences
-testing_negative_context_sentences = dataset_wool_shop.testing_negative_context_sentences
-testing_text_generation_prompts = dataset_wool_shop.testing_text_generation_prompts
+training_positive_context_sentences = user_dataset.training_positive_context_sentences
+training_negative_context_sentences = user_dataset.training_negative_context_sentences
+testing_positive_context_sentences = user_dataset.testing_positive_context_sentences
+testing_negative_context_sentences = user_dataset.testing_negative_context_sentences
+testing_text_generation_prompts = user_dataset.testing_text_generation_prompts
 
 target_tokens = [" wool", " yarn"]
 tokens = [tokenizer.tokenize(token)[0] for token in target_tokens]

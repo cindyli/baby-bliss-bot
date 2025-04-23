@@ -98,6 +98,34 @@ def get_rank_for_tokens(all_ranks, target_token_ids):
     return target_ranks
 
 
+def get_average_input_embeddings(model, tokenizer, words):
+    """Compute average input embeddings for a list of multi-token words/phrases"""
+    embedding_layer = model.get_input_embeddings()
+    embeddings = embedding_layer.weight.data
+
+    word_vectors = []
+
+    for word in words:
+        tokens = tokenizer.tokenize(word)
+        if not tokens:  # Handle edge case for empty tokens
+            continue
+
+        token_ids = tokenizer.convert_tokens_to_ids(tokens)
+
+        # Get embeddings for all sub-tokens
+        token_embeddings = embeddings[token_ids]
+
+        # Average across sub-tokens for this word
+        word_embedding = torch.mean(token_embeddings, dim=0)
+        word_vectors.append(word_embedding)
+
+    # Average across all words
+    if not word_vectors:  # Handle empty input case
+        return None
+
+    return torch.mean(torch.stack(word_vectors), dim=0)
+
+
 def test_token_prediction(model, tokenizer, context_sentences, new_token_id, target_token_ids):
     """Test the rank of new token in predictions for each testing context."""
 
@@ -170,38 +198,32 @@ def print_results(title, target_tokens, new_token, results):
 
 
 def generate_text(model, tokenizer, prompt):
-    inputs = tokenizer(prompt, return_tensors="pt")
+    inputs = tokenizer(prompt, return_tensors="pt").to(model.device)
     outputs = model.generate(**inputs, max_length=50)
     return tokenizer.decode(outputs[0], skip_special_tokens=True)
 
 
 def evaluate_new_token(
     model, tokenizer, training_positive_context_sentences, training_negative_context_sentences,
-    testing_context_sentences, new_token_id, target_token_ids, target_tokens, new_token, phrase
+    testing_positive_context_sentences, testing_negative_context_sentences, testing_text_generation_prompts,
+    new_token_id, target_token_ids, target_tokens, new_token, phrase
 ):
     # Test token prediction
     results = test_token_prediction(model, tokenizer, training_positive_context_sentences, new_token_id, target_token_ids)
     print_results("Re-verify predictions on POSITIVE training sentences:", target_tokens, new_token, results)
     results = test_token_prediction(model, tokenizer, training_negative_context_sentences, new_token_id, target_token_ids)
     print_results("Re-verify predictions on NEGATIVE training sentences:", target_tokens, new_token, results)
-    results = test_token_prediction(model, tokenizer, testing_context_sentences, new_token_id, target_token_ids)
-    print_results("Predictions on TESTING training sentences:", target_tokens, new_token, results)
+    results = test_token_prediction(model, tokenizer, testing_positive_context_sentences, new_token_id, target_token_ids)
+    print_results("Predictions on TESTING POSITIVE training sentences:", target_tokens, new_token, results)
+    results = test_token_prediction(model, tokenizer, testing_negative_context_sentences, new_token_id, target_token_ids)
+    print_results("Predictions on TESTING NEGATIVE training sentences:", target_tokens, new_token, results)
 
     # Text Generation
     print("\nValidation - Generation:")
 
-    text_generation_prompts = [
-        f"The{phrase} sells a variety of products including",
-        f"The{phrase} is a place where people can",
-        f"I visited the{phrase} to",
-        f"The owner of the{phrase} specializes in",
-        f"The{phrase} differs from other stores because it",
-        f"A cozy{phrase} is",
-        f"I met a friendly alpaca farmer at the{phrase} who",
-        f"She spent hours at the{phrase}"
-    ]
-
-    for prompt in text_generation_prompts:
-        print(f"Prompt: {prompt}")
-        print(f"Generated text with{phrase}: {generate_text(model, tokenizer, prompt)}")
-        print(f"Generated text with {new_token}: {generate_text(model, tokenizer, prompt.replace(phrase, new_token))}\n")
+    for prompt_template in testing_text_generation_prompts:
+        original_prompt = prompt_template.format(placeholder=phrase)
+        new_prompt = prompt_template.format(placeholder=new_token)
+        print(f"Prompt: {prompt_template}")
+        print(f"Generated text with{phrase}: {generate_text(model, tokenizer, original_prompt)}")
+        print(f"Generated text with {new_token}: {generate_text(model, tokenizer, new_prompt)}\n")

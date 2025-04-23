@@ -7,7 +7,7 @@ This script reports the rank of a certain token in the predictions in a given co
 import os
 import time
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from data import dataset_wool_shop as dataset
+from data import dataset_29111_wool_shop as dataset
 # from data import dataset_animal_bark as dataset
 from utils import get_token_prediction
 
