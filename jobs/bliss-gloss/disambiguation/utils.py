@@ -41,10 +41,25 @@ def create_training_data(model, tokenizer, positive_context_sentences, negative_
     return torch.cat(hidden_states, dim=0).to(model.device), torch.tensor(target_logits, device=model.device)
 
 
-def calc_embeddings(hidden_states, target_logits):
-    output_emb_before_squeeze = torch.linalg.lstsq(hidden_states, target_logits.unsqueeze(1)).solution
-    output_emb = output_emb_before_squeeze.squeeze(1)
-
+def calc_embeddings(hidden_states, target_logits, dtype=None):
+    # Set the minimal safe dtype for lstsq as default
+    lstsq_dtype = torch.float32  # default for stability/speed balance
+    
+    # Override to user's dtype ONLY if it's float32/float64
+    if dtype in (torch.float32, torch.float64):
+        lstsq_dtype = dtype
+    
+    # Convert inputs to lstsq-compatible dtype
+    hidden_states = hidden_states.to(lstsq_dtype)
+    target_logits = target_logits.to(lstsq_dtype)
+    
+    # Compute solution in higher precision
+    output_emb = torch.linalg.lstsq(hidden_states, target_logits.unsqueeze(1)).solution.squeeze(1)
+    
+    # Cast result to user's dtype
+    if dtype is not None and dtype != lstsq_dtype:
+        output_emb = output_emb.to(dtype)
+    
     return output_emb
 
 
@@ -179,7 +194,7 @@ def get_token_prediction(model, tokenizer, context_sentences, target_token_ids):
 
             results.append({
                 'context': context,
-                'target_token_ranks': get_rank_for_tokens(sorted_indices, target_token_ids),  # Now a list of ranks
+                'rank_of_target_token_ids': get_rank_for_tokens(sorted_indices, target_token_ids),  # Now a list of ranks
                 'top_5_predictions': top_5_tokens
             })
 
@@ -193,7 +208,8 @@ def print_results(title, target_tokens, new_token, results):
     for result in results:
         print(f"\nContext: {result['context']}")
         print(f"Rank of {target_tokens}: {result['rank_of_target_token_ids']}")
-        print(f"Rank of {new_token}: {result['rank_of_new_token_id'][0]}")
+        if new_token:
+            print(f"Rank of {new_token}: {result['rank_of_new_token_id'][0]}")
         print(f"Top 5 predictions: {', '.join(result['top_5_predictions'])}")
 
 
@@ -222,8 +238,15 @@ def evaluate_new_token(
     print("\nValidation - Generation:")
 
     for prompt_template in testing_text_generation_prompts:
-        original_prompt = prompt_template.format(placeholder=phrase)
-        new_prompt = prompt_template.format(placeholder=new_token)
         print(f"Prompt: {prompt_template}")
-        print(f"Generated text with{phrase}: {generate_text(model, tokenizer, original_prompt)}")
+
+        if (type(phrase) == list):
+            for p in phrase:
+                original_prompt = prompt_template.format(placeholder=p)
+                print(f"Generated text with {p}: {generate_text(model, tokenizer, original_prompt)}")
+        else:
+            original_prompt = prompt_template.format(placeholder=phrase)
+            print(f"Generated text with {phrase}: {generate_text(model, tokenizer, original_prompt)}")
+
+        new_prompt = prompt_template.format(placeholder=new_token)
         print(f"Generated text with {new_token}: {generate_text(model, tokenizer, new_prompt)}\n")
