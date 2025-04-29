@@ -44,22 +44,22 @@ def create_training_data(model, tokenizer, positive_context_sentences, negative_
 def calc_embeddings(hidden_states, target_logits, dtype=None):
     # Set the minimal safe dtype for lstsq as default
     lstsq_dtype = torch.float32  # default for stability/speed balance
-    
+
     # Override to user's dtype ONLY if it's float32/float64
     if dtype in (torch.float32, torch.float64):
         lstsq_dtype = dtype
-    
+
     # Convert inputs to lstsq-compatible dtype
     hidden_states = hidden_states.to(lstsq_dtype)
     target_logits = target_logits.to(lstsq_dtype)
-    
+
     # Compute solution in higher precision
     output_emb = torch.linalg.lstsq(hidden_states, target_logits.unsqueeze(1)).solution.squeeze(1)
-    
+
     # Cast result to user's dtype
     if dtype is not None and dtype != lstsq_dtype:
         output_emb = output_emb.to(dtype)
-    
+
     return output_emb
 
 
