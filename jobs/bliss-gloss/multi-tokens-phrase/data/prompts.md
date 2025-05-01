@@ -2,12 +2,16 @@ Prompts used to generate various datasets:
 
 1. Positive context sentences:
 
-Give 100 partial sentences that the next word will contextually lead to "lowness" or "shortness" in the context of height. These partial sentences should be long to provide more context information that leads to the prediction of these words. They should cover varied grammar structures and scenarios. Don't include unnecessary information in these partial sentence such as ellipsis. Provide these sentences as a python list.
+Generate a Python list containing 300 unique and grammatically varied sentences. Each sentence must include either the word "lowness" or "shortness", specifically used in the context of height (not emotion or duration). Ensure each sentence is long and contextually rich, naturally leading up to the keyword, which should appear towards the end of the sentence. The set of sentences should include a wide variety of grammatical structures (e.g., conditionals, relative clauses, passive voice, questions, compound/complex sentences etc) and a diverse range of real-world scenarios (e.g., architecture, nature, human height, machinery, etc.). Output the result as a valid Python list of strings.
 
-Improve the dataset above to ensure it covers as many contexts as possible including diverse grammar and sentence structures.
+Go through the given Python list. For each sentence, identify whether it contains the word "lowness" or "shortness". Then, return a new Python list containing only the part of each sentence before the keyword ("lowness" or "shortness"). Ensure the result is still a valid Python list of strings, and remove any trailing punctuation or whitespace after the truncated sentence. Only output the Python list of truncated sentences.
 
 2. Negative context sentences:
-Give 100 partial sentences that the next word will almost impossible to contextually lead to "lowness" or "shortness" in the context of height. These partial sentences should be long to provide more context information that doesn't lead to the prediction of these words. They should cover varied grammar structures and scenarios. Don't include unnecessary information in these partial sentence such as ellipsis. Provide these sentences as a python list.
+# Glosses used in other contexts
+Generate a Python list containing 100 sentences. Each sentence must include either the word "lowness" or "shortness", used in various contexts except in the context of height. Ensure each sentence is long and contextually rich, naturally leading up to the keyword, which should appear towards the end of the sentence. The set of sentences should include a wide variety of grammatical structures (e.g., conditionals, relative clauses, passive voice, questions, compound/complex sentences etc) and a diverse range of real-world scenarios (e.g., architecture, nature, human height, machinery, etc.). Output the result as a valid Python list of strings.
+
+# Glosses are unlikely to be used
+Generate a Python list containing 100 long, context-rich partial sentences. Each sentence should provide enough information to make the next word very unlikely to be "lowness" or "shortness" when interpreted in the context of physical height. The sentences should cover a diverse range of grammatical structures (e.g., conditionals, passives, relative clauses, interrogatives, compound/complex constructions) and a wide variety of real-world scenarios (e.g., cooking, emotions, finance, astronomy, politics). Avoid including ellipses or any placeholder text. Each sentence should end naturally but remain incomplete. Return the result as a valid Python list of strings.
 
 Improve the dataset above to ensure it covers as many contexts as possible including diverse grammar and sentence structures.
 

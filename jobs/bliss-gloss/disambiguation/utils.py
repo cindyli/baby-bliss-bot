@@ -240,7 +240,7 @@ def evaluate_new_token(
     for prompt_template in testing_text_generation_prompts:
         print(f"Prompt: {prompt_template}")
 
-        if (type(phrase) == list):
+        if isinstance(phrase, list):
             for p in phrase:
                 original_prompt = prompt_template.format(placeholder=p)
                 print(f"Generated text with {p}: {generate_text(model, tokenizer, original_prompt)}")

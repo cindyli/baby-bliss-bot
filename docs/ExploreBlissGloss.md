@@ -123,4 +123,10 @@ specific meaning of *bark* corresponds to the intended Bliss symbol.
 2. Difficulty Handling Multi-Token Glosses  
 Another challenge is when an English gloss consists of multiple tokens. Currently, there is no effective method to
 combine the embeddings of multiple tokens into a single embedding that can be assigned to a single Bliss token.
-This limitation prevents accurate representation of multi-token glosses within the Blissymbolics.  
+This limitation prevents accurate representation of multi-token glosses within the Blissymbolics.
+
+3. Ambiguity in Blissymbolics Symbols  
+A further challenge arises when a single Blissymbolics symbol represents multiple meanings. For example, Bliss ID
+24819 can mean either "lowness" or "shortness" in the context of height, while Bliss ID 14916 can refer to "I",
+"me", or "myself". This polysemy introduces ambiguity when assigning an embedding to a Bliss token, as the embedding
+must account for all possible meanings associated with that symbol.

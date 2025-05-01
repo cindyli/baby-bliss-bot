@@ -24,12 +24,11 @@ import torch
 from transformers import (
     AutoTokenizer,
     AutoModelForCausalLM,
-    AutoConfig,
     BitsAndBytesConfig,
     TrainingArguments,
     Trainer
 )
-from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training
+from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training, PeftModel
 from datasets import Dataset
 from utils import create_training_data, calc_embeddings, evaluate_new_token, get_average_input_embeddings  # noqa: E402
 # from data import user_dataset as user_dataset
@@ -63,8 +62,12 @@ learning_rate = 0.0003
 epochs = 10
 batch_size = 10
 
+# When true, the new token's output embedding is excluded from fine-tuning.
+# This is useful when the new token's calculated output embedding is trusted.
+EXCLUDE_NEW_TOKEN_OUTPUT_EMBEDDING_FROM_FINE_TUNING = False
+
 # Dynamic import of the dataset
-module_name = f"dataset_{bliss_id}_{'_'.join(glosses)}"
+module_name = f"dataset_{bliss_id}_{'_'.join([gloss.replace(' ', '') for gloss in glosses])}"
 
 try:
     user_dataset = importlib.import_module(f"{module_name}")
@@ -132,6 +135,13 @@ new_token_input_embedding_before = get_average_input_embeddings(model, tokenizer
 model.get_input_embeddings().weight.data[new_token_id] = new_token_input_embedding_before.clone()
 print(f"Input embedding of the new token '{new_token}' set to the average input embedding of all constituent tokens of '{glosses}'")
 
+# Use the comparable token to check if existing embeddings are changed by the fine-tuning
+comparable_token = " minimalist"  # The token to find if its embeddings are changed by the fine-tuning
+comparable_token_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(comparable_token))[0]
+print(f"Token ID of the comparable token '{comparable_token}': {comparable_token_id}\n")
+comparable_token_input_embedding_before = model.get_input_embeddings().weight.data[comparable_token_id].float().detach()
+comparable_token_output_embedding_before = model.get_output_embeddings().weight.data[comparable_token_id].float().detach()
+
 # Preprocess the quantized model for QLoRA Training
 model = prepare_model_for_kbit_training(model)
 
@@ -143,7 +153,7 @@ peft_config = LoraConfig(
     use_rslora=True,
     bias="none",
     task_type="CAUSAL_LM",
-    target_modules=["q_proj", "k_proj", "v_proj", "o_proj", "embed_tokens"],  # Include the input embedding layer
+    target_modules=["q_proj", "k_proj", "v_proj", "o_proj"],
 )
 model = get_peft_model(model, peft_config)
 
@@ -217,11 +227,20 @@ print(f"Fine-tuning time: {int(elapsed_time // 60)} minutes and {elapsed_time % 
 # Load the best model to make sure the evaluation is done on the best model
 best_model_path = trainer.state.best_model_checkpoint
 tokenizer = AutoTokenizer.from_pretrained(best_model_path)
-# Load the config of the base model, update the vocab size to the new vocab size.
-config = AutoConfig.from_pretrained(model_dir)
-config.vocab_size = len(tokenizer)
-# Add ignore_mismatched_sizes=True to handle any remaining size mismatches
-model = AutoModelForCausalLM.from_pretrained(best_model_path, config=config, ignore_mismatched_sizes=True)
+# Load base model and resize embeddings as the fine-tuned adapter has one more token than the base model
+model = AutoModelForCausalLM.from_pretrained(
+    model_dir,
+    torch_dtype=dtype
+)
+model.resize_token_embeddings(len(tokenizer))
+# Load PEFT adapter from checkpoint
+model = PeftModel.from_pretrained(
+    model,
+    best_model_path,
+    is_trainable=False  # For inference
+)
+# Merge adapter weights with base model
+model = model.merge_and_unload()
 print(f"Loaded best model from step {trainer.state.best_global_step}. Its best eval_loss = {trainer.state.best_metric}")
 
 end_time_load_best_model = time.time()
@@ -235,15 +254,27 @@ tokenizer.save_pretrained(save_model_dir)
 # Compare embeddings of the new token before and after fine-tuning
 new_token_input_embedding_after = model.get_input_embeddings().weight.data[new_token_id].clone()
 input_embedding_similarity = torch.nn.functional.cosine_similarity(new_token_input_embedding_before.to(model.device), new_token_input_embedding_after.to(model.device), dim=0)
-print(f"Similarity of the new token input embedding before and after: {input_embedding_similarity:.4f}")
-distance = torch.norm(new_token_input_embedding_before - new_token_input_embedding_after, p=2)
+print(f"Cosine Similarity of the new token input embedding before and after: {input_embedding_similarity:.4f}")
+distance = torch.norm(new_token_input_embedding_before.to(model.device) - new_token_input_embedding_after.to(model.device), p=2)
 print(f"Euclidean Distance of the new token input embedding before and after: {distance.item():.4f}")
 
 new_token_output_embedding_after = model.get_output_embeddings().weight.data[new_token_id].clone()
 output_embedding_similarity = torch.nn.functional.cosine_similarity(new_token_output_embedding_before.to(model.device), new_token_output_embedding_after.to(model.device), dim=0)
-print(f"Similarity of the new token output embedding before and after: {output_embedding_similarity:.4f}")
-distance = torch.norm(new_token_output_embedding_before - new_token_output_embedding_after, p=2)
-print(f"Euclidean Distance of the new token output embedding before and after: {distance.item():.4f}")
+print(f"Cosine Similarity of the new token output embedding before and after: {output_embedding_similarity:.4f}")
+distance = torch.norm(new_token_output_embedding_before.to(model.device) - new_token_output_embedding_after.to(model.device), p=2)
+print(f"Euclidean Distance of the new token output embedding before and after: {distance.item():.4f}\n")
+
+comparable_token_input_embedding_after = model.get_input_embeddings().weight.data[comparable_token_id].float().detach()
+comparable_token_input_embedding_similarity = torch.nn.functional.cosine_similarity(comparable_token_input_embedding_before.to(model.device), comparable_token_input_embedding_after.to(model.device), dim=0)
+print(f"Cosine Similarity of {comparable_token} input embedding before and after: {comparable_token_input_embedding_similarity:.4f}")
+distance = torch.norm(comparable_token_input_embedding_before.to(model.device) - comparable_token_input_embedding_after.to(model.device), p=2)
+print(f"Euclidean Distance of {comparable_token} input embedding before and after: {distance.item():.4f}")
+
+comparable_token_output_embedding_after = model.get_output_embeddings().weight.data[comparable_token_id].float().detach()
+comparable_token_output_embedding_similarity = torch.nn.functional.cosine_similarity(comparable_token_output_embedding_before.to(model.device), comparable_token_output_embedding_after.to(model.device), dim=0)
+print(f"Cosine Similarity of the {comparable_token} output embedding before and after: {comparable_token_output_embedding_similarity:.4f}")
+distance = torch.norm(comparable_token_output_embedding_before.to(model.device) - comparable_token_output_embedding_after.to(model.device), p=2)
+print(f"Euclidean Distance of {comparable_token} output embedding before and after: {distance.item():.4f}")
 
 print("==============================================================")
 print("\n==== Evaluation after fine-tuning ====\n")
