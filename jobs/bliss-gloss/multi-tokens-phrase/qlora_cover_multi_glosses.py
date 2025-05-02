@@ -61,10 +61,9 @@ glosses = json.loads(sys.argv[2])
 learning_rate = 0.0003
 epochs = 10
 batch_size = 10
-
-# When true, the new token's output embedding is excluded from fine-tuning.
-# This is useful when the new token's calculated output embedding is trusted.
-EXCLUDE_NEW_TOKEN_OUTPUT_EMBEDDING_FROM_FINE_TUNING = False
+# The comparable token whose input and output embeddings are compared before and after fine-tuning.
+# It should be a token that appears often in the fine-tuning dataset.
+comparable_token = " minimalist"
 
 # Dynamic import of the dataset
 module_name = f"dataset_{bliss_id}_{'_'.join([gloss.replace(' ', '') for gloss in glosses])}"
@@ -136,7 +135,6 @@ model.get_input_embeddings().weight.data[new_token_id] = new_token_input_embeddi
 print(f"Input embedding of the new token '{new_token}' set to the average input embedding of all constituent tokens of '{glosses}'")
 
 # Use the comparable token to check if existing embeddings are changed by the fine-tuning
-comparable_token = " minimalist"  # The token to find if its embeddings are changed by the fine-tuning
 comparable_token_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(comparable_token))[0]
 print(f"Token ID of the comparable token '{comparable_token}': {comparable_token_id}\n")
 comparable_token_input_embedding_before = model.get_input_embeddings().weight.data[comparable_token_id].float().detach()
