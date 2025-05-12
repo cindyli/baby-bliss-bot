@@ -31,7 +31,7 @@ with open(input_csv, newline="") as csvfile:
         bci_av_id = int(row[0].strip())
         tag_str = row[1].strip()
         tag_str = tag_str if tag_str else "None"
-        
+
         result[tag_str].append(bci_av_id)
 
 # Write the result to JSON

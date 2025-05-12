@@ -1,7 +1,6 @@
 # python compare_most_frequent_symbols.py <output_overlapped_symbols_json> <output_only_in_standard_board_json> <output_only_in_tag1_json>
 # python compare_most_frequent_symbols.py ./output/overlapped_symbols.json ./output/only_in_standard_board.json ./output/only_in_tag1.json
 
-import csv
 import json
 import sys
 
