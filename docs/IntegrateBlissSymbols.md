@@ -77,10 +77,10 @@ Mats Lundälv, a former chairman of BCI, sorted the Bliss words into groups for 
   * Symbols are grouped by its tag number and reported in [this output file](`jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/frequency_tagged_symbols.json`).
   * Group counts:
     * Group 1: **644 symbols**
-    * Group 1: **127 symbols**
-    * Group 1: **141 symbols**
-    * Group 1: **95 symbols**
-    * Group 1: **13 symbols**
+    * Group 2: **127 symbols**
+    * Group 3: **141 symbols**
+    * Group 4: **95 symbols**
+    * Group 5: **13 symbols**
     * Ungrouped: **4815 symbols**
 
 ### Overlap Analysis
