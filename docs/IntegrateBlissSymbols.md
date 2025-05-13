@@ -2,7 +2,7 @@
 
 This document outlines the process for integrating Bliss symbols into a LLaMA language model by adding a new token for each Bliss symbol. Each token is formatted as `[BLISS_{blissID}]`.
 
-The working directory for all steps is: [`job/bliss-gloss/integrate-bliss-symbols`](../jobs/bliss-gloss/integrate-bliss-symbols/integrate-bliss-symbols).
+The working directory for all steps is: [`job/bliss-gloss/integrate-bliss-symbols`](../jobs/bliss-gloss/integrate-bliss-symbols).
 
 ## Step 1: Add Single-Token Gloss Symbols
 
