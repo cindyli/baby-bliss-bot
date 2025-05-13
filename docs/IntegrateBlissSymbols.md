@@ -74,7 +74,7 @@ Two methods were used to identify frequently used symbols:
 Mats Lundälv, a former chairman of BCI, sorted the Bliss words into groups for frequency analysis. Group 1 is higher frequency, Group 5 is lower. Ungrouped are even lower. 
 
   * [The spreadsheet](https://docs.google.com/spreadsheets/d/1E4H45LYffyWKT0Devp32wfB1NOPBnPEp/edit?usp=drive_link&ouid=111581944030695000923&rtpof=true&sd=true).
-  * Symbols are grouped by its tag number and reported in [this output file](`jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/frequency_tagged_symbols.json`).
+  * Symbols are grouped by its tag number and reported in [this output file](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/frequency_tagged_symbols.json).
   * Group counts:
     * Group 1: **644 symbols**
     * Group 2: **127 symbols**
