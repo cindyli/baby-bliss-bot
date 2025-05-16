@@ -2,6 +2,8 @@
 
 This documentation outlines the steps to add a new token for a Bliss symbol into the LLaMA model. As an example, we will use the Bliss symbol with ID 24819, which represents "lowness" or "shortness" in the context of height.
 
+The working directory for all steps is: [`jobs/bliss-gloss/multi-tokens-phrase/`](../jobs/bliss-gloss/multi-tokens-phrase/).
+
 ## Step 1: Create and Prepare the Dataset
 
 ### Step 1.1 Generate Synthetic Datasets Using LLMs

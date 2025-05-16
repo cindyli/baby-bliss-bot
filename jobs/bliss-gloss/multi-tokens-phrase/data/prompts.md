@@ -2,23 +2,67 @@ Prompts used to generate various datasets:
 
 1. Positive context sentences:
 
-Generate a Python list containing 300 unique and grammatically varied sentences. Each sentence must include either the word "lowness" or "shortness", specifically used in the context of height (not emotion or duration). Ensure each sentence is long and contextually rich, naturally leading up to the keyword, which should appear towards the end of the sentence. The set of sentences should include a wide variety of grammatical structures (e.g., conditionals, relative clauses, passive voice, questions, compound/complex sentences etc) and a diverse range of real-world scenarios (e.g., architecture, nature, human height, machinery, etc.). Output the result as a valid Python list of strings.
+Generate a Python list named "positive_context_sentences" containing 50 unique, high-quality English sentences. Each sentence must include at least one occurrence of the word "any". A sentence may contain multiple occurrences, but the last occurrence must appear naturally toward the end of the sentence.
 
-Go through the given Python list. For each sentence, identify whether it contains the word "lowness" or "shortness". Then, return a new Python list containing only the part of each sentence before the keyword ("lowness" or "shortness"). Ensure the result is still a valid Python list of strings, and remove any trailing punctuation or whitespace after the truncated sentence. Only output the Python list of truncated sentences.
+Each sentence should be:
+* Contextually rich, describing a realistic or meaningful scenario.
+* Grammatically diverse, spanning a wide range of structures, such as:
+* Conditional sentences (e.g., if-clauses)
+* Relative clauses
+* Passive voice constructions
+* Direct and indirect questions
+* Compound and complex sentences
+* Imperative and exclamatory forms
+
+The dataset should reflect a broad range of real-world contexts, including but not limited to:
+* Personal, professional, and academic settings
+* Emotions, relationships, and interpersonal interactions
+* Scientific, philosophical, and technical topics
+* Everyday activities and abstract reflections
+
+The output must be a valid Python list of unique strings, each representing one sentence, and assigned to the variable "positive_context_sentences". Format your response as Python code only, with no additional explanation or comments.
 
 2. Negative context sentences:
 # Glosses used in other contexts
-Generate a Python list containing 100 sentences. Each sentence must include either the word "lowness" or "shortness", used in various contexts except in the context of height. Ensure each sentence is long and contextually rich, naturally leading up to the keyword, which should appear towards the end of the sentence. The set of sentences should include a wide variety of grammatical structures (e.g., conditionals, relative clauses, passive voice, questions, compound/complex sentences etc) and a diverse range of real-world scenarios (e.g., architecture, nature, human height, machinery, etc.). Output the result as a valid Python list of strings.
+Generate a Python list named "negative_context_sentences" containing 100 sentences. Each sentence must include either the word "lowness" or "shortness", used in various contexts except in the context of height. Ensure each sentence is long and contextually rich, naturally leading up to the keyword, which should appear towards the end of the sentence. The set of sentences should include a wide variety of grammatical structures (e.g., conditionals, relative clauses, passive voice, questions, compound/complex sentences etc) and a diverse range of real-world scenarios (e.g., architecture, nature, human height, machinery, etc.). Output the result as a valid Python list of strings.
 
 # Glosses are unlikely to be used
-Generate a Python list containing 100 long, context-rich partial sentences. Each sentence should provide enough information to make the next word very unlikely to be "lowness" or "shortness" when interpreted in the context of physical height. The sentences should cover a diverse range of grammatical structures (e.g., conditionals, passives, relative clauses, interrogatives, compound/complex constructions) and a wide variety of real-world scenarios (e.g., cooking, emotions, finance, astronomy, politics). Avoid including ellipses or any placeholder text. Each sentence should end naturally but remain incomplete. Return the result as a valid Python list of strings.
+Generate a Python list named "negative_context_sentences" containing 100 unique, context-rich, incomplete sentences. Each sentence must end naturally but remain clearly unfinished, inviting continuation. Critically, the continuation must not plausibly begin with the word "a", "an", or "any"—such continuations should be grammatically or semantically implausible.
 
-Improve the dataset above to ensure it covers as many contexts as possible including diverse grammar and sentence structures.
+Each sentence should be:
+* Contextually rich, describing a realistic or meaningful scenario.
+* Grammatically diverse, spanning a wide range of structures, such as:
+* Conditional sentences (e.g., if-clauses)
+* Relative clauses
+* Passive voice constructions
+* Direct and indirect questions
+* Compound and complex sentences
+* Imperative and exclamatory forms
+
+The dataset should reflect a broad range of real-world contexts, including but not limited to:
+* Personal, professional, and academic settings
+* Emotions, relationships, and interpersonal interactions
+* Scientific, philosophical, and technical topics
+* Everyday activities and abstract reflections
+
+Do not include ellipses, placeholders, or unnatural truncation. Return the result as valid Python code: a list named "negative_context_sentences" containing 100 string elements.
 
 3. Fine tuning sentences:
-Now I need to create fine-tuning dataset, give me 150 texts containing either "lowness" or "shortness" or both in the context of height. These sentences should cover as many contexts as possible such as living contexts, tenses and moods, various sentence structures, various grammatical positions, in questions or exclamations, long texts and short, and more. Provide these sentences as a python list.
+Generate a dataset for fine-tuning. I need 200 unique English texts that each contain one or more occurrences of the word "a", "an", or "any". These sentences must reflect a wide variety of contexts and structures, including:
 
-Improve the dataset above to ensure it covers as many contexts as possible.
+* Different tenses (past, present, future, perfect, etc.)
+* Moods (indicative, imperative, subjunctive, conditional)
+* Sentence types (declarative, interrogative, exclamatory, imperative)
+* Sentence lengths (very short to long, complex sentences)
+* Contexts (daily life, academic, professional, casual, emotional, hypothetical, etc.)
+* Grammatical diversity (subject, object, determiner use, negations, subordinate clauses, etc.)
+* Various text lengths
+
+The output should be a valid Python list of unique strings assigned to the variable "fine_tuning_sentences". Each string must represent a text.
+
+Output format: Python code only. Do not include any comments or explanations.
 
 4. Text generation prompts for testing:
-I am testing a fine-tuned language model's understanding of lowness or shortness in the context of physical height. Please generate 10 diverse partial sentence prompts that contain a "{placeholder}" where a word or phrase representing shortness or lowness in height should appear. These prompts should be partial sentences and diverse as much as possible. Examples are "Because of the {placeholder}," or "The {placeholder} of the fence meant that". Provide these prompts as a python list.
+I am evaluating a fine-tuned language model’s ability to understand and generate text based on articles and determiners such as "a", "an", and "any". Generate 10 diverse partial sentence prompts containing a "{placeholder}" near the beginning of each sentence, where the placeholder represents one of these target words. Each prompt should be a unique, incomplete sentence designed to elicit natural continuations. Ensure stylistic and topical diversity across prompts.
+
+Output the result as valid Python code, assigning the list of strings to the variable testing_text_generation_prompts. Do not include any comments, explanations, or additional text—output the code only.
