@@ -246,7 +246,7 @@ elapsed_time = end_time_load_best_model - end_time_fine_tuning
 print(f"Loading best model time: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds")
 
 # Save Model
-model.save_pretrained(save_model_dir, save_embedding_layers=True)
+model.save_pretrained(save_model_dir)
 tokenizer.save_pretrained(save_model_dir)
 
 # Compare embeddings of the new token before and after fine-tuning
