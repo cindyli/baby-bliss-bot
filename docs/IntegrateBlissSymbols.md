@@ -51,7 +51,7 @@ python ~/bliss_gloss/add_single_token_gloss_symbols.py ./data/bliss_gloss_cleane
 
 * Output:
 
-* **The output model** is saved in `/projects/ctb-whkchun/s2_bliss_LLMs/integrate_single_token_gloss_symbols`.
+* **The output model** is saved in `~/projects/ctb-whkchun/s2_bliss_LLMs/integrate_bliss_symbols/single_gloss_model`.
 * **Added symbols list**: [`output/bliss_ids_added.json`](../jobs/bliss-gloss/integrate-bliss-symbols/1-add-single-token-gloss-symbols/output/bliss_ids_added.json)
 * **Skipped Symbols List** (symbols not added): [`/output/bliss_ids_not_added.json`](../jobs/bliss-gloss/integrate-bliss-symbols/1-add-single-token-gloss-symbols/output/bliss_ids_not_added.json)
 
@@ -63,8 +63,7 @@ Two methods were used to identify frequently used symbols:
 
 1. The Bliss standard board
 
-  * Symbols in the board are extracted from [`standard_board_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/standard_board_symbols.json).
-  * Output file: [`output/standard_board_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/standard_board_symbols.json)
+  * Symbols in the board are extracted to [`standard_board_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/standard_board_symbols.json).
   * A total of **479 symbols** are extracted: 
     * **323 symbols** are single symbols.
     * **156 symbols** are Composite symbols
@@ -74,7 +73,7 @@ Two methods were used to identify frequently used symbols:
 Mats Lundälv, a former chairman of BCI, sorted the Bliss words into groups for frequency analysis. Group 1 is higher frequency, Group 5 is lower. Ungrouped are even lower. 
 
   * [The spreadsheet](https://docs.google.com/spreadsheets/d/1E4H45LYffyWKT0Devp32wfB1NOPBnPEp/edit?usp=drive_link&ouid=111581944030695000923&rtpof=true&sd=true).
-  * Symbols are grouped by its tag number and reported in [this output file](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/frequency_tagged_symbols.json).
+  * Symbols are grouped by its tag number and reported in [this file](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/frequency_tagged_symbols.json).
   * Group counts:
     * Group 1: **644 symbols**
     * Group 2: **127 symbols**
@@ -152,17 +151,17 @@ python get_frequency_tagged_symbols.py ./data/Bliss_frequency_tags.csv ./output/
 
 ## Step 3: Identify Missing High-Frequency Symbols
 
-**Working directoy**: [`jobs/bliss-gloss/integrate-bliss-symbols/3-find-missing-symbols/`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-missing-symbols/).
+**Working directoy**: [`jobs/bliss-gloss/integrate-bliss-symbols/3-find-frequently-used-symbols/`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-frequently-used-symbols/).
 
 This step compares **288 most frequently used symbols** from Step 2 aginst the list of symbols already been added in the step 1 and finds high-priority Bliss symbols that were not added during Step 1.
 
 **160 symbols** were found to be missing. 
 
-They are written to [`output/missing_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-missing-symbols/output/missing_symbols.json).
+They are written to [`output/missing_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-frequently-used-symbols/output/missing_symbols.json).
 
 ### Script Details
 
-* Script: [`find_missing_symbols.py`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-missing-symbols/find_missing_symbols.py)
+* Script: [`find_missing_symbols.py`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-frequently-used-symbols/find_missing_symbols.py)
 
 * Usage:
 
@@ -176,4 +175,109 @@ python find_missing_symbols.py ./data/Bliss_frequency_tags.csv ./output/frequenc
 ```
 
 * Output file:
-  * [`output/missing_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-missing-symbols/output/missing_symbols.json): 160 missing symbols
+  * [`output/missing_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-frequently-used-symbols/output/missing_symbols.json): 160 missing symbols
+
+## Step 4: Add Symbols Not Included in Step 1
+
+**Working directory**: [`jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/)
+
+This step focuses on adding Bliss symbols that were not included in **Step 1**.
+
+To optimize the process, we begin with the 160 most frequently used missing symbols and continue with the remaining symbols.
+
+The procedure outlined below should be repeated for each new symbol being added to the model.
+
+### Step 4.1 Build Dataset for a Symbol
+
+This stage prepares training and evaluation data for a specific Bliss symbol. We'll use the symbol with BCI-AV-ID `12321` (glosses: `"a"`, `"an"` `"any"`) as an example.
+
+1. **Generate the initial dataset** 
+
+Use a large language model (e.g., ChatGPT, Claude, DeepSeek) to create a initial dataset containing diverse contexts for the glosses. See [example prompts](../../multi-tokens-phrase/data/prmpts).
+  
+Your dataset should define 4 Python lists:
+  * `positive_context_sentences`: Complete sentences with strong contextual cues that naturally lead to the target gloss.
+  * `negative_context_sentences`: Partial sentences that should **not** lead to the target gloss. These, together with `positive_context_sentences`, are used to compute the output embedding of the new token.
+  * `fine_tuning_sentences`: Complete sentences that explicitly include at least one target gloss. These will be used to fine-tune the token embedding.
+  * `testing_text_generation_prompts`: Partial sentences containing the placeholder string `{placeholder}`, where the gloss or token is expected to appear. Used to evaluate model performance after fine-tuning.
+
+**Note**: The data file must be saved in the [`data/`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/data/) directory, using the naming convention `initial_{bci_av_id}.py`. The script will automatically look for a file at this location with a matching filename.
+
+2. **Process the dataset** 
+
+Run the `build_dataset.py` script. This script transforms the initial dataset into a format ready for training and evaluation:
+
+* **Positive context sentences** -> `training_positive_context_sentences` & `testing_positive_context_sentences`:
+  1. Replace curly quotes (`’`) with straight quotes (`'`)
+  2. Truncate each sentence at the last occurrence of any target gloss
+  3. Discard truncated sentences if shorter than `MIN_PARTIAL_SENTENCE_LENGTH`
+  4. Check the prediction rank of the first token of each gloss with the truncated sentence. Discard the truncated sentences if none of the gloss prediction ranks are lower than `RANK_POSITIVE_THRESHOLD.`
+  5. Split 80% for training and 20% for testing
+
+* **Negative context sentences** -> `training_negative_context_sentences` & `testing_negative_context_sentences`:
+  1. Replace curly quotes (`’`) with straight quotes (`'`)
+  2. Check the prediction rank of the first token of each gloss in the partial sentences. Discard the sentences if any one of the prediction ranks is lower than `RANK_NEGATIVE_THRESHOLD.`
+  3. Split 80% for training and 20% for testing
+
+* **Fine-tuning sentences** -> `fine_tuning_sentences` & `validation_sentences`:
+  1. Replace curly quotes (`’`) with straight quotes (`'`)
+  2. Replace the glosses of the current `bci_av_id` with the corresponding token
+  3. Replace glosses of *existing* BCI-AV-IDs with their corresponding tokens to ensure proper inter-symbol learning
+  4. Shuffle the dataset
+  5. Split 80% for training and 20% for validation
+
+* **Testing prompts** -> `testing_text_generation_prompts`:
+  1. Replace curly quotes (`’`) with straight quotes (`'`)
+  2. Remove any space before the `{placeholder}`
+
+**Constants and Their Default Values**:
+
+| Constant                        | Value               |
+| ------------------------------- | ------------------- |
+| `MIN_PARTIAL_SENTENCE_LENGTH`   | 40                  |
+| `RANK_POSITIVE_THRESHOLD`       | 100                 |
+| `RANK_NEGATIVE_THRESHOLD`       | 1000                |
+| `TOKEN_TEMPLATE`                | `[BLISS_{bciAvId}]` |
+| `MIN_NUM_OF_TRAINING_SENTENCES` | 100                 |
+
+### Step 4.2 Add the New Symbol Token
+
+This step integrates the symbol token into the model and fine-tunes its representation:
+
+1. **Compute the initial output embedding** of the new symbol token using training context sentences: `training_positive_context_sentences` and `training_negative_context_sentences`.
+2. **Compute the initial input embedding** as the average of all token embeddings across the target glosses.
+3. **Add the new symbol token to the LLaMA tokenizer** in the format `[BLISS_{bci_av_id}]` and initializes its input and output embeddings.
+4. **Fine-tune the model** using the training and validation data: `fine_tuning_sentences` and `validation_sentences`. This optimizes both the new token's embeddings and the attention layers.
+5. Saves the adapter to `~/projects/ctb-whkchun/s2_bliss_LLMs/integrate_bliss_symbols/{sequence_id}_adapter_{bci_av_id}`
+6. **Evaluate performance** of the new token on testing context sentences and text generation prompts: `testing_positive_context_sentences`, `testing_negative_context_sentences`, and `testing_text_generation_prompts`.
+
+### Script Details
+
+* **Script**: [`add_new_symbol_token.py`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/add_new_symbol_token.py)
+
+* **Usage**:
+```bash
+python add_new_symbol_token.py <bliss_id> <glosses> <data_dir> <processed_bliss_ids_json>
+```
+
+* **Example**:
+```bash
+python add_new_symbol_token.py 12327 '["afraid", "frightened", "scared"]' ~/bliss_gloss/4-add-missing-symbols/data/ ~/bliss_gloss/4-add-missing-symbols/data/bliss_ids_added.json
+```
+
+* **Output**:
+  * **Adapter** 
+    
+    Saved on the Alliance server at `~/projects/ctb-whkchun/s2_bliss_LLMs/integrate_bliss_symbols/{sequence_id}_adapter_{bci_av_id}`
+
+  * **Processed dataset**
+
+    [`/data/dataset_{bci_av_id}_{gloss_1}_{gloss_2}_..._{gloss_N}.py`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/data). For example, for BCI-AV-ID 12321 with glosses "a", "an", and "any", the processed dataset file is: [`./data/dataset_12321_a_an_any.py`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/data/dataset_12321_a_an_any.py)
+
+  * **The fine-tuning log file**
+
+    [`/logs/{sequence_id}_{bci_av_id}`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/logs)
+
+  * **Updated Bliss Registry**
+
+    [`bliss_ids_added.json`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/data/bliss_ids_added.json`)
