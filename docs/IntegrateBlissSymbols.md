@@ -242,7 +242,7 @@ Run the `build_dataset.py` script. This script transforms the initial dataset in
 
 ### Step 4.2 Add the New Symbol Token
 
-This step integrates the symbol token into the model and fine-tunes its representation:
+This step incrementally integrates symbol tokens into the model and fine-tunes their representations. Each symbol is added one at a time, with the integration of each new symbol building upon the representations of previously incorporated symbols. This process enables the model to learn the contextual meaning and usage of each symbol.
 
 1. **Compute the initial output embedding** of the new symbol token using training context sentences: `training_positive_context_sentences` and `training_negative_context_sentences`.
 2. **Compute the initial input embedding** as the average of all token embeddings across the target glosses.
