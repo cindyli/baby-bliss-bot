@@ -349,6 +349,9 @@ print(f"Euclidean Distance of the new token output embedding before and after: {
 print("==============================================================")
 print("\n==== Evaluation after fine-tuning ====\n")
 
+# Set the model to evaluation mode for inference
+model.eval()
+
 # Evaluate the results
 evaluation_results = evaluate_new_token(
     model, tokenizer, training_positive_context_sentences, training_negative_context_sentences,

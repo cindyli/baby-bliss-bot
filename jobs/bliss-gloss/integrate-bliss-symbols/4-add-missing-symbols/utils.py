@@ -355,13 +355,13 @@ def evaluate_new_token(
     results = test_token_prediction(model, tokenizer, training_negative_context_sentences, target_token_ids, new_token_id)
     print_results("Re-verify predictions on NEGATIVE training sentences:", target_tokens, new_token, results)
     results = test_token_prediction(model, tokenizer, testing_positive_context_sentences, target_token_ids, new_token_id)
-    print_results("Predictions on TESTING POSITIVE training sentences:", target_tokens, new_token, results)
+    print_results("Predictions on TESTING POSITIVE testing sentences:", target_tokens, new_token, results)
     results = test_token_prediction(model, tokenizer, testing_negative_context_sentences, target_token_ids, new_token_id)
-    print_results("Predictions on TESTING NEGATIVE training sentences:", target_tokens, new_token, results)
+    print_results("Predictions on TESTING NEGATIVE testing sentences:", target_tokens, new_token, results)
 
     # Text Generation
     print("\nValidation - Generation:")
     test_text_generation(model, tokenizer, testing_text_generation_prompts, new_token, phrase)
 
-# END of utility functions for adding a new symtol token to the model
+# END of utility functions for adding a new symbol token to the model
 ###################################################

@@ -8,7 +8,7 @@
 # You may obtain a copy of the BSD 3-Clause License at
 # https://github.com/inclusive-design/baby-bliss-bot/blob/main/LICENSE
 
-#SBATCH --job-name=add_new_symbol_token_12869
+#SBATCH --job-name=test_model_12356_with_adapter19
 #SBATCH --time 1-00:00
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=v100l:1
@@ -28,9 +28,9 @@ pip install --upgrade pip
 
 module load StdEnv/2023 rust/1.85.0 arrow/19.0.1 gcc/13.3
 
-pip install torch==2.6.0 transformers==4.50.3 huggingface_hub==0.30.2 accelerate==1.6.0 peft==0.15.2 bitsandbytes==0.45.5 datasets==3.5.0
+pip install torch==2.6.0 transformers==4.50.3 huggingface_hub==0.30.2 accelerate==1.6.0 peft==0.15.2 bitsandbytes==0.45.5
 
 pip list
 
-echo "=== Use QLora fine tuning to add Bliss symbol 12869 into Llama with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
-python ~/bliss_gloss/4-add-missing-symbols/add_new_symbol_token.py 12869 '["boat", "ship"]' ~/bliss_gloss/4-add-missing-symbols/data/ ~/bliss_gloss/4-add-missing-symbols/data/bliss_ids_added.json > ~/bliss_gloss/4-add-missing-symbols/logs/18-12869.log
+echo "===Test model with new tokens added with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
+python ~/bliss_gloss/4-add-missing-symbols/test_model.py 12356 '["air", "atmosphere"]' 'data' '19_adapter_12869' > ~/bliss_gloss/4-add-missing-symbols/test_results/test_12356_with_adapter19.log
