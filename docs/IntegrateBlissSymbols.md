@@ -253,7 +253,7 @@ This step incrementally integrates symbol tokens into the model and fine-tunes t
 
 ### Script Details
 
-* **Script**: [`add_new_symbol_token.py`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/add_new_symbol_token.py)
+* **Integration Script**: [`add_new_symbol_token.py`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/add_new_symbol_token.py)
 
 * **Usage**:
 ```bash
@@ -281,3 +281,29 @@ python add_new_symbol_token.py 12327 '["afraid", "frightened", "scared"]' ~/blis
   * **Updated Bliss Registry**
 
     [`bliss_ids_added.json`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/data/bliss_ids_added.json`)
+
+Note: The job script `job_add_new_symbol_token.sh` is responsible for submitting the integration script above to the Alliance server for execution.
+
+## Step 5: Periodic Model Evaluation
+
+Step 4 generates multiple adapters. Periodically evaluate previously added tokens using newer adapters to ensure they continue to perform as expected.
+
+### Script Details
+
+* **Evaluation Script**: [`test_model.py`](../jobs/bliss-gloss/integrate-bliss-symbols/4-add-missing-symbols/test_model.py)
+
+* **Description**:  
+  This script loads the base model along with a specified adapter, retrieves the test data from the dataset, and evaluates the test data using the loaded model.
+
+* **Usage**:
+  ```bash
+  python test_model.py <bliss_id> <glosses> <data_dir> <adapter_dir_name>
+  ```
+
+* **Example**:
+```bash
+python test_model.py 12356 '["air", "atmosphere"]' 'data' '19_adapter_12869'
+```
+
+* **Output**:
+  The script prints out the evaluation results to the console.
