@@ -2459,5 +2459,10 @@
     "12870": [
         "body",
         "trunk"
+    ],
+    "12895": [
+        "loaf of bread",
+        "bread",
+        "loaf"
     ]
 }
