@@ -2478,5 +2478,9 @@
         "cupboard",
         "closet",
         "wardrobe"
+    ],
+    "13642": [
+        "dead",
+        "deceased"
     ]
 }
