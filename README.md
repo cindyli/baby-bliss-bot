@@ -51,61 +51,60 @@ Run the following command to lint all python scripts:
 
 * `flake8`
 
-## Model Experiments
+## Documentation
 
-We performed experiments with a number of existing models listed below to understand how useful they are in helping
-with generating new Bliss symbols etc.
+### Teaching Language Models to Understand Bliss Symbols
 
-### Llama2
+- **[Integrating Bliss Meaning Symbols into the Model](./docs/IntegrateBlissMeaningSymbols.md)**  
+  Describes the process of integrating Bliss Meaning Symbols into a LLaMA language model by introducing a dedicated token for each symbol. These symbols represent specific concepts (e.g., "tree", "house", etc.).
 
-**Conclusion**: useful
+- **[Using Bliss Gloss as a Semantic Bridge](./docs/ExploreBlissGloss.md)**  
+  Investigates the use of Bliss glosses to leverage the model’s pre-trained English knowledge. This approach explores mapping Bliss symbols to English phrases or concepts to enhance understanding.
 
-See the [Llama2FineTuning.md](./docs/Llama2FineTuning.md) in the [documentation](./docs) folder for details
-on how to fine tune, evaluation results and the conclusion about how useful it is.
+- **[Disambiguating English Word Meanings](./docs/WordDisambiguation.md)**  
+  Explores techniques for resolving ambiguity in English words when mapping to Bliss symbols. Proposes computing output embeddings of Bliss tokens using training data to ensure conceptual precision.
 
-### StyleGAN3
+- **[Adding Bliss Symbol Tokens](./docs/AddBlissSpecificTokens.md)**  
+  Provides step-by-step instructions for introducing new Bliss symbol tokens into a LLaMA model. For a complete pipeline, see the [Integrating Bliss Meaning Symbols](./docs/IntegrateBlissMeaningSymbols.md) documentation.
 
-**Conclusion**: not useful
+---
 
-See the [TrainStyleGAN3Model.md](./docs/TrainStyleGAN3Model.md) in the [documentation](./docs) folder for details
-on how to train this model, training results and the conclusion about how useful it is.
+### Instruction Fine-Tuning
 
-### StyleGAN2-ADA
+- **[Translate btw English and Conceptual Bliss](./docs/InstructionFineTuning.md)**  
+  Details the instruction fine-tuning process for translating between English and Conceptual Bliss. Includes evaluation metrics and concludes that this method is **effective**.
 
-**Conclusion**: shows promise
+---
 
-See the [StyleGAN2-ADATraining.md](./docs/StyleGAN2-ADATraining.md) in the [documentation](./docs) folder for details
-on how to train this model and training results.
+### Retrieval-Augmented Generation (RAG)
+
+- **[Enhance Model Response Accuracy](./docs/RAG.md)**  
+  Describes how Retrieval-Augmented Generation can be used to enhance model accuracy by retrieving relevant context at inference time.
+
+---
+
+### Context and Prompt Optimization
+
+- **[Reflect Chat History](./docs/ReflectChatHistory.md)**  
+  Discusses strategies for incorporating previous chat history into current prompts. Evaluates summarization and prompt engineering approaches, concluding that **prompt engineering is more effective**.
+
+---
+
+### Bliss Symbol Generation with GANs
+
+- **[Bliss Symbol Generation Using StyleGAN2-ADA](./docs/StyleGAN2-ADATraining.md)**  
+  Explains how to train a StyleGAN2-ADA model for Bliss symbol generation. Reports promising training results and viability for symbol synthesis.
+
+- **[Bliss Symbol Generation Using StyleGAN3](./docs/StyleGAN3Training.md)**  
+  Provides training results using StyleGAN3 for symbol generation. Concludes that this approach is **not effective** for Bliss symbols.
+
+---
 
 ### Texture Inversion
 
-**Conclusion**: not useful 
+- **[Symbol Manipulation](./notebooks/README.md)**  
+  Describes the texture inversion technique and its potential for symbol manipulation. Evaluation shows that this method is **not effective** for the targeted use case.
 
-See the [Texture Inversion documentation](./notebooks/README.md) for details.
-
-## Preserving Information
-
-### RAG (Retrieval-augmented generation)
-
-**Conclusion**: useful
-
-RAG (Retrieval-augmented generation) technique is explored to resolve ambiguities by retrieving relevant contextual
-information from external sources, enabling the language model to generate more accurate and reliable responses.
-
-See [RAG.md](./docs/RAG.md) for more details.
-
-### Reflection over Chat History
-
-**Conclusion**: useful
-
-When users have a back-and-forth conversation, the application requires a form of "memory" to retain and incorporate past interactions into its current processing. Two methods are explored to achieve this:
-
-1. Summarizing the chat history and providing it as contextual input.
-2. Using prompt engineering to instruct the language model to consider the past conversation.
-
-The second method, prompt engineering, yields more desired responses than summarizing chat history.
-
-See [ReflectChatHistory.md](./docs/RAG.md) for more details.
 
 ## Notebooks
 

@@ -1,6 +1,6 @@
 # Steps to Integrate Bliss Symbols into LLaMA
 
-This document outlines the process for integrating Bliss symbols into a LLaMA language model by adding a new token for each Bliss symbol. Each token is formatted as `[BLISS_{blissID}]`.
+This document outlines the process for integrating Bliss Meaning Symbols into a LLaMA language model by introducing a new token for each Bliss symbol. These symbols represent specific concepts such as “tree,” “house,” and others. Each token is formatted as [BLISS_{blissID}].
 
 The working directory for all steps is: [`job/bliss-gloss/integrate-bliss-symbols`](../jobs/bliss-gloss/integrate-bliss-symbols).
 
