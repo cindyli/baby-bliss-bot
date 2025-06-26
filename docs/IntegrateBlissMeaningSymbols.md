@@ -4,6 +4,8 @@ This document outlines the process for integrating Bliss Meaning Symbols into a 
 
 The working directory for all steps is: [`job/bliss-gloss/integrate-bliss-symbols`](../jobs/bliss-gloss/integrate-bliss-symbols).
 
+**Note:** Some scripts use a Bliss symbol explanation file [`./data/bliss_symbol_explanations.json`](./data/bliss_symbol_explanations.json) to look up symbol glosses and explanations. This file is a copy from the [`inclusive-design/adaptive-palette`](https://github.com/inclusive-design/adaptive-palette/blob/main/public/data/bliss_symbol_explanations.json) repository.
+
 ## Step 1: Add Single-Token Gloss Symbols
 
 **Working directory**: [`job/bliss-gloss/integrate-bliss-symbols/1-add-single-token-gloss-symbols`](../jobs/bliss-gloss/integrate-bliss-symbols/1-add-single-token-gloss-symbols)
@@ -64,9 +66,8 @@ Two methods were used to identify frequently used symbols:
 1. The Bliss standard board
 
   * Symbols in the board are extracted to [`standard_board_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/standard_board_symbols.json).
-  * A total of **479 symbols** are extracted: 
-    * **323 symbols** are single symbols.
-    * **156 symbols** are Composite symbols
+  * A total of **473 symbols** are extracted: 
+    * Note: Although "was", "were", and "had" appear on the standard board, they are not included in the extracted list because they do not have unique symbols. Instead, they are represented by variations of existing concepts: **"being (state of)"** (ID: 24443) for "was/were", and **"holding"** (ID: 24912) for "had".
 
 2. Frequency-Tagged Spreadsheet (by Mats Lundälv)
 
@@ -85,9 +86,9 @@ Mats Lundälv, a former chairman of BCI, sorted the Bliss words into groups for 
 ### Overlap Analysis
 
 Based on the above sources:
-* **288 symbols** appear in both the standard board and frequency group 1
-* **191 symbols** are only in the standard board
-* **356 symbols** are only in frequency group 1
+* **417 symbols** appear in both the standard board and frequency group 1
+* **56 symbols** are only in the standard board
+* **227 symbols** are only in frequency group 1
 
 So, the primary focus is the **288 overlapping symbols**.
 
@@ -100,16 +101,18 @@ So, the primary focus is the **288 overlapping symbols**.
 * Usage: 
 
 ```bash
-python get_standard_board_symbols.py <initial_json_file> <output_symbols_file>
+python get_standard_board_symbols.py <bliss_standard_chart_json> <bliss_symbol_explanations_json> <output_symbols_file>")
 ```
 
 * Example:
 
 ```bash
-python get_standard_board_symbols.py ../../../../adaptive-palette/public/palettes/bliss_standard_chart.json ./output/standard_board_symbols.json
+python get_standard_board_symbols.py ../../../../../adaptive-palette/public/palettes/bliss_standard_chart.json ./data/bliss_symbol_explanations.json ./output/standard_board_symbols.json
 ```
 
 * Output: [`output/standard_board_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/standard_board_symbols.json)
+
+* Note: <bliss_standard_chart_json> must point to the json file that contains other JSON files that the "branchTo" field refers to.
 
 #### Extract symbols by their frequency group
 
@@ -135,13 +138,13 @@ python get_frequency_tagged_symbols.py ./data/Bliss_frequency_tags.csv ./output/
 * Usage:
 
 ```bash
-python get_frequency_tagged_symbols.py <frequency_tagged_symbols_csv> <output_tagged_symbols_json>
+python compare_most_frequent_symbols.py <bliss_symbol_explanations_json> <output_overlapped_symbols_json> <output_only_in_standard_board_json> <output_only_in_tag1_json>
 ```
 
 * Example:
 
 ```bash
-python get_frequency_tagged_symbols.py ./data/Bliss_frequency_tags.csv ./output/frequency_tagged_symbols.json
+python compare_most_frequent_symbols.py ./data/bliss_symbol_explanations.json ./output/overlapped_symbols.json ./output/only_in_standard_board.json ./output/only_in_tag1.json
 ```
 
 * Output file:
