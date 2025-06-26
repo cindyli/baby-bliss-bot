@@ -156,9 +156,9 @@ python compare_most_frequent_symbols.py ./data/bliss_symbol_explanations.json ./
 
 **Working directoy**: [`jobs/bliss-gloss/integrate-bliss-symbols/3-find-frequently-used-symbols/`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-frequently-used-symbols/).
 
-This step compares **288 most frequently used symbols** from Step 2 aginst the list of symbols already been added in the step 1 and finds high-priority Bliss symbols that were not added during Step 1.
+This step compares **417 most frequently used symbols** from Step 2 aginst the list of symbols already been added in the step 1 and finds high-priority Bliss symbols that were not added during Step 1.
 
-**160 symbols** were found to be missing. 
+**230 symbols** were found to be missing. 
 
 They are written to [`output/missing_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/3-find-frequently-used-symbols/output/missing_symbols.json).
 

@@ -12,15 +12,14 @@ symbols_in_model_json = sys.argv[1]
 most_common_symbols_json = sys.argv[2]
 output_missing_symbols_json = sys.argv[3]
 
-with open(symbols_in_model_json, 'r') as f:
-    symbols_in_model = json.load(f)
-existing_symbols = set(map(int, symbols_in_model.keys()))
+symbols_in_model = json.load(open(symbols_in_model_json, 'r'))
+existing_symbol_ids = set(map(int, symbols_in_model.keys()))
 
-with open(most_common_symbols_json, 'r') as f:
-    most_common_symbols = json.load(f)
+most_common_symbols = json.load(open(most_common_symbols_json, 'r'))
+most_common_symbol_ids = {int(item["id"]): item for item in most_common_symbols}
 
 # Find missing elements
-missing_ids = [bci_av_id for bci_av_id in most_common_symbols if bci_av_id not in existing_symbols]
+missing_ids = [bci_av_id for bci_av_id in most_common_symbol_ids if bci_av_id not in existing_symbol_ids]
 
 # Output the result
 with open(output_missing_symbols_json, 'w') as f:
