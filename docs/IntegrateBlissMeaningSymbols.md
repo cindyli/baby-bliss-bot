@@ -4,7 +4,7 @@ This document outlines the process for integrating Bliss Meaning Symbols into a 
 
 The working directory for all steps is: [`job/bliss-gloss/integrate-bliss-symbols`](../jobs/bliss-gloss/integrate-bliss-symbols).
 
-**Note:** Some scripts use a Bliss symbol explanation file [`./data/bliss_symbol_explanations.json`](./data/bliss_symbol_explanations.json) to look up symbol glosses and explanations. This file is a copy from the [`inclusive-design/adaptive-palette`](https://github.com/inclusive-design/adaptive-palette/blob/main/public/data/bliss_symbol_explanations.json) repository.
+**Note:** Some scripts use a Bliss symbol explanation file [`bliss_symbol_explanations.json`](../jobs/bliss-gloss/data/bliss_symbol_explanations.json) to look up symbol glosses and explanations. This file is a copy from the [`inclusive-design/adaptive-palette`](https://github.com/inclusive-design/adaptive-palette/blob/main/public/data/bliss_symbol_explanations.json) repository.
 
 ## Step 1: Add Single-Token Gloss Symbols
 
@@ -107,7 +107,7 @@ python get_standard_board_symbols.py <bliss_standard_chart_json> <bliss_symbol_e
 * Example:
 
 ```bash
-python get_standard_board_symbols.py ../../../../../adaptive-palette/public/palettes/bliss_standard_chart.json ./data/bliss_symbol_explanations.json ./output/standard_board_symbols.json
+python get_standard_board_symbols.py ../../../../../adaptive-palette/public/palettes/bliss_standard_chart.json ../../data/bliss_symbol_explanations.json ./output/standard_board_symbols.json
 ```
 
 * Output: [`output/standard_board_symbols.json`](../jobs/bliss-gloss/integrate-bliss-symbols/2-find-frequently-used-symbols/output/standard_board_symbols.json)
@@ -144,7 +144,7 @@ python compare_most_frequent_symbols.py <bliss_symbol_explanations_json> <output
 * Example:
 
 ```bash
-python compare_most_frequent_symbols.py ./data/bliss_symbol_explanations.json ./output/overlapped_symbols.json ./output/only_in_standard_board.json ./output/only_in_tag1.json
+python compare_most_frequent_symbols.py ../../data/bliss_symbol_explanations.json ./output/overlapped_symbols.json ./output/only_in_standard_board.json ./output/only_in_tag1.json
 ```
 
 * Output file:

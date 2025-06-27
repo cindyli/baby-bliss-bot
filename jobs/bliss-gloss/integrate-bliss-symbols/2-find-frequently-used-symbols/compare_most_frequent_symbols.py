@@ -1,5 +1,5 @@
 # python compare_most_frequent_symbols.py <bliss_symbol_explanations_json> <output_overlapped_symbols_json> <output_only_in_standard_board_json> <output_only_in_tag1_json>
-# python compare_most_frequent_symbols.py ./data/bliss_symbol_explanations.json ./output/overlapped_symbols.json ./output/only_in_standard_board.json ./output/only_in_tag1.json
+# python compare_most_frequent_symbols.py ../../data/bliss_symbol_explanations.json ./output/overlapped_symbols.json ./output/only_in_standard_board.json ./output/only_in_tag1.json
 
 import json
 import sys

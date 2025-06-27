@@ -1,11 +1,11 @@
 # python get_standard_board_symbols.py <bliss_standard_chart_json> <bliss_symbol_explanations_json> <output_symbols_file>")
-# python get_standard_board_symbols.py ../../../../../adaptive-palette/public/palettes/bliss_standard_chart.json ./data/bliss_symbol_explanations.json ./output/standard_board_symbols.json
+# python get_standard_board_symbols.py ../../../../../adaptive-palette/public/palettes/bliss_standard_chart.json ../../data/bliss_symbol_explanations.json ./output/standard_board_symbols.json
 # Note: <bliss_standard_chart_json> must point to the json file that contains other JSON files that the "branchTo" field refers to.
 
-# This script processes a JSON file containing symbols on the Bliss standard board ()./data/bliss_symbol_explanations.json).
-# The symbols in this file is represented by their composing symbols at the character level. The output symbols from this
-# script requires word-level symbols. This script finds the word-level symbols by comparing the composing information with
-# those in the Bliss symbol explanations JSON file, which contains the mapping from character-level to word-level symbols.
+# This script processes a JSON file containing symbols on the Bliss standard board. The symbols in this file don't
+# have their direct IDs but are represented by their composing symbols at the character level. Since this script needs
+# to output symbols at the word-level, it compares this composing information with those in the Bliss symbol explanations
+# JSON file, which contains the mapping from character-level composing information to symbol IDs.
 
 import sys
 import os
