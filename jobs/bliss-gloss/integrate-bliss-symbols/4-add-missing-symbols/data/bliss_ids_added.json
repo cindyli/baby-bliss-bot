@@ -2499,5 +2499,13 @@
     "14443": [
         "glasses",
         "eyeglasses"
+    ],
+    "14446": [
+        "gloves",
+        "mittens",
+        "mitts",
+        "glove",
+        "mitt",
+        "mitten"
     ]
 }
