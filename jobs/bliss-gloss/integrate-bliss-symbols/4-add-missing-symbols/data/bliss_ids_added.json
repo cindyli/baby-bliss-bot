@@ -2534,5 +2534,11 @@
         "letter",
         "mail",
         "post"
+    ],
+    "15733": [
+        "dont,doesnt",
+        "not",
+        "negative",
+        "no"
     ]
 }
