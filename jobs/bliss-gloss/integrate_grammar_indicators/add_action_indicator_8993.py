@@ -249,9 +249,9 @@ elapsed_time = end_time_fine_tuning - end_time_prepare
 print(f"Fine-tuning time: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds")
 
 # Save Model
-model.save_pretrained(save_adapter_dir,)
-tokenizer.save_pretrained(save_adapter_dir,)
-print(f"Saved new adapter to {save_adapter_dir,}")
+model.save_pretrained(save_adapter_dir)
+tokenizer.save_pretrained(save_adapter_dir)
+print(f"Saved new adapter to {save_adapter_dir}")
 
 # Compare embeddings of the new token before and after fine-tuning
 new_token_input_embedding_after = model.get_input_embeddings().weight.data[new_token_id].clone()
