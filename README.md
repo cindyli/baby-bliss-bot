@@ -53,7 +53,7 @@ Run the following command to lint all python scripts:
 
 ## Documentation
 
-### Teaching Language Models to Understand Bliss Symbols
+### Teaching Llama Model to Understand Bliss Symbols
 
 - **[Integrating Bliss Meaning Symbols into the Model](./docs/IntegrateBlissMeaningSymbols.md)**  
   Describes the process of integrating Bliss Meaning Symbols into a LLaMA language model by introducing a dedicated token for each symbol. These symbols represent specific concepts (e.g., "tree", "house", etc.).
@@ -65,7 +65,7 @@ Run the following command to lint all python scripts:
   Explores techniques for resolving ambiguity in English words when mapping to Bliss symbols. Proposes computing output embeddings of Bliss tokens using training data to ensure conceptual precision.
 
 - **[Use a Single Token for a Multi-token Gloss](./docs/InputEmbeddingForMultiTokenGloss.md)**  
-  Explores methods for representing a multi-token gloss with a single token. Compares several strategies for initializing its input embedding prior to fine-tuning and identifies the most effective approach.
+  Explores methods for representing a multi-token gloss with a new single Bliss token. Compares several strategies for initializing its input embedding prior to fine-tuning and identifies the most effective approach.
 
 - **[Adding Bliss Symbol Tokens](./docs/AddBlissSpecificTokens.md)**  
   Provides step-by-step instructions for introducing new Bliss symbol tokens into a LLaMA model. For a complete pipeline, see the [Integrating Bliss Meaning Symbols](./docs/IntegrateBlissMeaningSymbols.md) documentation.
