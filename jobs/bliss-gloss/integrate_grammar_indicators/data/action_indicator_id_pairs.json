@@ -13,7 +13,10 @@
         8993
       ],
       "description": "advance,go-(to)",
-      "infinitive_form_verbs": "to advance,to go",
+      "infinitive_form_verbs": [
+        "to advance",
+        "to go"
+      ],
       "explanation": "(forward + action indicator)  See also: go,depart,leave-(to) 14449, and walk,go-(to) 18031"
     }
   },
@@ -31,7 +34,9 @@
         8993
       ],
       "description": "agree-(to)",
-      "infinitive_form_verbs": "to agree",
+      "infinitive_form_verbs": [
+        "to agree"
+      ],
       "explanation": "(agreement + action indicator)"
     }
   },
@@ -49,7 +54,11 @@
         8993
       ],
       "description": "ask,inquire,question-(to)",
-      "infinitive_form_verbs": "to ask,to inquire,to question",
+      "infinitive_form_verbs": [
+        "to ask",
+        "to inquire",
+        "to question"
+      ],
       "explanation": "(question + action indicator)"
     }
   },
@@ -67,7 +76,13 @@
         8993
       ],
       "description": "be,am,are,is,exist-(to)",
-      "infinitive_form_verbs": "to be,to am,to are,to is,to exist",
+      "infinitive_form_verbs": [
+        "to be",
+        "to am",
+        "to are",
+        "to is",
+        "to exist"
+      ],
       "explanation": "(to live [half-sized] + action indicator: the \"little meaning\" of to live) (See Note p. II-30 in BRG)"
     }
   },
@@ -85,7 +100,9 @@
         8993
       ],
       "description": "bite-(to)",
-      "infinitive_form_verbs": "to bite",
+      "infinitive_form_verbs": [
+        "to bite"
+      ],
       "explanation": "(teeth + action indicator)"
     }
   },
@@ -103,7 +120,9 @@
         8993
       ],
       "description": "blow_(wind)-(to)",
-      "infinitive_form_verbs": "to blow",
+      "infinitive_form_verbs": [
+        "to blow"
+      ],
       "explanation": "(wind + action indicator)"
     }
   },
@@ -121,7 +140,9 @@
         8993
       ],
       "description": "brush-(to)",
-      "infinitive_form_verbs": "to brush",
+      "infinitive_form_verbs": [
+        "to brush"
+      ],
       "explanation": "(brush + action indicator)"
     }
   },
@@ -139,7 +160,9 @@
         8993
       ],
       "description": "burn-(to)",
-      "infinitive_form_verbs": "to burn",
+      "infinitive_form_verbs": [
+        "to burn"
+      ],
       "explanation": "(fire + action indicator)"
     }
   },
@@ -157,7 +180,9 @@
         8993
       ],
       "description": "bury_(person)-(to)",
-      "infinitive_form_verbs": "to bury",
+      "infinitive_form_verbs": [
+        "to bury"
+      ],
       "explanation": "(grave + action indicator: to lay to rest below the earth)"
     }
   },
@@ -175,7 +200,10 @@
         8993
       ],
       "description": "can,be_able-(to)",
-      "infinitive_form_verbs": "can,to be able",
+      "infinitive_form_verbs": [
+        "can",
+        "to be able"
+      ],
       "explanation": "(ability_(half_sized) + action indicator)"
     }
   },
@@ -193,7 +221,9 @@
         8993
       ],
       "description": "cause-(to)",
-      "infinitive_form_verbs": "to cause",
+      "infinitive_form_verbs": [
+        "to cause"
+      ],
       "explanation": "(cause + action indicator)"
     }
   },
@@ -211,7 +241,11 @@
         8993
       ],
       "description": "close,enclose,shut-(to)",
-      "infinitive_form_verbs": "to close,to enclose,to shut",
+      "infinitive_form_verbs": [
+        "to close",
+        "to enclose",
+        "to shut"
+      ],
       "explanation": "(enclosure + action indicator)"
     }
   },
@@ -229,7 +263,9 @@
         8993
       ],
       "description": "comb-(to)",
-      "infinitive_form_verbs": "to comb",
+      "infinitive_form_verbs": [
+        "to comb"
+      ],
       "explanation": "(comb + action indicator)"
     }
   },
@@ -247,7 +283,9 @@
         8993
       ],
       "description": "count-(to)",
-      "infinitive_form_verbs": "to count",
+      "infinitive_form_verbs": [
+        "to count"
+      ],
       "explanation": "(number + action indicator)"
     }
   },
@@ -265,7 +303,9 @@
         8993
       ],
       "description": "cross-(to)",
-      "infinitive_form_verbs": "to cross",
+      "infinitive_form_verbs": [
+        "to cross"
+      ],
       "explanation": "(across + action indicator)"
     }
   },
@@ -283,7 +323,9 @@
         8993
       ],
       "description": "cut_(scissors)-(to)",
-      "infinitive_form_verbs": "to cut",
+      "infinitive_form_verbs": [
+        "to cut"
+      ],
       "explanation": "(scissors + action indicator) SYMBOL SYNONYM"
     }
   },
@@ -301,7 +343,9 @@
         8993
       ],
       "description": "decide-(to)",
-      "infinitive_form_verbs": "to decide",
+      "infinitive_form_verbs": [
+        "to decide"
+      ],
       "explanation": "(decision + action indicator)"
     }
   },
@@ -319,7 +363,9 @@
         8993
       ],
       "description": "develop-(to)",
-      "infinitive_form_verbs": "to develop",
+      "infinitive_form_verbs": [
+        "to develop"
+      ],
       "explanation": "(development + action indicator)"
     }
   },
@@ -337,7 +383,9 @@
         8993
       ],
       "description": "die-(to)",
-      "infinitive_form_verbs": "to die",
+      "infinitive_form_verbs": [
+        "to die"
+      ],
       "explanation": "(death + action indicator)"
     }
   },
@@ -355,7 +403,9 @@
         8993
       ],
       "description": "divide-(to)",
-      "infinitive_form_verbs": "to divide",
+      "infinitive_form_verbs": [
+        "to divide"
+      ],
       "explanation": "(division + action indicator)"
     }
   },
@@ -373,7 +423,9 @@
         8993
       ],
       "description": "eat-(to)",
-      "infinitive_form_verbs": "to eat",
+      "infinitive_form_verbs": [
+        "to eat"
+      ],
       "explanation": "(food + action indicator)"
     }
   },
@@ -391,7 +443,12 @@
         8993
       ],
       "description": "enter,absorb,insert,penetrate-(to)",
-      "infinitive_form_verbs": "to enter,to absorb,to insert,to penetrate",
+      "infinitive_form_verbs": [
+        "to enter",
+        "to absorb",
+        "to insert",
+        "to penetrate"
+      ],
       "explanation": "(into + action indicator)"
     }
   },
@@ -409,7 +466,11 @@
         8993
       ],
       "description": "go,depart,leave-(to)",
-      "infinitive_form_verbs": "to go,to depart,to leave",
+      "infinitive_form_verbs": [
+        "to go",
+        "to depart",
+        "to leave"
+      ],
       "explanation": "(departure + action indicator)"
     }
   },
@@ -427,7 +488,9 @@
         8993
       ],
       "description": "have-(to)",
-      "infinitive_form_verbs": "to have",
+      "infinitive_form_verbs": [
+        "to have"
+      ],
       "explanation": "(holding + action indicator: to have something in one's possession without necessarily owning it, thus the half-size of own,possess-(to) 15950)"
     }
   },
@@ -445,7 +508,10 @@
         8993
       ],
       "description": "hear,listen-(to)",
-      "infinitive_form_verbs": "to hear,to listen",
+      "infinitive_form_verbs": [
+        "to hear",
+        "to listen"
+      ],
       "explanation": "(ear + action indicator)"
     }
   },
@@ -463,7 +529,9 @@
         8993
       ],
       "description": "heat-(to)",
-      "infinitive_form_verbs": "to heat",
+      "infinitive_form_verbs": [
+        "to heat"
+      ],
       "explanation": "(heat + action indicator)"
     }
   },
@@ -481,7 +549,9 @@
         8993
       ],
       "description": "jump-(to)",
-      "infinitive_form_verbs": "to jump",
+      "infinitive_form_verbs": [
+        "to jump"
+      ],
       "explanation": "(jump + action indicator)"
     }
   },
@@ -499,7 +569,9 @@
         8993
       ],
       "description": "kiss-(to)",
-      "infinitive_form_verbs": "to kiss",
+      "infinitive_form_verbs": [
+        "to kiss"
+      ],
       "explanation": "(kiss + action indicator)"
     }
   },
@@ -517,7 +589,9 @@
         8993
       ],
       "description": "kneel-(to)",
-      "infinitive_form_verbs": "to kneel",
+      "infinitive_form_verbs": [
+        "to kneel"
+      ],
       "explanation": "(kneeling_(kneeling_person) + action indicator)"
     }
   },
@@ -535,7 +609,9 @@
         8993
       ],
       "description": "live_(life)-(to)",
-      "infinitive_form_verbs": "to live",
+      "infinitive_form_verbs": [
+        "to live"
+      ],
       "explanation": "(life + action indicator)"
     }
   },
@@ -553,7 +629,9 @@
         8993
       ],
       "description": "lock-(to)",
-      "infinitive_form_verbs": "to lock",
+      "infinitive_form_verbs": [
+        "to lock"
+      ],
       "explanation": "(key + action indicator)"
     }
   },
@@ -571,7 +649,9 @@
         8993
       ],
       "description": "marry-(to)",
-      "infinitive_form_verbs": "to marry",
+      "infinitive_form_verbs": [
+        "to marry"
+      ],
       "explanation": "(marriage + action indicator)"
     }
   },
@@ -589,7 +669,10 @@
         8993
       ],
       "description": "mix,blend-(to)",
-      "infinitive_form_verbs": "to mix,to blend",
+      "infinitive_form_verbs": [
+        "to mix",
+        "to blend"
+      ],
       "explanation": "(mixture + action indicator)"
     }
   },
@@ -607,7 +690,9 @@
         8993
       ],
       "description": "multiply-(to)",
-      "infinitive_form_verbs": "to multiply",
+      "infinitive_form_verbs": [
+        "to multiply"
+      ],
       "explanation": "(multiplication + action indicator)"
     }
   },
@@ -625,7 +710,11 @@
         8993
       ],
       "description": "must,have_to,be_forced_to-(to)",
-      "infinitive_form_verbs": "to must,to have to,to be forced to",
+      "infinitive_form_verbs": [
+        "to must",
+        "to have to",
+        "to be forced to"
+      ],
       "explanation": "(must_(a) + action indicator)          -  Note, original derivation in BRG is: (to force + passive indicator: to be forced to do something)"
     }
   },
@@ -643,7 +732,9 @@
         8993
       ],
       "description": "need-(to)",
-      "infinitive_form_verbs": "to need",
+      "infinitive_form_verbs": [
+        "to need"
+      ],
       "explanation": "(need + action indicator: the leaning person needs support)"
     }
   },
@@ -661,7 +752,9 @@
         8993
       ],
       "description": "observe-(to)",
-      "infinitive_form_verbs": "to observe",
+      "infinitive_form_verbs": [
+        "to observe"
+      ],
       "explanation": "(observation + action indicator: to look at something thoughtfully)"
     }
   },
@@ -679,7 +772,9 @@
         8993
       ],
       "description": "open-(to)",
-      "infinitive_form_verbs": "to open",
+      "infinitive_form_verbs": [
+        "to open"
+      ],
       "explanation": "(opening + action indicator)"
     }
   },
@@ -697,7 +792,10 @@
         8993
       ],
       "description": "penetrate,go_through-(to)",
-      "infinitive_form_verbs": "to penetrate,to go through",
+      "infinitive_form_verbs": [
+        "to penetrate",
+        "to go through"
+      ],
       "explanation": "(through + action indicator)"
     }
   },
@@ -715,7 +813,10 @@
         8993
       ],
       "description": "point,indicate-(to)",
-      "infinitive_form_verbs": "to point,to indicate",
+      "infinitive_form_verbs": [
+        "to point",
+        "to indicate"
+      ],
       "explanation": "(pointer + action indicator)"
     }
   },
@@ -733,7 +834,9 @@
         8993
       ],
       "description": "rain-(to)",
-      "infinitive_form_verbs": "to rain",
+      "infinitive_form_verbs": [
+        "to rain"
+      ],
       "explanation": "(rain + action indicator)"
     }
   },
@@ -751,7 +854,11 @@
         8993
       ],
       "description": "return,come_back,reverse-(to)",
-      "infinitive_form_verbs": "to return,to come back,to reverse",
+      "infinitive_form_verbs": [
+        "to return",
+        "to come back",
+        "to reverse"
+      ],
       "explanation": "(return + action indicator)"
     }
   },
@@ -769,7 +876,13 @@
         8993
       ],
       "description": "say,speak,talk,tell,express-(to)",
-      "infinitive_form_verbs": "to say,to speak,to talk,to tell,to express",
+      "infinitive_form_verbs": [
+        "to say",
+        "to speak",
+        "to talk",
+        "to tell",
+        "to express"
+      ],
       "explanation": "(mouth + action indicator)"
     }
   },
@@ -787,7 +900,11 @@
         8993
       ],
       "description": "see,look,watch-(to)",
-      "infinitive_form_verbs": "to see,to look,to watch",
+      "infinitive_form_verbs": [
+        "to see",
+        "to look",
+        "to watch"
+      ],
       "explanation": "(eye + action indicator)"
     }
   },
@@ -805,7 +922,9 @@
         8993
       ],
       "description": "sew-(to)",
-      "infinitive_form_verbs": "to sew",
+      "infinitive_form_verbs": [
+        "to sew"
+      ],
       "explanation": "(needle + action indicator)"
     }
   },
@@ -823,7 +942,10 @@
         8993
       ],
       "description": "shine,beam-(to)",
-      "infinitive_form_verbs": "to shine,to beam",
+      "infinitive_form_verbs": [
+        "to shine",
+        "to beam"
+      ],
       "explanation": "(sun + action indicator)"
     }
   },
@@ -841,7 +963,9 @@
         8993
       ],
       "description": "shower-(to)",
-      "infinitive_form_verbs": "to shower",
+      "infinitive_form_verbs": [
+        "to shower"
+      ],
       "explanation": "(shower + action indicator)"
     }
   },
@@ -859,7 +983,9 @@
         8993
       ],
       "description": "sleep-(to)",
-      "infinitive_form_verbs": "to sleep",
+      "infinitive_form_verbs": [
+        "to sleep"
+      ],
       "explanation": "(sleep + action indicator)"
     }
   },
@@ -877,7 +1003,9 @@
         8993
       ],
       "description": "smell-(to)",
-      "infinitive_form_verbs": "to smell",
+      "infinitive_form_verbs": [
+        "to smell"
+      ],
       "explanation": "(nose + action indicator)"
     }
   },
@@ -895,7 +1023,9 @@
         8993
       ],
       "description": "smoke-(to)",
-      "infinitive_form_verbs": "to smoke",
+      "infinitive_form_verbs": [
+        "to smoke"
+      ],
       "explanation": "(smoking_(cigarette) + action indicator)"
     }
   },
@@ -913,7 +1043,9 @@
         8993
       ],
       "description": "snow-(to)",
-      "infinitive_form_verbs": "to snow",
+      "infinitive_form_verbs": [
+        "to snow"
+      ],
       "explanation": "(snow + action indicator)"
     }
   },
@@ -931,7 +1063,9 @@
         8993
       ],
       "description": "sound-(to)",
-      "infinitive_form_verbs": "to sound",
+      "infinitive_form_verbs": [
+        "to sound"
+      ],
       "explanation": "(sound + action indicator)"
     }
   },
@@ -949,7 +1083,9 @@
         8993
       ],
       "description": "stand-(to)",
-      "infinitive_form_verbs": "to stand",
+      "infinitive_form_verbs": [
+        "to stand"
+      ],
       "explanation": "(standing_(standing_person) + action indicator)"
     }
   },
@@ -967,7 +1103,9 @@
         8993
       ],
       "description": "steam-(to)",
-      "infinitive_form_verbs": "to steam",
+      "infinitive_form_verbs": [
+        "to steam"
+      ],
       "explanation": "(steam + action indicator)"
     }
   },
@@ -985,7 +1123,9 @@
         8993
       ],
       "description": "succeed-(to)",
-      "infinitive_form_verbs": "to succeed",
+      "infinitive_form_verbs": [
+        "to succeed"
+      ],
       "explanation": "(success + action indicator)"
     }
   },
@@ -1003,7 +1143,9 @@
         8993
       ],
       "description": "taste-(to)",
-      "infinitive_form_verbs": "to taste",
+      "infinitive_form_verbs": [
+        "to taste"
+      ],
       "explanation": "(taste + action indicator)"
     }
   },
@@ -1021,7 +1163,9 @@
         8993
       ],
       "description": "tiptoe-(to)",
-      "infinitive_form_verbs": "to tiptoe",
+      "infinitive_form_verbs": [
+        "to tiptoe"
+      ],
       "explanation": "(toe + action indicator: to walk on one's toes)"
     }
   },
@@ -1039,7 +1183,10 @@
         8993
       ],
       "description": "touch,feel-(to)",
-      "infinitive_form_verbs": "to touch,to feel",
+      "infinitive_form_verbs": [
+        "to touch",
+        "to feel"
+      ],
       "explanation": "(hand + action indicator)"
     }
   },
@@ -1057,7 +1204,11 @@
         8993
       ],
       "description": "twinkle,shine,sparkle-(to)",
-      "infinitive_form_verbs": "to twinkle,to shine,to sparkle",
+      "infinitive_form_verbs": [
+        "to twinkle",
+        "to shine",
+        "to sparkle"
+      ],
       "explanation": "(star + action indicator)"
     }
   },
@@ -1075,7 +1226,9 @@
         8993
       ],
       "description": "visit-(to)",
-      "infinitive_form_verbs": "to visit",
+      "infinitive_form_verbs": [
+        "to visit"
+      ],
       "explanation": "(visit + action indicator)  See visit 24859"
     }
   },
@@ -1093,7 +1246,9 @@
         8993
       ],
       "description": "weigh-(to)",
-      "infinitive_form_verbs": "to weigh",
+      "infinitive_form_verbs": [
+        "to weigh"
+      ],
       "explanation": "(weight + action indicator)"
     }
   },
@@ -1111,7 +1266,10 @@
         8993
       ],
       "description": "wiggle,squirm-(to)",
-      "infinitive_form_verbs": "to wiggle,to squirm",
+      "infinitive_form_verbs": [
+        "to wiggle",
+        "to squirm"
+      ],
       "explanation": "(worm + action indicator: to wriggle like a worm)"
     }
   },
@@ -1129,7 +1287,10 @@
         8993
       ],
       "description": "persuade,convince-(to)",
-      "infinitive_form_verbs": "to persuade,to convince",
+      "infinitive_form_verbs": [
+        "to persuade",
+        "to convince"
+      ],
       "explanation": "(persuasion + action indicator: to lead to agreement)"
     }
   },
@@ -1147,7 +1308,9 @@
         8993
       ],
       "description": "shine-(to)",
-      "infinitive_form_verbs": "to shine",
+      "infinitive_form_verbs": [
+        "to shine"
+      ],
       "explanation": "(shine + action indicator)"
     }
   },
@@ -1165,7 +1328,11 @@
         8993
       ],
       "description": "conjure,turn_to,transform-(to)",
-      "infinitive_form_verbs": "to conjure,to turn to,to transform",
+      "infinitive_form_verbs": [
+        "to conjure",
+        "to turn to",
+        "to transform"
+      ],
       "explanation": "(wand + action indicator)"
     }
   },
@@ -1183,7 +1350,10 @@
         8993
       ],
       "description": "remember,recall-(to)",
-      "infinitive_form_verbs": "to remember,to recall",
+      "infinitive_form_verbs": [
+        "to remember",
+        "to recall"
+      ],
       "explanation": "(memory + action indicator)  Preferred NEW SYNONYM, replacing 16485"
     }
   },
@@ -1201,7 +1371,9 @@
         8993
       ],
       "description": "unfold-(to)",
-      "infinitive_form_verbs": "to unfold",
+      "infinitive_form_verbs": [
+        "to unfold"
+      ],
       "explanation": "(unfolding + action indicator)  Preferred NEW SYNONYM, replacing 17976"
     }
   },
@@ -1219,7 +1391,9 @@
         8993
       ],
       "description": "walk_(horse)-(to)",
-      "infinitive_form_verbs": "to walk",
+      "infinitive_form_verbs": [
+        "to walk"
+      ],
       "explanation": "(horse + action indicator)"
     }
   },
@@ -1237,7 +1411,9 @@
         8993
       ],
       "description": "fail-(to)",
-      "infinitive_form_verbs": "to fail",
+      "infinitive_form_verbs": [
+        "to fail"
+      ],
       "explanation": "(failure + action indicator)"
     }
   },
@@ -1255,7 +1431,10 @@
         8993
       ],
       "description": "have_a_view,have_an_opinion-(to)",
-      "infinitive_form_verbs": "to have a view,to have an opinion",
+      "infinitive_form_verbs": [
+        "to have a view",
+        "to have an opinion"
+      ],
       "explanation": "(opinion + action indicator)"
     }
   },
@@ -1273,7 +1452,9 @@
         8993
       ],
       "description": "chase-(to)",
-      "infinitive_form_verbs": "to chase",
+      "infinitive_form_verbs": [
+        "to chase"
+      ],
       "explanation": "(chase + action indicator)"
     }
   },
@@ -1291,7 +1472,10 @@
         8993
       ],
       "description": "wrap,wind-(to)",
-      "infinitive_form_verbs": "to wrap,to wind",
+      "infinitive_form_verbs": [
+        "to wrap",
+        "to wind"
+      ],
       "explanation": "(spiral + action indicator)"
     }
   },
@@ -1309,7 +1493,9 @@
         8993
       ],
       "description": "conceptualise-(to)",
-      "infinitive_form_verbs": "to conceptualise",
+      "infinitive_form_verbs": [
+        "to conceptualise"
+      ],
       "explanation": "(concept + action indicator)"
     }
   },
@@ -1327,7 +1513,9 @@
         8993
       ],
       "description": "insure-(to)",
-      "infinitive_form_verbs": "to insure",
+      "infinitive_form_verbs": [
+        "to insure"
+      ],
       "explanation": "(insurance + action indicator)"
     }
   }

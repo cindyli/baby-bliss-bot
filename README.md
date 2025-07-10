@@ -53,7 +53,12 @@ Run the following command to lint all python scripts:
 
 ## Documentation
 
-### Teaching Llama Model to Understand Bliss Symbols
+### Teaching Llama Model to Understand Bliss Grammatical Indicators
+
+- **[Add Grammatical Indicator Symbols](./docs/AddGrammaticalIndicators.md)**  
+  Describes three methods explored for integrating Bliss grammatical indicator symbols into a Llama model.
+
+### Teaching Llama Model to Understand Bliss Meaning Symbols
 
 - **[Integrating Bliss Meaning Symbols into the Model](./docs/IntegrateBlissMeaningSymbols.md)**  
   Describes the process of integrating Bliss Meaning Symbols into a LLaMA language model by introducing a dedicated token for each symbol. These symbols represent specific concepts (e.g., "tree", "house", etc.).

@@ -2,7 +2,15 @@
 # python add_action_indicator_8993.py ~/bliss_gloss/integrate_grammar_indicators/data/ ~/bliss_gloss/integrate_grammar_indicators/data/action_indicator_id_pairs.json fixed
 
 # This script adds the action indicator symbol token, with BCI-AV-ID 8993, to the model and fine-tunes the model
-# with the new token.
+# with the new token. At the end, it evaluates the model to check if the new token is correctly learned.
+
+# init_type can be one of the following:
+# - "fixed": Use the input and output embeddings of a fixed token, e.g., " to", as the input and output embeddings
+#   for the new token.
+# - "diff": Use the difference of the input and output embeddings between the verb form and noun form as the input and
+#   output embeddings for the new token.
+# - "calc_output_embedding": Use the input embedding of a fixed token, e.g., " to", as the input embedding for the new
+#   token, and calculate the output embedding based on the context sentences that include the new token.
 
 # pip install transformers accelerate peft bitsandbytes datasets
 
@@ -26,9 +34,12 @@ from transformers import (
 from peft import LoraConfig, get_peft_model, prepare_model_for_kbit_training, PeftModel
 from datasets import Dataset
 from utils import (
+    calc_output_embedding,
     calc_embeddings_diff,
     evaluate_new_token
 )
+sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")))
+from dataset_to_as_infinitive_marker import positive_context_sentences, negative_context_sentences  # noqa: E402
 
 if len(sys.argv) != 4:
     print("Usage: python add_action_indicator_8993.py <data_dir> <action_indicator_id_pairs_json> <init_type>")
@@ -46,6 +57,10 @@ FIXED_TOKEN = " to"
 # between the verb form and noun form
 INIT_EMBEDDING_DIFF = True if init_type == "diff" else False
 
+# Set to True to initialize the new token's input embedding with the input embedding of "to", and initialize its
+# output embedding to a calculated output embedding that captures having "to" as part of the infinitive form.
+INIT_EMBEDDING_CALC_OUTPUT_EMBEDDING = True if init_type == "calc_output_embedding" else False
+
 # Constants for building the dataset
 TOKEN_TEMPLATE = "[BLISS_{bciAvId}]"
 
@@ -60,6 +75,8 @@ dataset_file = os.path.join(data_dir, f"initial_{bliss_id}.py")
 if not os.path.exists(dataset_file):
     print(f"Error: Initial dataset file '{dataset_file}' does not exist.")
     sys.exit(1)
+
+print(f"Parameters - Learning Rate: {LEARNING_RATE}, Epochs: {EPOCHS}, Batch Size: {BATCH_SIZE}\n")
 
 # Track the total running time of this script
 start_time = time.time()
@@ -130,7 +147,7 @@ if INIT_FIXED_TOKEN_EMBEDDINGS:
 
     new_token_input_embedding_before = model.get_input_embeddings().weight.data[initial_token_id]
     new_token_output_embedding_before = model.get_output_embeddings().weight.data[initial_token_id]
-    print(f"Using input and output embeddings of the fixed token '{FIXED_TOKEN}'")
+    print(f"FIXED: Use input and output embeddings of the fixed token '{FIXED_TOKEN}'")
 
 if INIT_EMBEDDING_DIFF:
     model_dir_for_dataset = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
@@ -158,7 +175,17 @@ if INIT_EMBEDDING_DIFF:
     # Run garbage collection
     gc.collect()
 
-    print(f"Using input and output embeddings of the difference between verb and noun forms for the new token '{new_token}'")
+    print(f"DIFF: Use input and output embeddings of the difference between verb and noun forms for the new token '{new_token}'")
+
+if INIT_EMBEDDING_CALC_OUTPUT_EMBEDDING:
+    initial_token_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(FIXED_TOKEN))[0]
+    new_token_input_embedding_before = model.get_input_embeddings().weight.data[initial_token_id]
+    print(f"CALC_OUTPUT_EMBEDDING: Use the input embedding of the fixed token '{FIXED_TOKEN}'({initial_token_id}) as the input embedding for the new token '{new_token}'")
+    # Calculate the output embedding based on the context sentences
+    new_token_output_embedding_before = calc_output_embedding(
+        model, tokenizer, positive_context_sentences, negative_context_sentences, initial_token_id, dtype=dtype
+    )
+    print(f"CALC_OUTPUT_EMBEDDING: Use calculated output embedding for the new token '{new_token}'")
 
 with torch.no_grad():
     model.get_input_embeddings().weight.data[new_token_id] = new_token_input_embedding_before.clone()

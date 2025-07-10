@@ -2,6 +2,75 @@
 import torch
 
 
+# START of utility functions for calculating the output embedding based on the context sentences
+def get_hidden_state_and_next_token_logits(model, tokenizer, text, return_logits=False):
+    """Get the hidden states before final layer for a given text."""
+    inputs = tokenizer(text, return_tensors="pt").to(model.device)
+    with torch.no_grad():
+        outputs = model(**inputs, output_hidden_states=True)
+        # Extract the hidden state of the last token in the sequence from the last layer
+        hidden_state_from_last_layer = outputs.hidden_states[-1][:, -1, :]
+        # Extract the logit for the next token prediction
+        next_token_logits = outputs.logits[:, -1, :] if return_logits else None
+    return hidden_state_from_last_layer, next_token_logits
+
+
+def create_training_data(model, tokenizer, positive_context_sentences, negative_context_sentences, target_token_ids):
+    """Create training data from context sentences."""
+
+    # Convert target token ids to list if not already
+    target_token_ids = target_token_ids if isinstance(target_token_ids, list) else [target_token_ids]
+
+    hidden_states = []
+    target_logits = []
+
+    # Positive context sentences - high target logits
+    for context in positive_context_sentences:
+        h, logits = get_hidden_state_and_next_token_logits(model, tokenizer, context, True)
+        hidden_states.append(h)
+        target_logits.append(logits[0, target_token_ids].max().item())
+
+    # Negative context sentences - low target logits
+    for context in negative_context_sentences:
+        h, logits = get_hidden_state_and_next_token_logits(model, tokenizer, context)
+        hidden_states.append(h)
+        target_logits.append(-10)  # discourage predicting the target token
+
+    return torch.cat(hidden_states, dim=0).to(model.device), torch.tensor(target_logits, device=model.device)
+
+
+def calc_embeddings(hidden_states, target_logits, dtype=None):
+    # Set the minimal safe dtype for lstsq as default
+    lstsq_dtype = torch.float32  # default for stability/speed balance
+
+    # Override to user's dtype ONLY if it's float32/float64
+    if dtype in (torch.float32, torch.float64):
+        lstsq_dtype = dtype
+
+    # Convert inputs to lstsq-compatible dtype
+    hidden_states = hidden_states.to(lstsq_dtype)
+    target_logits = target_logits.to(lstsq_dtype)
+
+    # Compute solution in higher precision
+    output_emb = torch.linalg.lstsq(hidden_states, target_logits.unsqueeze(1)).solution.squeeze(1)
+
+    # Cast result to user's dtype
+    if dtype is not None and dtype != lstsq_dtype:
+        output_emb = output_emb.to(dtype)
+
+    return output_emb
+
+
+def calc_output_embedding(model, tokenizer, training_positive_context_sentences, training_negative_context_sentences, target_token_ids, dtype):
+
+    hidden_states, target_logits = create_training_data(
+        model, tokenizer, training_positive_context_sentences, training_negative_context_sentences, target_token_ids
+    )
+    return calc_embeddings(hidden_states, target_logits, dtype)
+# END of utility functions for calculating the output embedding based on the context sentences
+
+
+# START of utility functions for calculating initial input and output embeddings for the new token
 def get_average_embeddings(model, tokenizer, phrase_list, embedding_type="input"):
     """Compute average input embeddings for a list of multi-token words/phrases"""
     embedding_layer = model.get_input_embeddings()
@@ -37,7 +106,7 @@ def calc_embeddings_diff(model, tokenizer, pairs_data):
 
     for pair in pairs_data:
         nouns = [noun.strip() for noun in pair["noun"]["noun_only"].split(",")]
-        verbs = [verb.strip() for verb in pair["verb-(to)"]["infinitive_form_verbs"].split(",")]
+        verbs = pair["verb-(to)"]["infinitive_form_verbs"]
 
         average_input_embedding_nouns = get_average_embeddings(model, tokenizer, nouns, embedding_type="input")
         average_input_embedding_verbs = get_average_embeddings(model, tokenizer, verbs, embedding_type="input")
@@ -54,8 +123,10 @@ def calc_embeddings_diff(model, tokenizer, pairs_data):
     output_embedding_diff = torch.mean(torch.stack(output_embedding_diffs), dim=0)
 
     return input_embedding_diff, output_embedding_diff
+# END of utility functions for calculating initial input and output embeddings for the new token
 
 
+# START of utility functions for evaluation
 def get_rank_for_tokens(all_ranks, target_token_ids):
     # Retrieve ranks for target token IDs
     target_ranks = []
@@ -139,3 +210,4 @@ def evaluate_new_token(
     # Text Generation
     print("\nValidation - Generation:")
     test_text_generation(model, tokenizer, testing_text_generation_prompts)
+# END of utility functions for evaluation

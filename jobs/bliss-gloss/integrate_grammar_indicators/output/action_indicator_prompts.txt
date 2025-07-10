@@ -1,4 +1,3 @@
-
 Generate sentences using the following instructions:
 Generate 3 sentences using the word "forward" as a noun.
 Generate 3 sentences for each of the following infinitive forms: "to advance,to go".
@@ -19,7 +18,7 @@ Generate 3 sentences for each of the following infinitive forms: "to burn".
 Generate 3 sentences using the word "grave" as a noun.
 Generate 3 sentences for each of the following infinitive forms: "to bury".
 Generate 3 sentences using the word "ability" as a noun.
-Generate 3 sentences for each of the following infinitive forms: "to can,to be able".
+Generate 3 sentences for each of the following infinitive forms: "can,to be able".
 Generate 3 sentences using the word "cause" as a noun.
 Generate 3 sentences for each of the following infinitive forms: "to cause".
 Generate 3 sentences using the word "enclosure" as a noun.

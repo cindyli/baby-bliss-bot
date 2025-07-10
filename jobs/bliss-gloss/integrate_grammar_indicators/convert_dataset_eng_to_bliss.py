@@ -19,13 +19,14 @@ output_bliss_dataset_py = sys.argv[3]
 
 def format_verb_composition(composition):
     """Convert composition array to BLISS format."""
-    result = ["["]
+    result = []
     for item in composition:
         if item == ";":
-            result.append(";")
+            continue
+        elif item == 8993:
+            result.insert(0, "[BLISS_8993]")
         else:
             result.append(f"[BLISS_{item}]")
-    result.append("]")
     return "".join(result)
 
 
@@ -46,11 +47,10 @@ def load_pairs_data(action_indicator_id_pairs_json):
 
         # Process verb data
         if "verb-(to)" in pair and "infinitive_form_verbs" in pair["verb-(to)"]:
-            infinitive_forms = pair["verb-(to)"]["infinitive_form_verbs"]
+            verb_forms = pair["verb-(to)"]["infinitive_form_verbs"]
             composition = pair["verb-(to)"]["composition"]
 
             # Split by comma and clean up each verb form
-            verb_forms = [verb.strip() for verb in infinitive_forms.split(",")]
             for verb_form in verb_forms:
                 verb_lookup[verb_form.lower()] = format_verb_composition(composition)
 

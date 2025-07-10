@@ -486,8 +486,8 @@ dataset_action_indicator_eng = [
 
     # "to reverse"
     "He tried to reverse the decision.",
-    "You must reverse the car out of the garage.",
     "The medicine may help to reverse the effects.",
+    "The doctor recommended a comprehensive lifestyle change to reverse the early signs of heart disease.",
 
     # "mouth" as a noun
     "She covered her mouth when she yawned.",
@@ -766,8 +766,8 @@ dataset_action_indicator_eng = [
 
     # "to shine"
     "The sun began to shine through the window.",
-    "Let the light shine on the truth.",
-    "He polished the surface to make it shine.",
+    "The young pianist practiced for hours every day, determined to shine at the upcoming competition.",
+    "After polishing the antique silver carefully, she was amazed to shine it back to its original brilliance.",
 
     # "wand" as a noun
     "He waved the wand and cast a spell.",
@@ -777,15 +777,15 @@ dataset_action_indicator_eng = [
     # "to conjure"
     "He tried to conjure a storm with his spell.",
     "She managed to conjure a perfect image in her mind.",
-    "The magician could conjure illusions with ease.",
+    "The magician's ability to conjure elaborate illusions from simple props never failed to amaze the audience.",
 
     # "to turn"
     "Sometimes you need to turn to a friend for advice.",
     "He had to turn to his notes during the presentation.",
-    "In moments of doubt, she would turn to her diary.",
+    "The chef instructed her apprentice to turn the heat down to prevent the delicate sauce from burning.",
 
     # "to transform"
-    "The frog was transformed into a prince.",
+    "Scientists are working tirelessly to transform carbon dioxide from the atmosphere into useful materials and fuels.",
     "She used her magic to transform the old house.",
     "They aimed to transform the company culture.",
 
@@ -797,12 +797,12 @@ dataset_action_indicator_eng = [
     # "to remember"
     "Try to remember where you left your keys.",
     "She struggled to remember his name.",
-    "I remember visiting that place as a child.",
+    "She struggled to remember where she had parked the car.",
 
     # "to recall"
     "He tried to recall the details of the meeting.",
-    "She couldn’t recall where she parked the car.",
-    "Can you recall what he said exactly?",
+    "It’s hard to recall every detail from that day, but some moments stand out clearly.",
+    "He paused to recall whether he had locked the door before leaving.",
 
     # "unfolding" as a noun
     "The unfolding of the story was dramatic.",
@@ -810,9 +810,9 @@ dataset_action_indicator_eng = [
     "The unfolding of the map revealed new paths.",
 
     # "to unfold"
-    "She began to fold the laundry neatly.",
-    "He tried to fold the paper into an origami crane.",
-    "Don't forget to fold the chairs after the event.",
+    "He began to unfold the letter with trembling hands, unsure of what it might say.",
+    "The map was too large to unfold on the small table, so they moved to the floor.",
+    "As the story started to unfold, the audience leaned in with anticipation.",
 
     # "horse" as a noun
     "The horse galloped across the field.",
@@ -845,7 +845,7 @@ dataset_action_indicator_eng = [
     "He needed time to have a view on the proposal.",
 
     # "to have an opinion"
-    "Do you have an opinion about the new law?",
+    "You don’t need to have an opinion on everything you see online.",
     "She didn’t want to have an opinion publicly.",
     "They asked him to have an opinion on the matter.",
 
@@ -867,12 +867,12 @@ dataset_action_indicator_eng = [
     # "to wrap"
     "She used ribbon to wrap the gift.",
     "He tried to wrap the cable neatly.",
-    "They helped him wrap the wound quickly.",
+    "He bent down to wrap the bandage around his injured ankle.",
 
     # "to wind"
     "The vines began to wind around the tree.",
-    "He watched the river wind through the valley.",
-    "They wind the string tightly on the spool.",
+    "He struggled to wind the old clock, its mechanism stiff from years of neglect.",
+    "She paused to wind the scarf tighter around her neck as the cold wind picked up.",
 
     # "concept" as a noun
     "The concept was difficult to understand.",

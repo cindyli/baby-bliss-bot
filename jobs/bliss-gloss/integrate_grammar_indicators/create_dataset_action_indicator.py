@@ -64,10 +64,10 @@ def convert_verb_format(text):
             # Just replace underscores with spaces
             verb_part = verb.replace("_", " ")
 
-        converted_verbs.append(f"to {verb_part}")
+        converted_verbs.append(verb_part if verb_part == "can" else f"to {verb_part}")
 
     # Join with commas
-    return ",".join(converted_verbs)
+    return converted_verbs
 
 
 # Create a dictionary for quick lookup of composition items by id
@@ -104,7 +104,7 @@ for item in explanations_data:
                 prompts.append("\nGenerate sentences using the following instructions:")
 
             prompts.append(f"Generate 3 sentences using the word \"{noun}\" as a noun.")
-            prompts.append(f"Generate 3 sentences for each of the following infinitive forms: \"{verbs}\".")
+            prompts.append(f"Generate 3 sentences for each of the following infinitive forms: \"{','.join(verbs)}\".")
 
             if count % frequency_to_add_general_prompt == 0:
                 prompts.append("\nThe output must be a valid Python list of strings, each representing one sentence, and assigned to the variable \"data_for_action_indicator\". Format your response as Python code only, with no additional explanation or comments.\n\n")

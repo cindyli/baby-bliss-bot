@@ -2,7 +2,7 @@ Prompts used to generate various datasets:
 
 1. Positive context sentences:
 
-Generate a Python list named "positive_context_sentences" containing 50 unique, high-quality English sentences. Each sentence must include at least one occurrence of the word "whole". A sentence may contain multiple occurrences, but the last occurrence must appear naturally toward the end of the sentence.
+Generate a Python list named "positive_context_sentences" containing 100 high-quality English sentences. Each sentence must include one of these words: "out of", "exit". A sentence may contain multiple occurrences of the word, but the last occurrence must appear naturally toward the end of the sentence.
 
 Each sentence should be:
 * Contextually rich, describing a realistic or meaningful scenario.
@@ -27,7 +27,7 @@ The output must be a valid Python list of unique strings, each representing one 
 Generate a Python list named "negative_context_sentences" containing 100 sentences. Each sentence must include either the word "afraid", "frightened" or "scared", used in various contexts except in the context of height. Ensure each sentence is long and contextually rich, naturally leading up to the keyword, which should appear towards the end of the sentence. The set of sentences should include a wide variety of grammatical structures (e.g., conditionals, relative clauses, passive voice, questions, compound/complex sentences etc) and a diverse range of real-world scenarios (e.g., architecture, nature, human height, machinery, etc.). Output the result as a valid Python list of strings.
 
 # Glosses are unlikely to be used
-Generate a Python list named "negative_context_sentences" containing 100 unique, context-rich, incomplete sentences. Each sentence must end naturally but remain clearly unfinished, inviting continuation. Critically, the continuation must not plausibly begin with any of these words: "all", "every", "everything", "total", "whole". Such continuations should be grammatically or semantically implausible.
+Generate a Python list named "negative_context_sentences" containing 100 context-rich, incomplete sentences. Each sentence must end naturally but remain clearly unfinished, inviting continuation. Critically, the continuation must not plausibly begin with any of these words: "doctor", "physician". Such continuations should be grammatically or semantically implausible.
 
 Each sentence should be:
 * Contextually rich, describing a realistic or meaningful scenario.
@@ -48,7 +48,7 @@ The dataset should reflect a broad range of real-world contexts, including but n
 Do not include ellipses, placeholders, or unnatural truncation. Return the result as valid Python code: a list named "negative_context_sentences" containing string elements.
 
 3. Fine tuning sentences:
-Generate a dataset for fine-tuning. I need 200 English texts that each contain one or more occurrences of these words: "all", "every", "everything", "total", "whole". These sentences must reflect a wide variety of contexts and structures, including:
+Generate a dataset for fine-tuning. I need 100 English texts that each contain one or more occurrences of these words: "doctor", "physician". These sentences must reflect a wide variety of contexts and structures, including:
 
 * Different tenses (past, present, future, perfect, etc.)
 * Moods (indicative, imperative, subjunctive, conditional)
@@ -63,6 +63,6 @@ The output should be a valid Python list of unique strings assigned to the varia
 Output format: Python code only. Do not include any comments or explanations.
 
 4. Text generation prompts for testing:
-I am evaluating a fine-tuned language model’s ability to understand and generate text based on articles and determiners the use of these words: "all", "every", "everything", "total", "whole". Generate 10 diverse partial sentence prompts containing a "{placeholder}" near the beginning of each sentence, where the placeholder represents one of these target words. Each prompt should be a unique, incomplete sentence designed to elicit natural continuations. Ensure stylistic and topical diversity across prompts.
+I am evaluating a fine-tuned language model’s ability to understand and generate text based on articles and determiners the use of these words: "doctor", "physician". When it comes to "post", it means a piece of writing. Generate 10 diverse partial sentence prompts containing a "{placeholder}" near the beginning of each sentence, where the placeholder represents one of these target words. Each prompt should be a unique, incomplete sentence designed to elicit natural continuations. Ensure stylistic and topical diversity across prompts.
 
 Output the result as valid Python code, assigning the list of strings to the variable "testing_text_generation_prompts". Do not include any comments, explanations, or additional text—output the code only.
