@@ -1,6 +1,7 @@
 # Baby Bliss Bot
 
-An exploratory research project to generate new Bliss vocabulary using machine learning techniques.
+An exploratory research project that uses generative AI to enhance communication for individuals who utilize
+Augmentative and Alternative Communication (AAC) devices and rely on a minority language system. 
 
 [The Bliss language](https://www.blissymbolics.org/) is an Augmentative and Alternative Communication (AAC) language
 used by individuals with severe speech and physical impairments around the world, but also by others for language
@@ -98,7 +99,8 @@ See [RAG.md](./docs/RAG.md) for more details.
 
 **Conclusion**: useful
 
-When users have a back-and-forth conversation, the application requires a form of "memory" to retain and incorporate past interactions into its current processing. Two methods are explored to achieve this:
+When users have a back-and-forth conversation, the application requires a form of "memory" to retain and
+incorporate past interactions into its current processing. Two methods are explored to achieve this:
 
 1. Summarizing the chat history and providing it as contextual input.
 2. Using prompt engineering to instruct the language model to consider the past conversation.
