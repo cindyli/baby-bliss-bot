@@ -11,7 +11,7 @@
 #SBATCH --job-name=add_action_indicator_8993
 #SBATCH --time 1-00:00
 #SBATCH --nodes=1
-#SBATCH --gpus-per-node=v100l:1
+#SBATCH --gpus-per-node=h100:1
 #SBATCH --mem=32G
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=4
@@ -33,4 +33,4 @@ pip install torch==2.6.0 transformers==4.50.3 huggingface_hub==0.30.2 accelerate
 pip list
 
 echo "=== Use QLora fine tuning to add Bliss action indicator 8993 with initial token into Llama with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
-python ~/bliss_gloss/integrate_grammar_indicators/add_action_indicator_8993.py ~/bliss_gloss/integrate_grammar_indicators/data/ ~/bliss_gloss/integrate_grammar_indicators/data/action_indicator_id_pairs.json calc_output_embedding > ~/bliss_gloss/integrate_grammar_indicators/logs/add_8993_calc_output_embedding.log
+python ~/bliss_gloss/integrate_grammar_indicators/add_action_indicator_8993.py ~/bliss_gloss/integrate_grammar_indicators/data/ ~/bliss_gloss/integrate_grammar_indicators/data/action_indicator_id_pairs.json random random > ~/bliss_gloss/integrate_grammar_indicators/logs/add_8993_bothAsRandom.log

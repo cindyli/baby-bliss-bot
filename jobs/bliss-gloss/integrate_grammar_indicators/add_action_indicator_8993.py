@@ -1,16 +1,21 @@
-# python add_action_indicator_8993.py <data_dir> <action_indicator_id_pairs_json> <init_type>
+# python add_action_indicator_8993.py <data_dir> <action_indicator_id_pairs_json> <input_embedding_init_type> <output_embedding_init_type>
 # python add_action_indicator_8993.py ~/bliss_gloss/integrate_grammar_indicators/data/ ~/bliss_gloss/integrate_grammar_indicators/data/action_indicator_id_pairs.json fixed
 
 # This script adds the action indicator symbol token, with BCI-AV-ID 8993, to the model and fine-tunes the model
 # with the new token. At the end, it evaluates the model to check if the new token is correctly learned.
 
-# init_type can be one of the following:
-# - "fixed": Use the input and output embeddings of a fixed token, e.g., " to", as the input and output embeddings
+# input_embedding_init_type defines how the input embedding is initialized. It can be one of the following:
+# - "random": Use a random embedding as the input embedding for the new token.
+# - "fixed": Use the input embedding of a fixed token, e.g., " to", as the input embedding for the new token.
+# - "diff": Use the difference of the input embedding between the verb form and noun form as the input embedding
 #   for the new token.
-# - "diff": Use the difference of the input and output embeddings between the verb form and noun form as the input and
-#   output embeddings for the new token.
-# - "calc_output_embedding": Use the input embedding of a fixed token, e.g., " to", as the input embedding for the new
-#   token, and calculate the output embedding based on the context sentences that include the new token.
+
+# output_embedding_init_type defines how the output embedding is initialized. It can be one of the following:
+# - "random": Use a random embedding as the output embedding for the new token.
+# - "fixed": Use the output embedding of a fixed token, e.g., " to", as the output embedding for the new token.
+# - "diff": Use the difference of the output embedding between the verb form and noun form as the output embedding
+#   for the new token.
+# - "calc": Calculate the output embedding based on the context sentences that include the new token.
 
 # pip install transformers accelerate peft bitsandbytes datasets
 
@@ -41,25 +46,25 @@ from utils import (
 sys.path.append(os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "data")))
 from dataset_to_as_infinitive_marker import positive_context_sentences, negative_context_sentences  # noqa: E402
 
-if len(sys.argv) != 4:
-    print("Usage: python add_action_indicator_8993.py <data_dir> <action_indicator_id_pairs_json> <init_type>")
+if len(sys.argv) != 5:
+    print("Usage: python add_action_indicator_8993.py <data_dir> <action_indicator_id_pairs_json> <input_embedding_init_type> <output_embedding_init_type>")
     sys.exit(1)
 
 data_dir = sys.argv[1]
 action_indicator_id_pairs_json = sys.argv[2]
-init_type = sys.argv[3]  # "fixed" or "diff"
+input_embedding_init_type = sys.argv[3]  # "random" or "fixed" or "diff"
+output_embedding_init_type = sys.argv[4]  # "random" or "fixed" or "diff" or "calc"
+
+if input_embedding_init_type not in ["random", "fixed", "diff"]:
+    print("Error: input_embedding_init_type must be one of 'random', 'fixed', or 'diff'")
+    sys.exit(1)
+
+if output_embedding_init_type not in ["random", "fixed", "diff", "calc"]:
+    print("Error: output_embedding_init_type must be one of 'random', 'fixed', 'diff', or 'calc'")
+    sys.exit(1)
 
 # Set to True to initialize the new token's input and output embeddings with the same embeddings of a fixed token
-INIT_FIXED_TOKEN_EMBEDDINGS = True if init_type == "fixed" else False
 FIXED_TOKEN = " to"
-
-# Set to True to initialize the new token's input and output embeddings with the difference of the embeddings
-# between the verb form and noun form
-INIT_EMBEDDING_DIFF = True if init_type == "diff" else False
-
-# Set to True to initialize the new token's input embedding with the input embedding of "to", and initialize its
-# output embedding to a calculated output embedding that captures having "to" as part of the infinitive form.
-INIT_EMBEDDING_CALC_OUTPUT_EMBEDDING = True if init_type == "calc_output_embedding" else False
 
 # Constants for building the dataset
 TOKEN_TEMPLATE = "[BLISS_{bciAvId}]"
@@ -100,7 +105,7 @@ testing_text_generation_prompts = namespace["testing_text_generation_prompts"]
 root_model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/integrate_bliss_symbols/"
 base_model_dir = os.path.join(root_model_dir, "1_single_gloss_model")
 adapter_dir = os.path.join(root_model_dir, "29_adapter_14443")
-save_adapter_dir = os.path.expanduser("~") + f"/projects/ctb-whkchun/s2_bliss_LLMs/integrate_grammar_indicators/8993/{init_type}/"
+save_adapter_dir = os.path.expanduser("~") + f"/projects/ctb-whkchun/s2_bliss_LLMs/integrate_grammar_indicators/8993/input_{input_embedding_init_type}_output_{output_embedding_init_type}/"
 
 new_token = TOKEN_TEMPLATE.format(bciAvId=bliss_id)
 dtype = torch.bfloat16
@@ -141,15 +146,15 @@ model.resize_token_embeddings(len(tokenizer))
 new_token_id = tokenizer.convert_tokens_to_ids(new_token)
 print(f"New token '{new_token}' added to the model with ID: {new_token_id}. Embeddings will be initialized later.")
 
-if INIT_FIXED_TOKEN_EMBEDDINGS:
+# Prepare embeddings for the initialization of the new token
+if input_embedding_init_type == "fixed" or output_embedding_init_type == "fixed":
     initial_token_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(FIXED_TOKEN))[0]
     print(f"Token ID of the fixed token '{FIXED_TOKEN}': {initial_token_id}")
 
-    new_token_input_embedding_before = model.get_input_embeddings().weight.data[initial_token_id]
-    new_token_output_embedding_before = model.get_output_embeddings().weight.data[initial_token_id]
-    print(f"FIXED: Use input and output embeddings of the fixed token '{FIXED_TOKEN}'")
+    input_embedding_of_fixed_token = model.get_input_embeddings().weight.data[initial_token_id]
+    output_embedding_of_fixed_token = model.get_output_embeddings().weight.data[initial_token_id]
 
-if INIT_EMBEDDING_DIFF:
+if input_embedding_init_type == "diff" or output_embedding_init_type == "diff":
     model_dir_for_dataset = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
     pairs_data = json.load(open(action_indicator_id_pairs_json, "r"))
 
@@ -160,7 +165,7 @@ if INIT_EMBEDDING_DIFF:
     # Set the model to evaluation mode
     model.eval()
 
-    new_token_input_embedding_before, new_token_output_embedding_before = calc_embeddings_diff(
+    input_embedding_of_diff, output_embedding_of_diff = calc_embeddings_diff(
         model_for_calc, tokenizer_for_calc, pairs_data
     )
 
@@ -177,7 +182,28 @@ if INIT_EMBEDDING_DIFF:
 
     print(f"DIFF: Use input and output embeddings of the difference between verb and noun forms for the new token '{new_token}'")
 
-if INIT_EMBEDDING_CALC_OUTPUT_EMBEDDING:
+# Init the input embedding of the new token
+if input_embedding_init_type == "random":
+    new_token_input_embedding_before = torch.randn(model.get_input_embeddings().weight.data[0].shape, dtype=dtype)
+    print(f"RANDOM: Use a random input embedding for the new token '{new_token}'")
+elif input_embedding_init_type == "fixed":
+    new_token_input_embedding_before = input_embedding_of_fixed_token.clone()
+    print(f"FIXED: Use input embedding of the fixed token '{FIXED_TOKEN}' as the input embedding for the new token '{new_token}'")
+elif input_embedding_init_type == "diff":
+    new_token_input_embedding_before = input_embedding_of_diff.clone()
+    print(f"DIFF: Use input embedding of the difference between verb and noun forms as the input embedding for the new token '{new_token}'")
+
+# Init the input embedding of the new token
+if output_embedding_init_type == "random":
+    new_token_output_embedding_before = torch.randn(model.get_output_embeddings().weight.data[0].shape, dtype=dtype)
+    print(f"RANDOM: Use a random output embedding for the new token '{new_token}'")
+elif output_embedding_init_type == "fixed":
+    new_token_output_embedding_before = output_embedding_of_fixed_token.clone()
+    print(f"FIXED: Use output embedding of the fixed token '{FIXED_TOKEN}' as the output embedding for the new token '{new_token}'")
+elif output_embedding_init_type == "diff":
+    new_token_output_embedding_before = output_embedding_of_diff.clone()
+    print(f"DIFF: Use output embedding of the difference between verb and noun forms as the output embedding for the new token '{new_token}'")
+elif output_embedding_init_type == "calc":
     initial_token_id = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(FIXED_TOKEN))[0]
     new_token_input_embedding_before = model.get_input_embeddings().weight.data[initial_token_id]
     print(f"CALC_OUTPUT_EMBEDDING: Use the input embedding of the fixed token '{FIXED_TOKEN}'({initial_token_id}) as the input embedding for the new token '{new_token}'")

@@ -41,9 +41,9 @@ After initializing `[BLISS_8933]`, QLoRA fine-tuning is performed to refine its 
 
 ## Test Results
 
-* [Method 1 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_fixed.log)
-* [Method 2 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_diff.log)
-* [Method 3 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_calc_output_embedding.log)
+* [Method 1 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_bothAsTo.log)
+* [Method 2 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_bothAsDiff.log)
+* [Method 3 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_inputAsTo_outputCalc.log)
 
 None of the methods produced satisfactory results. The grammatical transformation was not learned effectively. Observed issues include:
 

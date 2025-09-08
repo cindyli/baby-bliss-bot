@@ -8,7 +8,7 @@
 # You may obtain a copy of the BSD 3-Clause License at
 # https://github.com/inclusive-design/baby-bliss-bot/blob/main/LICENSE
 
-#SBATCH --job-name=add_new_symbol_token_14446
+#SBATCH --job-name=add_new_symbol_token_15943
 #SBATCH --time 1-00:00
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=v100l:1
@@ -32,5 +32,5 @@ pip install torch==2.6.0 transformers==4.50.3 huggingface_hub==0.30.2 accelerate
 
 pip list
 
-echo "=== Use QLora fine tuning to add Bliss symbol 14446 into Llama with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
-python ~/bliss_gloss/4-add-missing-symbols/add_new_symbol_token.py 14446 '["gloves", "mittens", "mitts", "glove", "mitt", "mitten"]' ~/bliss_gloss/4-add-missing-symbols/data/ ~/bliss_gloss/4-add-missing-symbols/data/bliss_ids_added.json > ~/bliss_gloss/4-add-missing-symbols/logs/29-14446.log
+echo "=== Use QLora fine tuning to add Bliss symbol 15943 into Llama with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
+python ~/bliss_gloss/4-add-missing-symbols/add_new_symbol_token.py 15943 '["out of", "exit"]' ~/bliss_gloss/4-add-missing-symbols/data/ ~/bliss_gloss/4-add-missing-symbols/data/bliss_ids_added.json > ~/bliss_gloss/4-add-missing-symbols/logs/37-15943.log
