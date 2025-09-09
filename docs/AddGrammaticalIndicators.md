@@ -39,11 +39,17 @@ Three methods are investigated. They differ in:
 
 After initializing `[BLISS_8933]`, QLoRA fine-tuning is performed to refine its embedding and attention layers. The effectiveness of the token is evaluated through prediction and text generation tests to determine whether the grammatical transformation is successfully learned.
 
+### Method 4: Random Initial Embedding
+
+Method 4 uses the same template and fine-tuning method as method 3, except the input and output embeddings are initialized
+with ramdom embeddings to reduce the bias towards the meaning of "to".
+
 ## Test Results
 
 * [Method 1 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_bothAsTo.log)
 * [Method 2 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_bothAsDiff.log)
 * [Method 3 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_inputAsTo_outputCalc.log)
+* [Method 4 test result](../jobs/bliss-gloss/integrate_grammar_indicators/logs/add_8993_init_bothAsRandom.log)
 
 None of the methods produced satisfactory results. The grammatical transformation was not learned effectively. Observed issues include:
 
