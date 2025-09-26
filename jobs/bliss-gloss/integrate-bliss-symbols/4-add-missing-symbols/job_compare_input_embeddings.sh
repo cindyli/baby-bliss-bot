@@ -8,11 +8,11 @@
 # You may obtain a copy of the BSD 3-Clause License at
 # https://github.com/inclusive-design/baby-bliss-bot/blob/main/LICENSE
 
-#SBATCH --job-name=add_new_symbol_token_15943
+#SBATCH --job-name=compare_embedding_before_after_finetuning
 #SBATCH --time 1-00:00
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=h100:1
-#SBATCH --mem=32G
+#SBATCH --mem=64G
 #SBATCH --ntasks-per-node=4
 #SBATCH --cpus-per-task=4
 #SBATCH --account=def-whkchun
@@ -28,9 +28,9 @@ pip install --upgrade pip
 
 module load StdEnv/2023 rust/1.85.0 arrow/19.0.1 gcc/13.3
 
-pip install torch==2.6.0 transformers==4.50.3 huggingface_hub==0.30.2 accelerate==1.6.0 peft==0.15.2 bitsandbytes==0.45.5 datasets==3.5.0
+pip install torch==2.6.0 transformers==4.50.3 huggingface_hub==0.30.2 pandas
 
 pip list
 
-echo "=== Use QLora fine tuning to add Bliss symbol 15943 into Llama with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
-python ~/bliss_gloss/4-add-missing-symbols/add_new_symbol_token.py 15943 '["out of", "exit"]' ~/bliss_gloss/4-add-missing-symbols/data/ ~/bliss_gloss/4-add-missing-symbols/data/bliss_ids_added.json > ~/bliss_gloss/4-add-missing-symbols/logs/37-15943.log
+echo "=== Compare input embeddings before and after the fine-tuning with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
+python ~/bliss_gloss/4-add-missing-symbols/compare_embedding_before_after_finetuning.py
