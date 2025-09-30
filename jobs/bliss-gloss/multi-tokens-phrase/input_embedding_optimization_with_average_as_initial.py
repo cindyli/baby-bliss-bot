@@ -13,16 +13,29 @@ def get_target_contextual_embedding(model, tokenizer, prefix_sentences, phrase):
     target_hidden_states = {}
     with torch.no_grad():
         for prefix in prefix_sentences:
-            reference_text = prefix + phrase
-            reference_inputs = tokenizer(reference_text, return_tensors="pt").to(model.device)
-            reference_outputs = model(**reference_inputs, output_hidden_states=True)
-            # Detach the tensor from the computation graph and store it
-            hidden_state_reference = reference_outputs.hidden_states[-1][:, -1, :].detach()
+            text = prefix + phrase
+            inputs = tokenizer(text, return_tensors="pt").to(model.device)
+            outputs = model(**inputs, output_hidden_states=True)
+
+            hidden_state_reference = outputs.hidden_states[-1][:, -1, :].detach()
             target_hidden_states[prefix] = hidden_state_reference
 
     return target_hidden_states
 
 
+def calculate_loss(model, tokenizer, prefix_sentence, new_token, target_hidden_state, loss_fn, device):
+    sentence_with_new_token = prefix_sentence + new_token
+    sentence_with_new_token_inputs = tokenizer(sentence_with_new_token, return_tensors="pt").to(device)
+    sentence_with_new_token_outputs = model(**sentence_with_new_token_inputs, output_hidden_states=True)
+    current_hidden_state = sentence_with_new_token_outputs.hidden_states[-1][:, -1, :]
+
+    # --- Calculate Loss ---
+    target = torch.ones(current_hidden_state.shape[0]).to(device)
+    loss = loss_fn(current_hidden_state, target_hidden_state, target)
+    return loss
+
+
+# Main script
 LEARNING_RATE = 5e-4
 EPOCHS = 100
 savepoint_epochs = 90   # Start to save model after this number of epochs
@@ -46,12 +59,13 @@ device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Read and execute the file to extract the target variables
 namespace = {}
-target_variable_names_in_initial_dataset = ["training_positive_context_sentences", "training_negative_context_sentences", "testing_positive_context_sentences", "testing_negative_context_sentences", "testing_text_generation_prompts"]
+target_variable_names_in_initial_dataset = ["training_positive_context_sentences", "validation_positive_context_sentences", "training_negative_context_sentences", "testing_positive_context_sentences", "testing_negative_context_sentences", "testing_text_generation_prompts"]
 with open(initial_dataset_file, "r") as f:
     initial_dataset = f.read()
 exec(initial_dataset, namespace)
 
 training_positive_context_sentences = namespace["training_positive_context_sentences"]
+validation_positive_context_sentences = namespace["validation_positive_context_sentences"]
 training_negative_context_sentences = namespace["training_negative_context_sentences"]
 testing_positive_context_sentences = namespace["testing_positive_context_sentences"]
 testing_negative_context_sentences = namespace["testing_negative_context_sentences"]
@@ -92,17 +106,18 @@ elapsed_time = end_time_calc_embedding - start_time
 print(f"Execution time for calculating and setting initial input and output embedding: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds\n")
 
 # Get target contextual embedding for the optimization
-print("Calculating target hidden states for the optimization...")
+print("Calculating target hidden states of target phrases and validation phrases before the optimization...")
 model.eval()
 target_hidden_states = get_target_contextual_embedding(model, tokenizer, training_positive_context_sentences, phrase)
+validation_hidden_states = get_target_contextual_embedding(model, tokenizer, validation_positive_context_sentences, phrase)
 
 end_time_get_target_hidden_states = time.time()
 elapsed_time = end_time_get_target_hidden_states - end_time_calc_embedding
-print(f"Execution time for calculating target hidden states: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds\n")
+print(f"Execution time for calculating hidden states: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds\n")
 
 # Freeze Model and Unfreeze Only the New Input Embedding
 model.train()
-print("\nFreezing all model parameters...")
+print("Freezing all model parameters...")
 for param in model.parameters():
     param.requires_grad = False
 
@@ -118,28 +133,27 @@ optimizer = torch.optim.AdamW(
 )
 loss_fn = torch.nn.CosineEmbeddingLoss()
 
+# Track the best validation loss and the best input embedding
+best_validation_loss = float('inf')
+best_input_embedding = None
+
 for epoch in range(EPOCHS):
+    # Set the model to training mode. The model will be switched to eval mode during validation.
+    model.train()
     total_loss = 0
     # Iterate through the prefixes and their pre-calculated target hidden states
     for prefix_sentence, target_hidden_state in target_hidden_states.items():
         optimizer.zero_grad()
 
-        sentence_with_new_token = prefix_sentence + new_token
-        sentence_with_new_token_inputs = tokenizer(sentence_with_new_token, return_tensors="pt").to(device)
-        sentence_with_new_token_outputs = model(**sentence_with_new_token_inputs, output_hidden_states=True)
-        current_hidden_state = sentence_with_new_token_outputs.hidden_states[-1][:, -1, :]
+        loss = calculate_loss(model, tokenizer, prefix_sentence, new_token, target_hidden_state, loss_fn, device)
 
-        # --- Calculate Loss ---
-        target = torch.ones(current_hidden_state.shape[0]).to(device)
-        loss = loss_fn(current_hidden_state, target_hidden_state, target)
-
-        # --- Backpropagate and Update ---
+        # Backpropagate and Update
         loss.backward()
 
         # Create a mask that keeps only the gradient for new_token_id
         mask = torch.zeros_like(input_embeddings.weight.grad)
         mask[new_token_id, :] = 1  # Set the row for new_token_id to 1
-        
+
         # Applying the mask to zero out gradients for all other embeddings
         input_embeddings.weight.grad *= mask
 
@@ -147,35 +161,54 @@ for epoch in range(EPOCHS):
 
         total_loss += loss.item()
 
-    avg_loss = total_loss / len(target_hidden_states)
-    if (epoch + 1) % checkpoint_epochs == 0:
-        print(f"Epoch {epoch + 1}/{EPOCHS}, Average Loss: {avg_loss:.6f}")
+    avg_train_loss = total_loss / len(target_hidden_states)
 
-    if output_model_dir and (epoch + 1) >= savepoint_epochs and (epoch + 1) % checkpoint_epochs == 0:
-        current_save_dir = f"{output_model_dir}_lr{LEARNING_RATE}/epochs{epoch + 1}"
-        if not os.path.exists(current_save_dir):
-            os.makedirs(current_save_dir)
-            tokenizer.save_pretrained(current_save_dir)
-            model.save_pretrained(current_save_dir)
+    # Validation after every epoch
+    model.eval()
+    total_validation_loss = 0
 
-# Save the last model if it is not saved yet
-if output_model_dir and EPOCHS % checkpoint_epochs != 0:
-    current_save_dir = f"{output_model_dir}_lr{LEARNING_RATE}/epochs{EPOCHS}"
-    if not os.path.exists(current_save_dir):
-        os.makedirs(current_save_dir)
-        tokenizer.save_pretrained(current_save_dir)
-        model.save_pretrained(current_save_dir)
+    # Wrap the validation loop with torch.no_grad()
+    with torch.no_grad():
+        for prefix_sentence, target_hidden_state in validation_hidden_states.items():
+            validation_loss = calculate_loss(model, tokenizer, prefix_sentence, new_token, target_hidden_state, loss_fn, device)
+            total_validation_loss += validation_loss.item()
 
-print("\nOptimization finished!")
+    avg_validation_loss = total_validation_loss / len(validation_hidden_states)
+
+    print(f"Epoch {epoch + 1}/{EPOCHS}, Average Training Loss: {avg_train_loss:.6f}, Average Validation Loss: {avg_validation_loss:.6f}")
+
+    # Save the best input embedding if the validation loss has improved
+    if avg_validation_loss < best_validation_loss:
+        best_validation_loss = avg_validation_loss
+        best_input_embedding = model.get_input_embeddings().weight[new_token_id].detach().clone()
+        print(f"**  New best validation loss: {best_validation_loss:.6f}. Saved the best input embedding.")
+
+print(f"\nOptimization finished! Best validation loss: {best_validation_loss:.6f}")
 
 end_time_optimization = time.time()
 elapsed_time = end_time_optimization - end_time_get_target_hidden_states
 print(f"Execution time for the optimization: {int(elapsed_time // 60)} minutes and {elapsed_time % 60:.2f} seconds\n")
 
-new_token_input_embedding_after = model.get_input_embeddings().weight.data[new_token_id].clone()
-input_embedding_similarity = torch.nn.functional.cosine_similarity(average_input_embedding.to(model.device), new_token_input_embedding_after.to(model.device), dim=0)
+if best_input_embedding is not None and output_model_dir:
+    print(f"Assigning the best embedding (with the validation loss {best_validation_loss:.6f}) back to the model.")
+
+    with torch.no_grad():
+        model.get_input_embeddings().weight[new_token_id] = best_input_embedding
+
+    if output_model_dir:
+        best_model_dir = f"{output_model_dir}_lr{LEARNING_RATE}"
+        if not os.path.exists(best_model_dir):
+            os.makedirs(best_model_dir)
+
+        print(f"Saving the final best model to {best_model_dir}")
+        tokenizer.save_pretrained(best_model_dir)
+        model.save_pretrained(best_model_dir)
+    else:
+        print(f"No model saved. Dir not exist: {output_model_dir}")
+
+input_embedding_similarity = torch.nn.functional.cosine_similarity(average_input_embedding.to(model.device), best_input_embedding.to(model.device), dim=0)
 print(f"Cosine Similarity of the new token input embedding before and after: {input_embedding_similarity:.4f}")
-distance = torch.norm(average_input_embedding.to(model.device) - new_token_input_embedding_after.to(model.device), p=2)
+distance = torch.norm(average_input_embedding.to(model.device) - best_input_embedding.to(model.device), p=2)
 print(f"Euclidean Distance of the new token input embedding before and after: {distance.item():.4f}")
 
 # Evaluation
