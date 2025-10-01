@@ -23,7 +23,7 @@
 # to a final best of 0.021390 at epoch 87.
 # 2. A comparison of the initial and final embeddings shows a cosine similarity of 0.3186 and an Euclidean distance
 # of 1.1064, indicating significant refinement through optimization.
-# 3. The new token demonstrates effective learning, achieving high accuracy in next-word prediction and text 
+# 3. The new token demonstrates effective learning, achieving high accuracy in next-word prediction and text
 # generation tasks.
 
 import os
