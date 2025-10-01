@@ -117,7 +117,7 @@ tokens = [tokenizer.tokenize(token)[0] for token in target_tokens]
 target_token_ids = tokenizer.convert_tokens_to_ids(tokens)
 
 hidden_states, target_logits = create_training_data(
-    model, tokenizer, training_positive_context_sentences, [], target_token_ids
+    model, tokenizer, training_positive_context_sentences, training_negative_context_sentences, target_token_ids
 )
 initial_output_embedding = calc_output_embedding(hidden_states, target_logits)
 
