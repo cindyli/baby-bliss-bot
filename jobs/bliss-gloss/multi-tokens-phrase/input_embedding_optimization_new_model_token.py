@@ -1,11 +1,42 @@
-# Usage: python input_embedding_optimization_with_average_as_initial.py
+# Usage: python input_embedding_optimization_new_model_token.py
+
+# This script implements an optimization method for teaching a language model the meaning of a
+# multi-token phrase by optimizing the input embedding of a single, newly added token. The goal
+# is to have this new token effectively capture the semantics of the original phrase without modifying
+# the LLM's existing weights. This approach requires further fine-tuning of the model to ensure that the
+# new token can be used in various contexts.
+
+# The core of the method is to add a special token to the model's vocabulary and then optimize only its
+# input embedding. The optimization objective is to align the contextual representation of this new token
+# with that of the original phrase by minimizing the cosine distance between their respective final hidden
+# states when appended to a set of prefix sentences.
+
+# The process involves these steps:
+# 1. Data Preparation: Create a dataset of training sentences, validation sentences, and testing prompts.
+# 2. Initialization: The new token is initialized with an average embedding from the phrase's constituent
+# tokens and a pre-calculated output embedding to have a good starting point.
+# 3. Isolated Optimization: With all other parameters in the base model frozen except the input embedding
+# layer, the script performs iterative optimization. A gradient mask is applied during the backward pass
+# to isolate updates exclusively to the new token's input embedding.
+# 4. Selection & Evaluation: The optimal embedding is selected based on the lowest validation loss. The
+# final model is then evaluated with text generation and next-word prediction tasks to verify that the new
+# token has effectively captured the semantics of the original phrase.
+
+# The test result is located at
+# `test_results/29111_wool_shop/input_embedding_optimization_new_model_token_0.0005_100.log`
+# 1. The results show strong convergence, with the validation loss decreasing from an initial value of 0.083170
+# to a final best of 0.020297 at epoch 86.
+# 2. A comparison of the initial and final embeddings shows a cosine similarity of 0.3186 and an Euclidean distance
+# of 1.0985, indicating significant refinement through optimization.
+# 3. The new token demonstrates effective learning, achieving high accuracy in next-word prediction and text 
+# generation tasks.
 
 import os
 import sys
 import time
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
-from utils import create_training_data, calc_embeddings, get_average_input_embeddings, evaluate_new_token  # noqa: E402
+from utils import create_training_data, calc_output_embedding, get_average_input_embeddings, evaluate_new_token  # noqa: E402
 
 
 def get_target_contextual_embedding(model, tokenizer, prefix_sentences, phrase):
@@ -52,9 +83,9 @@ if not os.path.exists(initial_dataset_file):
 model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/Llama-3.1-8B-Instruct"
 output_model_dir = os.path.expanduser("~") + "/projects/ctb-whkchun/s2_bliss_LLMs/optimize_input_embedding"
 # output_model_dir = os.path.expanduser("~") + "/bliss_gloss/multi-tokens-phrase/test_results/models/optimize_input_embedding"
-phrase = "wool shop"
-target_tokens = [" wool", " yarn"]
-new_token = "[BLISS_29111]"
+phrase = "to brush teeth"
+target_tokens = [" to"]
+new_token = "[BLISS_12914]"
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Read and execute the file to extract the target variables
@@ -88,7 +119,7 @@ target_token_ids = tokenizer.convert_tokens_to_ids(tokens)
 hidden_states, target_logits = create_training_data(
     model, tokenizer, training_positive_context_sentences, [], target_token_ids
 )
-initial_output_embedding = calc_embeddings(hidden_states, target_logits)
+initial_output_embedding = calc_output_embedding(hidden_states, target_logits)
 
 average_input_embedding = get_average_input_embeddings(model, tokenizer, [phrase])
 
