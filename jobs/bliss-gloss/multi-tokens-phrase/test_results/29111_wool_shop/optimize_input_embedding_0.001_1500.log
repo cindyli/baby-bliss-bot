@@ -15,7 +15,7 @@ Epoch 1200, Total Loss: 4.2643
 Epoch 1300, Total Loss: 3.8318
 Epoch 1400, Total Loss: 3.4623
 Epoch 1500, Total Loss: 3.1404
-Execution time for calculating input embedding: 4236 minutes and 21.42 seconds
+Execution time for calculating input embedding: 4236 minutes and 21.42 seconds (70.6 hours)
 
 Execution time for calculating input embedding: 0 minutes and 0.00 seconds
 ==============================================================

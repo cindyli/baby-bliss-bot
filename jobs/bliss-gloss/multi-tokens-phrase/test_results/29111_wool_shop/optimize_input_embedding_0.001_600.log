@@ -6,7 +6,7 @@ Epoch 400, Total Loss: 12.3598
 Epoch 500, Total Loss: 10.5463
 Epoch 600, Total Loss: 8.8517
 
-Execution time for calculating input embedding: 1615 minutes and 36.38 seconds
+Execution time for calculating input embedding: 1615 minutes and 36.38 seconds (27 hours)
 ==============================================================
 
 ==== Re-verify predictions on POSITIVE training sentences:
