@@ -1,4 +1,4 @@
-# Usage: python calc_output_embeddings.py
+# Usage: python output_embedding_calc.py
 
 """
 This script adds a new special token to a llama model to represent specifically
@@ -34,7 +34,7 @@ import os
 import time
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from data import data_animal_bark
-from utils import create_training_data, calc_embeddings, add_token_to_model, test_token_prediction
+from utils_output_embedding import create_training_data, calc_embeddings, add_token_to_model, test_token_prediction
 
 
 def print_results(title, results):

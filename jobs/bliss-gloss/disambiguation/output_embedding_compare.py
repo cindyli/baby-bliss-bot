@@ -1,4 +1,4 @@
-# Usage: python compare_output_embeddings.py <epochs> <learning_rate>
+# Usage: python output_embedding_compare.py <epochs> <learning_rate>
 
 """
 This script calculates the output embedding of the new token meaning the dog bark
@@ -17,7 +17,7 @@ import time
 from transformers import AutoModelForCausalLM, AutoTokenizer
 import torch.nn.functional as F
 from data import dataset_animal_bark as dataset
-from utils import create_training_data, calc_embeddings, optimize_embeddings
+from utils_output_embedding import create_training_data, calc_embeddings, optimize_embeddings
 
 epochs = int(sys.argv[1])
 learning_rate = float(sys.argv[2])

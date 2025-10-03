@@ -125,8 +125,8 @@ version 3 with:
 - **Epochs**: 200
 - **Learning Rate**: 0.01
 
-- **Script**: [compare_output_embeddings.py](../jobs/bliss_gloss/disambiguation/compare_output_embeddings.py)
-- **Results**: [compare_output_embeddings.log](../jobs/bliss_gloss/disambiguation/test_results/compare_output_embeddings.log)
+- **Script**: [output_embedding_compare.py](../jobs/bliss_gloss/disambiguation/output_embedding_compare.py)
+- **Results**: [output_embedding_compare.log](../jobs/bliss_gloss/disambiguation/test_results/output_embedding_compare.log)
 
 ### Conclusion
 The **inversion of matrix multiplication** approach provides the best results for computing output embeddings

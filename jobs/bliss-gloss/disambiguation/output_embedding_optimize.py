@@ -1,4 +1,4 @@
-# Usage: python optimize_output_embeddings.py <epochs> <learning_rate>
+# Usage: python output_embedding_optimize.py <epochs> <learning_rate>
 
 """
 This script adds a new special token to a llama model to represent specifically
@@ -70,7 +70,7 @@ import sys
 import os
 import time
 from transformers import AutoModelForCausalLM, AutoTokenizer
-from utils import create_training_data, optimize_embeddings, add_token_to_model, test_token_prediction
+from utils_output_embedding import create_training_data, optimize_embeddings, add_token_to_model, test_token_prediction
 
 
 def print_results(title, results):
@@ -86,7 +86,7 @@ def print_results(title, results):
 
 
 if len(sys.argv) != 3:
-    print("Usage: python optimize_output_embeddings.py <epochs> <learning_rate>")
+    print("Usage: python output_embedding_optimize.py <epochs> <learning_rate>")
     sys.exit(1)
 
 epochs = int(sys.argv[1])

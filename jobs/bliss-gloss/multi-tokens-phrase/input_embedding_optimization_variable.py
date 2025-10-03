@@ -2,11 +2,12 @@
 
 # This script implements an optimization method to calculate a single input embedding that
 # semantically represents a multi-token phrase. The method involves optimizing a standalone "virtual token"
-# to replicate the contextual impact of the original phrase on a large language model (LLM) without
+# to replicate the contextual impact of the original phrase on a language model without
 # altering the model's underlying weights.
 
 # The optimization objective is to minimize the difference between two contextual embeddings:
-# 1) the target hidden state produced by the LLM after processing a prefix sentence followed by the original phrase
+# 1) the target hidden state produced by the language model after processing a prefix sentence followed
+# by the original phrase
 # 2) the hidden state produced after processing the same prefix followed by the learnable virtual token.
 
 # The process involves three main steps:
