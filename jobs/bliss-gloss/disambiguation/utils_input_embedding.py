@@ -94,7 +94,14 @@ def get_embeddings_of_words(model, tokenizer, words, type="input_embeddings"):
 # Get the average input embedding for a list of multi-token words/phrases
 def get_average_input_embeddings(model, tokenizer, words):
     """Compute average input embeddings for a list of multi-token words/phrases"""
-    word_vectors = get_embeddings_of_words(model, tokenizer, words)
+    word_vectors = get_embeddings_of_words(model, tokenizer, words, type="input_embeddings")
+    return torch.mean(word_vectors, dim=0) if word_vectors is not None else None
+
+
+# Get the average output embedding for a list of multi-token words/phrases
+def get_average_output_embeddings(model, tokenizer, words):
+    """Compute average output embeddings for a list of multi-token words/phrases"""
+    word_vectors = get_embeddings_of_words(model, tokenizer, words, type="output_embeddings")
     return torch.mean(word_vectors, dim=0) if word_vectors is not None else None
 
 
@@ -136,36 +143,29 @@ def get_unambiguous_embedding_by_PCA_kneed(synonym_embeddings, kneed_sensitivity
     sorted_eigenvectors = eigenvectors[:, sorted_indices]
 
     # 4. Automatically Find the Elbow using kneed
-    x_range = range(1, len(sorted_eigenvalues) + 1)
+    num_meaningful_components = n_samples - 1
 
-    kneedle = KneeLocator(
-        x_range,
-        sorted_eigenvalues.cpu().numpy(),       # kneed works with numpy arrays or lists
-        S=kneed_sensitivity,              # Sensitivity parameter
-        curve="concave",
-        direction="decreasing"
-    )
-
-    n_components = kneedle.elbow
-
-    # When kneed library cannot find a clear elbow, which can happen with very smooth curves or
-    # few data points, the function defaults to using just one principal component, as it represents
-    # the most dominant, shared meaning.
-    if n_components is None:
-        print("Warning: kneed could not find an elbow. Defaulting to 1 principal component.")
+    if num_meaningful_components < 3:
+        # kneed needs at least 3 points. If we have fewer, just take the first PC.
         n_components = 1
+        print("Warning: Less than 4 embeddings provided. Defaulting to n_components=1.")
+    else:
+        # Slice the eigenvalues to only include the meaningful ones
+        meaningful_eigenvalues = sorted_eigenvalues[:num_meaningful_components]
 
-    # # Calculate the cumulative explained variance
-    # total_variance = torch.sum(sorted_eigenvalues)
-    # explained_variance_ratio = sorted_eigenvalues / total_variance
-    # cumulative_explained_variance = torch.cumsum(explained_variance_ratio, dim=0)
+        kneedle = KneeLocator(
+            x=range(1, len(meaningful_eigenvalues) + 1),
+            y=meaningful_eigenvalues.cpu().numpy(),
+            S=kneed_sensitivity,
+            curve="concave",
+            direction="decreasing"
+        )
 
-    # # Determine the number of components that meet the threshold
-    # # Use searchsorted to find the first index where the cumulative sum exceeds the threshold.
-    # n_components = torch.searchsorted(cumulative_explained_variance, explained_variance_threshold).item() + 1
+        n_components = kneedle.elbow
 
-    # # Ensure n_components is not larger than the number of available components
-    # n_components = min(n_components, len(sorted_eigenvalues))
+        if n_components is None:
+            print("Warning: kneed could not find an elbow within meaningful components. Defaulting to 1.")
+            n_components = 1
 
     # Get the top N principal components
     top_n_pcs = sorted_eigenvectors[:, :n_components]
