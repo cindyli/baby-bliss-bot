@@ -66,7 +66,7 @@ Run the following command to lint all python scripts:
 - **[Using Bliss Gloss as a Semantic Bridge](./docs/ExploreBlissGloss.md)**  
   Investigates the use of Bliss glosses to leverage the model’s pre-trained English knowledge. This approach explores mapping Bliss symbols to English phrases or concepts to enhance understanding.
 
-- **[Disambiguating English Word Meanings](./docs/OutputEmbeddingForWordDisambiguation.md)**  
+- **[Disambiguating Synonyms](./docs/DisambiguateSynonyms.md)**  
   Explores techniques for resolving ambiguity in English words when mapping to Bliss symbols. Proposes computing output embeddings of Bliss tokens using training data to ensure conceptual precision.
 
 - **[Use a Single Token for a Multi-token Gloss](./docs/InputEmbeddingForMultiTokenGloss.md)**  

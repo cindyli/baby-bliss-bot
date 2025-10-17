@@ -28,7 +28,7 @@ of the tokens in the phrase, providing a good starting point.
 3. Optimization: With the base model's parameters frozen, an Adam optimizer iteratively refines the input embedding to minimize the Cosine Embedding Loss between its output and the target hidden states. The best-performing embedding is selected based on the lowest validation loss.
 4. Evaluation: The final, optimized input embedding and a calcualted output embedding is assigned to a new token in the model's vocabulary and is evaluated on its ability to perform next-word prediction and coherent text generation.
 
-Note: See [output embedding via matrix inversion](./docs/OutputEmbeddingForWordDisambiguation.md) regarding how the output embedding is calculated.
+Note: See [Disambiguate Synonyms documentation](./docs/DisambiguateSynonyms.md) regarding how the output embedding is calculated.
 
 ### Test Results
 
@@ -57,7 +57,7 @@ initial input embedding = average of input embedding of composing tokens
 
 ### Step 1: Initialize Input and Output Embeddings
 
-We use a consistent method to compute the **output embedding** based on previous work on [output embedding via matrix inversion](./docs/OutputEmbeddingForWordDisambiguation.md). This document focuses on different strategies for initializing the **input embedding**.
+We use a consistent method to compute the **output embedding** based on previous work regarding [Disambiguate Synonyms](./docs/DisambiguateSynonyms.md). This document focuses on different strategies for initializing the **input embedding**.
 
 #### Input Embedding Initialization Strategies:
 
@@ -135,7 +135,7 @@ The **most effective approach** is:
 
 ## 📎 References
 
-- [Output Embedding for Word Disambiguation](./docs/OutputEmbeddingForWordDisambiguation.md)
+- [Disambiguate Synonyms](./docs/DisambiguateSynonyms.md)
 - [Optimization Script](../jobs/bliss-gloss/multi-tokens-phrase/input_embedding_optimization.py)
 - [QLoRA fine-tuning Script](../jobs/bliss-gloss/multi-tokens-phrase/qlora_embedding_exploration.py)
 - [Context Dataset: `dataset_29111_wool_shop.py`](../jobs/bliss-gloss/multi-tokens-phrase/data/)
