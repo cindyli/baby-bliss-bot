@@ -242,10 +242,6 @@ def get_unambiguous_embedding_by_PCA_threshold(synonym_embeddings, explained_var
     return projected_average
 
 
-import torch
-import numpy as np
-from transformers import AutoTokenizer, AutoModel
-
 def get_unambiguous_embedding_by_PC1_and_variance_contributions(embeddings):
     """
     Calculates the primary principal component (PC1) and returns the variance contribution
@@ -269,76 +265,37 @@ def get_unambiguous_embedding_by_PC1_and_variance_contributions(embeddings):
     # 1. Perform PCA ---
     centered_embeddings = embeddings - torch.mean(embeddings, dim=0)
     covariance_matrix = torch.cov(centered_embeddings.T)
-    
+
     # Use eigh for symmetric matrices; it's faster and more stable.
     eigenvalues, eigenvectors = torch.linalg.eigh(covariance_matrix)
-    
+
     # Sort eigenvalues and eigenvectors in descending order
     sorted_indices = torch.argsort(eigenvalues, descending=True)
     sorted_eigenvalues = eigenvalues[sorted_indices]
     sorted_eigenvectors = eigenvectors[:, sorted_indices]
-    
+
     # 2. Get the Primary Principal Component (PC1) ---
     # PC1 is the eigenvector corresponding to the largest eigenvalue.
     pc1 = sorted_eigenvectors[:, 0]
-    
+
     # 3. Calculate Variance Contribution Percentages ---
     # The total variance is the sum of all eigenvalues.
     total_variance = torch.sum(sorted_eigenvalues)
-    
-    # We only care about the N-1 meaningful components
+
+    # Only care about the N-1 meaningful components
     num_meaningful_components = n_samples - 1
     meaningful_eigenvalues = sorted_eigenvalues[:num_meaningful_components]
-    
-    variance_percentages = torch.tensor([]) # Default empty tensor
+
+    variance_percentages = torch.tensor([])  # Default empty tensor
     if total_variance > 0:
         # Calculate percentage for each of the top N-1 components
         variance_percentages = (meaningful_eigenvalues / total_variance) * 100
     else:
         print("Warning: Total variance is zero. All contributions are zero.")
         variance_percentages = torch.zeros(num_meaningful_components)
-        
+
     return pc1, variance_percentages
 
-
-# --- Example Usage ---
-if __name__ == '__main__':
-    # Setup model and tokenizer
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    print(f"Using device: {device}")
-    
-    model_name = 'bert-base-uncased'
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
-    model = AutoModel.from_pretrained(model_name).to(device)
-
-    # A cluster of synonyms
-    synonym_cluster = ["strong", "powerful", "robust", "sturdy", "tough"]
-    
-    # Helper function to get embeddings
-    def get_embeddings(model, tokenizer, words):
-        embeddings = model.get_input_embeddings().weight.data
-        word_vectors = []
-        for word in words:
-            token_ids = tokenizer.convert_tokens_to_ids(tokenizer.tokenize(word))
-            token_embeddings = embeddings[torch.tensor(token_ids).to(device)]
-            word_vectors.append(token_embeddings.mean(dim=0))
-        return torch.stack(word_vectors)
-
-    # Get the embeddings for our synonym cluster
-    embeddings_tensor = get_embeddings(model, tokenizer, synonym_cluster)
-    print(f"\nInput tensor shape: {embeddings_tensor.shape}") # (5, 768)
-
-    # --- Run the function to get PC1 and variance info ---
-    primary_component_embedding, variance_contribs = get_pc1_and_variance_contributions(embeddings_tensor)
-
-    print(f"Shape of the new PC1 embedding: {primary_component_embedding.shape}")
-    print("\n--- Variance Contributions of Top N-1 Components ---")
-
-    cumulative_variance = 0.0
-    for i, percentage in enumerate(variance_contribs):
-        cumulative_variance += percentage.item()
-        print(f"  - PC {i+1}: {percentage.item():.2f}% (Cumulative: {cumulative_variance:.2f}%)")
-        
 
 def get_unambiguous_embedding_by_self_attention(synonym_embeddings):
     """
