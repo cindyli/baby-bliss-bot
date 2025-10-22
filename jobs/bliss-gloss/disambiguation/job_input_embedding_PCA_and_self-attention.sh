@@ -34,4 +34,4 @@ pip install torch==2.7.1 transformers==4.56.2
 pip list
 
 echo "=== Disambiguate synonyms using PCA and self-attention methods with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
-python ~/bliss_gloss/disambiguation/input_embedding_PCA_and_self-attention.py > ~/bliss_gloss/disambiguation/test_results/input_embedding_PCA_kneed.log
+python ~/bliss_gloss/disambiguation/input_embedding_PCA_and_self-attention.py > ~/bliss_gloss/disambiguation/test_results/input_embedding_PC1.log

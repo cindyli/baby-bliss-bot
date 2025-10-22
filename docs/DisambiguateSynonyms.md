@@ -33,6 +33,196 @@ structure:
 
 This document explores solutions for these two challenges.
 
+## Computing the Input Embedding
+
+When a Blissymbol is associated with multiple synonym glosses, a new input embedding
+must be computed to represent the shared semantic space of those synonyms. We
+experimented with three approaches:
+
+1. **Averaging Input Embeddings**
+2. **Principle Component Analysis**
+3. **Attention-based Aggregation**
+
+### Approach 1: Averaging Input Embeddings
+
+This method computes the element-wise average of the embedding vectors for all synonyms
+in the cluster. Despite its simplicity, this approach yielded strong results in text
+generation tasks, making it a practical baseline.
+
+### Approach 2: Principle Component Analysis (PCA)
+
+PCA identifies the directions (principal components, or PCs) along which the synonym
+embeddings vary the most. By projecting the average embedding onto a subspace defined
+by the top PCs, we aim to capture the core shared meaning while reducing noise.
+
+**Procedure:**
+
+1. Stack Embeddings: Treat the synonym embeddings as points in a high-dimensional space.
+2. Calculate Covariance Matrix: Measure how the embeddings vary together.
+3. Extract Principal Components: Find the eigenvectors of this matrix. The eigenvector
+with the largest eigenvalue is PC1, and so on.
+4. Project onto Subspace: Select the top N PCs that capture the most variance. Project
+the average embedding onto this subspace.
+
+**Choosing the Number of PCs (N):**
+
+Two methods were tested:
+
+1. Use Explained Variance Threshold
+2. Use Kneed Library
+3. Use Primary Principal Component
+
+#### Explained Variance Threshold
+
+We tested thresholds of 0.95 and 0.99, meaning 95% and 99% of the total variance is
+retained. In both cases, PCA returned 3 principal components. However, the resulting
+embeddings did not yield satisfactory results in text generation.
+
+#### Kneed Library
+
+* With a sensitivity of 1 and no PC limit, 4096 components were returned—equal to the
+dimensionality of LLaMA embeddings—resulting in an embedding identical to the average.
+* Since only 4 synonym embeddings were used ("break", "fracture", "injure", "damage"),
+the maximum dimensionality of the subspace is 3. Restricting the output to 3 PCs
+resulted in only 1 PC being selected, which also produced suboptimal results.
+
+#### Primary Principal Component
+
+* Use the primary principal component (PC1) as the initial input embedding and output
+embedding.
+
+### Approach 3: Attention-based Aggregation
+
+Instead of a fixed weight (like in weighted averaging), attention dynamically calculates
+an "importance score" for each synonym within the context of the entire synonym cluster.
+Synonyms that are more semantically central to the cluster will receive higher scores.
+
+**Procedure:**
+
+1. Define a "Query" Vector: Use the average of all synonym embeddings as the query
+vector `q`, representing the overall meaning.
+2. Calculate Similarity Scores: For each synonym embedding s_i, calculate a similarity
+score with the query vector q using the dot product: score_i = q · s_i. A high score
+means the synonym s_i is very similar to the overall cluster average.
+3. Normalize Scores (Softmax): Apply a softmax function to all the scores. This converts
+them into a probability distribution, where all scores are positive and sum to 1. For
+the attention weights (α_i): α_i = softmax(score_i)
+4. Compute Weighted Sum: pute the final embedding as a weighted sum:
+[MEANING_SHINY]_embedding = Σ (α_i * s_i)
+
+In practice, this method produced an embedding nearly identical to the average embedding.
+
+### Script and Test Results
+
+We evaluated all three methods using the Blissymbol with BCI-AV ID 24852, which has four
+single-token glosses: break, fracture, injury, and damage. The goal was to add a new
+token [BLISS_24852] to the LLaMA model, compute its input and output embeddings using
+each method, and evaluate performance in word prediction and text generation tasks.
+
+- **Script**: [input_embedding_PCA_and_self-attention.py](../jobs/bliss_gloss/disambiguation/input_embedding_PCA_and_self-attention.py)
+
+- **Test Results**
+
+<table border="1" cellspacing="0" cellpadding="5">
+  <thead>
+    <tr>
+      <th colspan="4" style="text-align:center;">Input Embedding</th>
+      <th colspan="3" style="text-align:center;">Output Embedding</th>
+      <th style="text-align:center;">Test Result Log</th>
+    </tr>
+    <tr>
+      <th style="text-align:center;">Calculation Method</th>
+      <th style="text-align:center;">Cosine Similarity<br>Btw Target and Average</th>
+      <th style="text-align:center;">Euclidean Distance<br>Btw Target and Average</th>
+      <th style="text-align:center;">Calculation Method</th>
+      <th style="text-align:center;">Cosine Similarity<br>Btw Target and Calculated</th>
+      <th style="text-align:center;">Euclidean Distance<br>Btw Target and Calculated</th>
+      <th style="text-align:center;">Quality of Prediction Result<br>(Test output embedding)</th>
+      <th style="text-align:center;">Quality of Text Generation Result<br>(Test input embedding)</th>
+      <th style="text-align:center;">Test Result</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Average</td>
+      <td>1</td>
+      <td>0</td>
+      <td>Calculated on positive &amp; negative contexts</td>
+      <td>1</td>
+      <td>0</td>
+      <td>Best</td>
+      <td>Good</td>
+      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_average_calculated.log)</td>
+    </tr>
+    <tr>
+      <td>PCA (threshold: 0.95)<br>3 principle components found</td>
+      <td>0.1948</td>
+      <td>0.3766</td>
+      <td>PCA (threshold: 0.95)<br>3 principle components found</td>
+      <td>0.0467</td>
+      <td>1.81</td>
+      <td>Bad</td>
+      <td>Good except last two generations</td>
+      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_PCA_threshold_0.95.log)</td>
+    </tr>
+    <tr>
+      <td>PCA (threshold: 0.99)<br>3 principle components found</td>
+      <td>0.1948</td>
+      <td>0.3766</td>
+      <td>Calculated on positive &amp; negative contexts</td>
+      <td>1</td>
+      <td>0</td>
+      <td>Good</td>
+      <td>Bad</td>
+      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_PCA_threshold_0.99.log)</td>
+    </tr>
+    <tr>
+      <td>PCA (Kneed library)<br>Sensitivity: 1<br>no PC restrictions<br>4096 principle components found</td>
+      <td>1</td>
+      <td>0</td>
+      <td>PCA (Kneed library)<br>4096 principle components found</td>
+      <td>0.0652</td>
+      <td>1.8471</td>
+      <td>Good</td>
+      <td>Good</td>
+      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_PCA_kneed.log)</td>
+    </tr>
+    <tr>
+      <td>PCA (Kneed library)<br>Sensitivity: 1<br>restricted to 3 PCs<br>1 principle components found</td>
+      <td>0.0633</td>
+      <td>0.0708</td>
+      <td>Calculated on positive &amp; negative contexts</td>
+      <td>1</td>
+      <td>0</td>
+      <td>Good</td>
+      <td>Bad</td>
+      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_PCA_kneed_restricted_to_N-1.log)</td>
+    </tr>
+    <tr>
+      <td>PCA (Primary principal component)</td>
+      <td>-0.0633</td>
+      <td>1.0936</td>
+      <td>PCA (Primary principal component)</td>
+      <td>-0.0175</td>
+      <td>1.124</td>
+      <td>Bad</td>
+      <td>Good</td>
+      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_OE_PC1.log)</td>
+    </tr>
+    <tr>
+      <td>Attention based</td>
+      <td>0.9999</td>
+      <td>0.0064</td>
+      <td>Attention based</td>
+      <td>0.066</td>
+      <td>1.847</td>
+      <td>Good</td>
+      <td>Good</td>
+      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_self_attention.log)</td>
+    </tr>
+  </tbody>
+</table>
+
 ## Computing the Output Embedding
 
 We use a data-driven approach to compute the output embedding for the new token by
@@ -146,179 +336,6 @@ for computing output embeddings of disambiguated Blissymbol tokens. The optimiza
 approach, while feasible, produces inconsistent outcomes.Future work will explore
 refining input embeddings for multi-token glosses.
 
-## Computing the Input Embedding
-
-When a Blissymbol is associated with multiple synonym glosses, a new input embedding
-must be computed to represent the shared semantic space of those synonyms. We
-experimented with three approaches:
-
-1. **Averaging Input Embeddings**
-2. **Principle Component Analysis**
-3. **Attention-based Aggregation**
-
-### Approach 1: Averaging Input Embeddings
-
-This method computes the element-wise average of the embedding vectors for all synonyms
-in the cluster. Despite its simplicity, this approach yielded strong results in text
-generation tasks, making it a practical baseline.
-
-### Approach 2: Principle Component Analysis (PCA)
-
-PCA identifies the directions (principal components, or PCs) along which the synonym
-embeddings vary the most. By projecting the average embedding onto a subspace defined
-by the top PCs, we aim to capture the core shared meaning while reducing noise.
-
-**Procedure:**
-
-1. Stack Embeddings: Treat the synonym embeddings as points in a high-dimensional space.
-2. Calculate Covariance Matrix: Measure how the embeddings vary together.
-3. Extract Principal Components: Find the eigenvectors of this matrix. The eigenvector
-with the largest eigenvalue is PC1, and so on.
-4. Project onto Subspace: Select the top N PCs that capture the most variance. Project
-the average embedding onto this subspace.
-
-**Choosing the Number of PCs (N):**
-
-Two methods were tested:
-
-1. Use Explained Variance Threshold
-2. Use Kneed Library
-
-#### Explained Variance Threshold
-
-We tested thresholds of 0.95 and 0.99, meaning 95% and 99% of the total variance is
-retained. In both cases, PCA returned 3 principal components. However, the resulting
-embeddings did not yield satisfactory results in text generation.
-
-#### Kneed Library
-
-* With a sensitivity of 1 and no PC limit, 4096 components were returned—equal to the
-dimensionality of LLaMA embeddings—resulting in an embedding identical to the average.
-* Since only 4 synonym embeddings were used ("break", "fracture", "injure", "damage"),
-the maximum dimensionality of the subspace is 3. Restricting the output to 3 PCs
-resulted in only 1 PC being selected, which also produced suboptimal results.
-
-### Approach 3: Attention-based Aggregation
-
-Instead of a fixed weight (like in weighted averaging), attention dynamically calculates
-an "importance score" for each synonym within the context of the entire synonym cluster.
-Synonyms that are more semantically central to the cluster will receive higher scores.
-
-**Procedure:**
-
-1. Define a "Query" Vector: Use the average of all synonym embeddings as the query
-vector `q`, representing the overall meaning.
-2. Calculate Similarity Scores: For each synonym embedding s_i, calculate a similarity
-score with the query vector q using the dot product: score_i = q · s_i. A high score
-means the synonym s_i is very similar to the overall cluster average.
-3. Normalize Scores (Softmax): Apply a softmax function to all the scores. This converts
-them into a probability distribution, where all scores are positive and sum to 1. For
-the attention weights (α_i): α_i = softmax(score_i)
-4. Compute Weighted Sum: pute the final embedding as a weighted sum:
-[MEANING_SHINY]_embedding = Σ (α_i * s_i)
-
-In practice, this method produced an embedding nearly identical to the average embedding.
-
-### Script and Test Results
-
-We evaluated all three methods using the Blissymbol with BCI-AV ID 24852, which has four
-single-token glosses: break, fracture, injury, and damage. The goal was to add a new
-token [BLISS_24852] to the LLaMA model, compute its input and output embeddings using
-each method, and evaluate performance in word prediction and text generation tasks.
-
-- **Script**: [input_embedding_PCA_and_self-attention.py](../jobs/bliss_gloss/disambiguation/input_embedding_PCA_and_self-attention.py)
-
-- **Test Results**
-
-<table border="1" cellspacing="0" cellpadding="5">
-  <thead>
-    <tr>
-      <th colspan="4" style="text-align:center;">Input Embedding</th>
-      <th colspan="3" style="text-align:center;">Output Embedding</th>
-      <th style="text-align:center;">Test Result Log</th>
-    </tr>
-    <tr>
-      <th style="text-align:center;">Calculation Method</th>
-      <th style="text-align:center;">Cosine Similarity<br>Btw Target and Average</th>
-      <th style="text-align:center;">Euclidean Distance<br>Btw Target and Average</th>
-      <th style="text-align:center;">Calculation Method</th>
-      <th style="text-align:center;">Cosine Similarity<br>Btw Target and Calculated</th>
-      <th style="text-align:center;">Euclidean Distance<br>Btw Target and Calculated</th>
-      <th style="text-align:center;">Quality of Prediction Result<br>(Test output embedding)</th>
-      <th style="text-align:center;">Quality of Text Generation Result<br>(Test input embedding)</th>
-      <th style="text-align:center;">Test Result</th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <td>Average</td>
-      <td>1</td>
-      <td>0</td>
-      <td>Calculated on positive &amp; negative contexts</td>
-      <td>1</td>
-      <td>0</td>
-      <td>Best</td>
-      <td>Good</td>
-      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_average_calculated.log)</td>
-    </tr>
-    <tr>
-      <td>PCA (threshold: 0.95)<br>3 principle components found</td>
-      <td>0.1948</td>
-      <td>0.3766</td>
-      <td>PCA (threshold: 0.95)<br>3 principle components found</td>
-      <td>0.0467</td>
-      <td>1.81</td>
-      <td>Bad</td>
-      <td>Good except last two generations</td>
-      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_PCA_threshold_0.95.log)</td>
-    </tr>
-    <tr>
-      <td>PCA (threshold: 0.99)<br>3 principle components found</td>
-      <td>0.1948</td>
-      <td>0.3766</td>
-      <td>Calculated on positive &amp; negative contexts</td>
-      <td>1</td>
-      <td>0</td>
-      <td>Good</td>
-      <td>Bad</td>
-      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_PCA_threshold_0.99.log)</td>
-    </tr>
-    <tr>
-      <td>PCA (Kneed library)<br>Sensitivity: 1<br>no PC restrictions<br>4096 principle components found</td>
-      <td>1</td>
-      <td>0</td>
-      <td>PCA (Kneed library)<br>4096 principle components found</td>
-      <td>0.0652</td>
-      <td>1.8471</td>
-      <td>Good</td>
-      <td>Good</td>
-      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_PCA_kneed.log)</td>
-    </tr>
-    <tr>
-      <td>PCA (Kneed library)<br>Sensitivity: 1<br>restricted to 3 PCs<br>1 principle components found</td>
-      <td>0.0633</td>
-      <td>0.0708</td>
-      <td>Calculated on positive &amp; negative contexts</td>
-      <td>1</td>
-      <td>0</td>
-      <td>Good</td>
-      <td>Bad</td>
-      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_PCA_kneed_restricted_to_N-1.log)</td>
-    </tr>
-    <tr>
-      <td>Attention based</td>
-      <td>0.9999</td>
-      <td>0.0064</td>
-      <td>Attention based</td>
-      <td>0.066</td>
-      <td>1.847</td>
-      <td>Good</td>
-      <td>Good</td>
-      <td>[Test Result](../jobs/bliss_gloss/disambiguation/test_results/IE_self_attention.log)</td>
-    </tr>
-  </tbody>
-</table>
-
 ### Conclusion
 
 1. **PCA with explained variance thresholds** (e.g., 0.95 or 0.99) did not yield
@@ -329,7 +346,11 @@ embedding. In these cases, averaging is more efficient and equally effective.
 3. **PCA remains a promising direction** for capturing nuanced semantic structure,
 but it requires further experimentation, especially with larger synonym sets, to
 demonstrate consistent benefits.
-4. **Recommended approach**: For now, the most effective and efficient strategy is
-to use:
-* **Averaged input embedding** as the initial input embedding.
+4. Fow now, **primary principal component** and **averaged input embedding** are the
+most effective and efficient strategy for initializing the input embedding.
+
+# Final Conclusion
+1. **Recommended approach**: the most effective and efficient strategy is to use:
+* **primary principal component** and **Averaged input embedding** as the initial input
+embedding.
 * **Calculated output embedding** as the initial output embedding.
