@@ -36,9 +36,10 @@ def create_training_data(model, tokenizer, positive_context_sentences, negative_
 
     # Negative context sentences - low target logits
     for context in negative_context_sentences:
-        h, logits = get_hidden_state_and_next_token_logits(model, tokenizer, context)
+        h, logits = get_hidden_state_and_next_token_logits(model, tokenizer, context, True)
         hidden_states.append(h)
-        target_logits.append(-10)  # discourage predicting the target token
+        # target_logits.append(-10)  # discourage predicting the target token
+        target_logits.append(logits[0, target_token_ids].min().item())
 
     return torch.cat(hidden_states, dim=0).to(model.device), torch.tensor(target_logits, device=model.device)
 
@@ -262,7 +263,7 @@ def get_unambiguous_embedding_by_PC1_and_variance_contributions(embeddings):
     if n_samples < 2:
         raise ValueError("At least two embeddings are required for PCA.")
 
-    # 1. Perform PCA ---
+    # 1. Perform PCA
     centered_embeddings = embeddings - torch.mean(embeddings, dim=0)
     covariance_matrix = torch.cov(centered_embeddings.T)
 
@@ -274,11 +275,11 @@ def get_unambiguous_embedding_by_PC1_and_variance_contributions(embeddings):
     sorted_eigenvalues = eigenvalues[sorted_indices]
     sorted_eigenvectors = eigenvectors[:, sorted_indices]
 
-    # 2. Get the Primary Principal Component (PC1) ---
+    # 2. Get the Primary Principal Component (PC1)
     # PC1 is the eigenvector corresponding to the largest eigenvalue.
     pc1 = sorted_eigenvectors[:, 0]
 
-    # 3. Calculate Variance Contribution Percentages ---
+    # 3. Calculate Variance Contribution Percentages
     # The total variance is the sum of all eigenvalues.
     total_variance = torch.sum(sorted_eigenvalues)
 
