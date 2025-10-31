@@ -2,7 +2,7 @@
 # of the new token that captures the disambiguated meaning of an English word.
 
 import torch
-from kneed import KneeLocator
+# from kneed import KneeLocator
 import torch.nn.functional as F
 
 
@@ -106,7 +106,7 @@ def get_average_output_embeddings(model, tokenizer, words):
     return torch.mean(word_vectors, dim=0) if word_vectors is not None else None
 
 
-def get_unambiguous_embedding_by_PCA_kneed(synonym_embeddings, kneed_sensitivity=1):
+def get_embedding_by_PCA_kneed(synonym_embeddings, kneed_sensitivity=1):
     """
     Generates a new token by projecting the average embedding onto a subspace
     spanned by the optimal number of principal components. The optimal number is
@@ -189,7 +189,7 @@ def get_unambiguous_embedding_by_PCA_kneed(synonym_embeddings, kneed_sensitivity
     return projected_average
 
 
-def get_unambiguous_embedding_by_PCA_threshold(synonym_embeddings, explained_variance_threshold=0.95):
+def get_embedding_by_PCA_threshold(synonym_embeddings, explained_variance_threshold=0.95):
     # 1. Calculate Covariance Matrix
     # Center the data by subtracting the mean
     n_samples = synonym_embeddings.shape[0]
@@ -243,7 +243,7 @@ def get_unambiguous_embedding_by_PCA_threshold(synonym_embeddings, explained_var
     return projected_average
 
 
-def get_unambiguous_embedding_by_PC1_and_variance_contributions(embeddings):
+def get_embedding_by_PC1_and_variance_contributions(embeddings):
     """
     Calculates the primary principal component (PC1) and returns the variance contribution
     percentage of each of the top N-1 components.
@@ -267,7 +267,7 @@ def get_unambiguous_embedding_by_PC1_and_variance_contributions(embeddings):
     centered_embeddings = embeddings - torch.mean(embeddings, dim=0)
     covariance_matrix = torch.cov(centered_embeddings.T)
 
-    # Use eigh for symmetric matrices; it's faster and more stable.
+    # Use eigh for symmetric matrices. it's faster and more stable.
     eigenvalues, eigenvectors = torch.linalg.eigh(covariance_matrix)
 
     # Sort eigenvalues and eigenvectors in descending order
@@ -298,7 +298,70 @@ def get_unambiguous_embedding_by_PC1_and_variance_contributions(embeddings):
     return pc1, variance_percentages
 
 
-def get_unambiguous_embedding_by_self_attention(synonym_embeddings):
+def get_embedding_by_average_PCs(embeddings):
+    """
+    Calculates the average of meaningful principal components (top N-1) and the weighted sum
+    of meaningful principal components based on their variance contribution percentages.
+
+    Args:
+        embeddings (torch.Tensor): A 2D tensor of shape (N, D) where N is the number
+                                   of synonym embeddings and D is the embedding dimension.
+
+    Returns:
+        tuple: A tuple containing:
+            - average_of_eigenvectors (torch.Tensor): The average of the meaningful principal
+            components (shape [D]).
+            - weighted_sum_of_eigenvectors (torch.Tensor): The weighted sum of the meaningful
+            principal components (shape [D]).
+    """
+    n_samples = embeddings.shape[0]
+    if n_samples < 2:
+        raise ValueError("At least two embeddings are required for PCA.")
+
+    # 1. Perform PCA
+    centered_embeddings = embeddings - torch.mean(embeddings, dim=0)
+    print(f"shape of centered embeddings: {centered_embeddings.shape}")
+    covariance_matrix = torch.cov(centered_embeddings.T)
+    print(f"shape of covariance matrix: {covariance_matrix.shape}")
+
+    # Use eigh for symmetric matrices. it's faster and more stable.
+    eigenvalues, eigenvectors = torch.linalg.eigh(covariance_matrix)
+
+    # Sort eigenvalues and eigenvectors in descending order
+    sorted_indices = torch.argsort(eigenvalues, descending=True)
+    sorted_eigenvalues = eigenvalues[sorted_indices]
+    sorted_eigenvectors = eigenvectors[:, sorted_indices]
+
+    print(f"Top 10 Sorted Eigenvalues: {sorted_eigenvalues[:10]}")
+
+    # 3. Calculate Variance Contribution Percentages
+    # The total variance is the sum of all eigenvalues.
+    total_variance = torch.sum(sorted_eigenvalues)
+
+    # Only care about the N-1 meaningful components
+    num_meaningful_components = n_samples - 1
+    meaningful_eigenvalues = sorted_eigenvalues[:num_meaningful_components]
+    meaningful_eigenvectors = sorted_eigenvectors[:, :num_meaningful_components]
+
+    print(f"Meaningful Eigenvalues: {meaningful_eigenvalues}")
+
+    if total_variance > 0:
+        # Calculate percentage for each of the top N-1 components
+        weights = meaningful_eigenvalues / total_variance
+    else:
+        print("Warning: Total variance is zero. All contributions are zero.")
+        weights = torch.zeros(num_meaningful_components)
+
+    average_of_eigenvectors = torch.mean(meaningful_eigenvectors, dim=1)
+
+    # This equivalent to weighted sum of the eigenvectors:
+    # sum(eigenvector_i * weight_i for i in range(num_meaningful_components))
+    weighted_sum_of_eigenvectors = meaningful_eigenvectors @ weights
+
+    return average_of_eigenvectors, weighted_sum_of_eigenvectors
+
+
+def get_embedding_by_self_attention(synonym_embeddings):
     """
     Calculates an unambiguous embedding for a cluster of synonyms using an attention mechanism.
 
