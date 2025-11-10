@@ -90,6 +90,7 @@ try:
 
     for item in data:
         item_id = item.get("id")
+        is_old = False
 
         # If the ID is in special_glosses, use its value directly and skip processing.
         if item_id in special_glosses:
@@ -106,6 +107,7 @@ try:
         # 2. Remove "(OLD)" suffix and any preceding space/underscore
         if processed_desc.endswith("(OLD)"):
             processed_desc = processed_desc[:-5].rstrip()
+            is_old = True
 
         # 3. Extract parenthetical suffix (e.g., "(ckb)")
         parenthetical_suffix = ""
@@ -156,6 +158,9 @@ try:
         for key, value in item.items():
             if key != "id" and key != "description":
                 new_item[key] = value
+        if is_old:
+            new_item["is_old"] = True
+
         primary_output_data[item_id] = new_item
         # Populate the map for tracking shared glosses
         for gloss in final_glosses:

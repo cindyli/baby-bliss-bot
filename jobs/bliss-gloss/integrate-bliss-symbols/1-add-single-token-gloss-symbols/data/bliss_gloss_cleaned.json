@@ -1170,7 +1170,8 @@
       "RK:-2",
       "/",
       14451
-    ]
+    ],
+    "is_old": true
   },
   "12376": {
     "glosses": [
@@ -2038,7 +2039,8 @@
     ],
     "pos": "WHITE",
     "explanation": "(reference line [half-sized] + arrowhead: full square between reference line and arrowhead emphasizes distance. This symbol is a simplified form of departure.)  - Character (sequenced)  SUPERSEDED SYNONYM  See away,at_a_distance,off 25522",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "12603": {
     "glosses": [
@@ -2310,7 +2312,8 @@
       17755,
       "/",
       15682
-    ]
+    ],
+    "is_old": true
   },
   "12625": {
     "glosses": [
@@ -2542,7 +2545,8 @@
       25542,
       "/",
       12640
-    ]
+    ],
+    "is_old": true
   },
   "12642": {
     "glosses": [
@@ -2923,7 +2927,8 @@
       15213,
       ";",
       8998
-    ]
+    ],
+    "is_old": true
   },
   "12833": {
     "glosses": [
@@ -3537,7 +3542,8 @@
       22913,
       "/",
       18273
-    ]
+    ],
+    "is_old": true
   },
   "12879": {
     "glosses": [
@@ -3592,7 +3598,8 @@
       18043,
       "/",
       13097
-    ]
+    ],
+    "is_old": true
   },
   "12884": {
     "glosses": [
@@ -4164,7 +4171,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(platform + earth [modification, extended] + bus)  - Character (superimposed - modified)  SUPERSEDED SYNONYM and SUPERSEDED CHARACTER  See bus_stop,bus_bay 24041",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "13091": {
     "glosses": [
@@ -4525,7 +4533,8 @@
       17983,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "13119": {
     "glosses": [
@@ -4868,7 +4877,8 @@
       22911,
       ";",
       8998
-    ]
+    ],
+    "is_old": true
   },
   "13147": {
     "glosses": [
@@ -4999,7 +5009,8 @@
       14381,
       "/",
       17717
-    ]
+    ],
+    "is_old": true
   },
   "13156": {
     "glosses": [
@@ -5180,7 +5191,8 @@
       13377,
       "/",
       13901
-    ]
+    ],
+    "is_old": true
   },
   "13172": {
     "glosses": [
@@ -5197,7 +5209,8 @@
       13377,
       "/",
       13901
-    ]
+    ],
+    "is_old": true
   },
   "13173": {
     "glosses": [
@@ -5218,7 +5231,8 @@
       13377,
       "/",
       13901
-    ]
+    ],
+    "is_old": true
   },
   "13174": {
     "glosses": [
@@ -5235,7 +5249,8 @@
       13377,
       "/",
       13901
-    ]
+    ],
+    "is_old": true
   },
   "13175": {
     "glosses": [
@@ -5501,7 +5516,8 @@
       8998,
       "/",
       13867
-    ]
+    ],
+    "is_old": true
   },
   "13357": {
     "glosses": [
@@ -5984,7 +6000,8 @@
       15406,
       "/",
       15471
-    ]
+    ],
+    "is_old": true
   },
   "13395": {
     "glosses": [
@@ -6053,7 +6070,8 @@
       22913,
       "/",
       15682
-    ]
+    ],
+    "is_old": true
   },
   "13400": {
     "glosses": [
@@ -6430,7 +6448,8 @@
       12335,
       "/",
       14690
-    ]
+    ],
+    "is_old": true
   },
   "13429": {
     "glosses": [
@@ -6564,7 +6583,8 @@
       14947,
       "/",
       12357
-    ]
+    ],
+    "is_old": true
   },
   "13438": {
     "glosses": [
@@ -6580,7 +6600,8 @@
       14947,
       "/",
       13121
-    ]
+    ],
+    "is_old": true
   },
   "13439": {
     "glosses": [
@@ -7013,7 +7034,8 @@
       15208,
       ";",
       8998
-    ]
+    ],
+    "is_old": true
   },
   "13635": {
     "glosses": [
@@ -7222,7 +7244,8 @@
       14164,
       "/",
       17983
-    ]
+    ],
+    "is_old": true
   },
   "13651": {
     "glosses": [
@@ -7281,7 +7304,8 @@
       13423,
       "/",
       25623
-    ]
+    ],
+    "is_old": true
   },
   "13655": {
     "glosses": [
@@ -7461,7 +7485,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(change + forward [modification, short arrow]: change through progression) - Character (superimposed - modified)",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "13668": {
     "glosses": [
@@ -7658,7 +7683,8 @@
       17189,
       "/",
       15975
-    ]
+    ],
+    "is_old": true
   },
   "13682": {
     "glosses": [
@@ -7705,7 +7731,8 @@
       12322,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "13685": {
     "glosses": [
@@ -8117,7 +8144,8 @@
       15927,
       "/",
       18209
-    ]
+    ],
+    "is_old": true
   },
   "13881": {
     "glosses": [
@@ -8204,7 +8232,8 @@
       18209,
       ";",
       8996
-    ]
+    ],
+    "is_old": true
   },
   "13888": {
     "glosses": [
@@ -8221,7 +8250,8 @@
       15927,
       "/",
       18209
-    ]
+    ],
+    "is_old": true
   },
   "13889": {
     "glosses": [
@@ -8436,7 +8466,8 @@
       15927,
       "/",
       24884
-    ]
+    ],
+    "is_old": true
   },
   "13906": {
     "glosses": [
@@ -8635,7 +8666,8 @@
       9009,
       "/",
       13918
-    ]
+    ],
+    "is_old": true
   },
   "13922": {
     "glosses": [
@@ -8779,7 +8811,8 @@
       24897,
       ";",
       8998
-    ]
+    ],
+    "is_old": true
   },
   "13933": {
     "glosses": [
@@ -8794,7 +8827,8 @@
       24897,
       ";",
       8993
-    ]
+    ],
+    "is_old": true
   },
   "13934": {
     "glosses": [
@@ -9258,7 +9292,8 @@
       14381,
       "/",
       17717
-    ]
+    ],
+    "is_old": true
   },
   "14130": {
     "glosses": [
@@ -9507,7 +9542,8 @@
       24896,
       ";",
       8998
-    ]
+    ],
+    "is_old": true
   },
   "14151": {
     "glosses": [
@@ -9592,7 +9628,8 @@
       25561,
       ";",
       8998
-    ]
+    ],
+    "is_old": true
   },
   "14157": {
     "glosses": [
@@ -9786,7 +9823,8 @@
       14647,
       ";",
       8998
-    ]
+    ],
+    "is_old": true
   },
   "14172": {
     "glosses": [
@@ -10336,7 +10374,8 @@
       22913,
       ";",
       8993
-    ]
+    ],
+    "is_old": true
   },
   "14377": {
     "glosses": [
@@ -10621,7 +10660,8 @@
       15214,
       ";",
       9009
-    ]
+    ],
+    "is_old": true
   },
   "14399": {
     "glosses": [
@@ -10649,7 +10689,8 @@
       13639,
       "/",
       8502
-    ]
+    ],
+    "is_old": true
   },
   "14401": {
     "glosses": [
@@ -11109,7 +11150,8 @@
       14133,
       "/",
       17724
-    ]
+    ],
+    "is_old": true
   },
   "14437": {
     "glosses": [
@@ -11459,7 +11501,8 @@
       22913,
       "/",
       13423
-    ]
+    ],
+    "is_old": true
   },
   "14463": {
     "glosses": [
@@ -11720,7 +11763,8 @@
       13093,
       "/",
       14377
-    ]
+    ],
+    "is_old": true
   },
   "14646": {
     "glosses": [
@@ -11877,7 +11921,8 @@
       12335,
       "/",
       14690
-    ]
+    ],
+    "is_old": true
   },
   "14657": {
     "glosses": [
@@ -11892,7 +11937,8 @@
       12335,
       "/",
       14690
-    ]
+    ],
+    "is_old": true
   },
   "14658": {
     "glosses": [
@@ -11952,7 +11998,8 @@
       14133,
       "/",
       17724
-    ]
+    ],
+    "is_old": true
   },
   "14663": {
     "glosses": [
@@ -11986,7 +12033,8 @@
       14377,
       "/",
       12378
-    ]
+    ],
+    "is_old": true
   },
   "14665": {
     "glosses": [
@@ -12196,7 +12244,8 @@
       8998,
       "/",
       25575
-    ]
+    ],
+    "is_old": true
   },
   "14680": {
     "glosses": [
@@ -12257,7 +12306,8 @@
       15399,
       ";",
       8993
-    ]
+    ],
+    "is_old": true
   },
   "14684": {
     "glosses": [
@@ -12301,7 +12351,8 @@
       17983,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "14687": {
     "glosses": [
@@ -12409,7 +12460,8 @@
       8998,
       "/",
       13894
-    ]
+    ],
+    "is_old": true
   },
   "14695": {
     "glosses": [
@@ -12466,7 +12518,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(animal + obsolete old pictograph of spines)  - Character  SUPERSEDED SYNONYM and SUPERSEDED CHARACTER  See hedgehog 23527",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "14700": {
     "glosses": [
@@ -12511,7 +12564,8 @@
       14689,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "14704": {
     "glosses": [
@@ -13265,7 +13319,8 @@
       17983,
       "/",
       14919
-    ]
+    ],
+    "is_old": true
   },
   "14921": {
     "glosses": [
@@ -13400,7 +13455,8 @@
       25538,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "14932": {
     "glosses": [
@@ -13531,7 +13587,8 @@
       15213,
       ";",
       8998
-    ]
+    ],
+    "is_old": true
   },
   "14941": {
     "glosses": [
@@ -14279,7 +14336,8 @@
       12383,
       "/",
       12603
-    ]
+    ],
+    "is_old": true
   },
   "15157": {
     "glosses": [
@@ -14906,7 +14964,8 @@
       15927,
       "/",
       17786
-    ]
+    ],
+    "is_old": true
   },
   "15204": {
     "glosses": [
@@ -14921,7 +14980,8 @@
       17786,
       ";",
       8993
-    ]
+    ],
+    "is_old": true
   },
   "15205": {
     "glosses": [
@@ -15029,7 +15089,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(two reference lines on the vertical boundaries of the symbol for enclosure, limiting what lies between them)  - Character (sequenced)  SUPERSEDED SYNONYM and SUPERSEDED CHARACTER  See limit(s),limitation,restriction 25579",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "15214": {
     "glosses": [
@@ -15296,7 +15357,8 @@
       8993,
       "/",
       12339
-    ]
+    ],
+    "is_old": true
   },
   "15396": {
     "glosses": [
@@ -16115,7 +16177,8 @@
       8998,
       "/",
       15471
-    ]
+    ],
+    "is_old": true
   },
   "15458": {
     "glosses": [
@@ -16285,7 +16348,8 @@
       15206,
       "/",
       20524
-    ]
+    ],
+    "is_old": true
   },
   "15471": {
     "glosses": [
@@ -16459,7 +16523,8 @@
       13639,
       "/",
       8498
-    ]
+    ],
+    "is_old": true
   },
   "15484": {
     "glosses": [
@@ -16883,7 +16948,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(arm + pictograph of bulging biceps + pointer)  - Character (superimposed - pointer)  SUPERSEDED SYNONYM and SUPERSEDED CHARACTER  See muscle 20517",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "15677": {
     "glosses": [
@@ -17330,7 +17396,8 @@
       8998,
       "/",
       12360
-    ]
+    ],
+    "is_old": true
   },
   "15710": {
     "glosses": [
@@ -17560,7 +17627,8 @@
       15927,
       "/",
       12360
-    ]
+    ],
+    "is_old": true
   },
   "15726": {
     "glosses": [
@@ -19075,7 +19143,8 @@
       8998,
       "/",
       12870
-    ]
+    ],
+    "is_old": true
   },
   "16171": {
     "glosses": [
@@ -19126,7 +19195,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(platform + combination of boat and to float)  - Character (superimposed - combined)  SUPERSEDED SYNONYM  and SUPERSEDED CHARACTER  See pier 24857",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "16175": {
     "glosses": [
@@ -19226,7 +19296,8 @@
       25542,
       "/",
       17493
-    ]
+    ],
+    "is_old": true
   },
   "16184": {
     "glosses": [
@@ -19402,7 +19473,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(platform + earth [modification, extended] + vehicle)  - Character (superimposed - modified)  SUPERSEDED SYNONYM and SUPERSEDED CHARACTER See stop,platform_(vehicle) 24290",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "16199": {
     "glosses": [
@@ -19737,7 +19809,8 @@
       14699,
       "/",
       17517
-    ]
+    ],
+    "is_old": true
   },
   "16223": {
     "glosses": [
@@ -19854,7 +19927,8 @@
       17192,
       "/",
       13685
-    ]
+    ],
+    "is_old": true
   },
   "16232": {
     "glosses": [
@@ -19967,7 +20041,8 @@
       8486,
       "/",
       12348
-    ]
+    ],
+    "is_old": true
   },
   "16240": {
     "glosses": [
@@ -20277,7 +20352,8 @@
       15927,
       "/",
       18209
-    ]
+    ],
+    "is_old": true
   },
   "16425": {
     "glosses": [
@@ -20771,7 +20847,8 @@
       15927,
       "/",
       18209
-    ]
+    ],
+    "is_old": true
   },
   "16461": {
     "glosses": [
@@ -21013,7 +21090,8 @@
       14919,
       "/",
       13918
-    ]
+    ],
+    "is_old": true
   },
   "16477": {
     "glosses": [
@@ -21097,7 +21175,8 @@
       "RK:-2",
       "/",
       13607
-    ]
+    ],
+    "is_old": true
   },
   "16484": {
     "glosses": [
@@ -21114,7 +21193,8 @@
       "RK:-2",
       "/",
       13607
-    ]
+    ],
+    "is_old": true
   },
   "16485": {
     "glosses": [
@@ -21129,7 +21209,8 @@
       24899,
       ";",
       8993
-    ]
+    ],
+    "is_old": true
   },
   "16486": {
     "glosses": [
@@ -21599,7 +21680,8 @@
       14897,
       "/",
       25406
-    ]
+    ],
+    "is_old": true
   },
   "16683": {
     "glosses": [
@@ -21922,7 +22004,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(pictograph: symbol suggests a sail on a mast)  - Character  SUPERSEDED SYNONYM  See sail 20519",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "16707": {
     "glosses": [
@@ -21930,7 +22013,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(pictograph: symbol suggests the outline of a sailboat.The symbol also can be explained as: combination of boat and sail)  - Character  SUPERSEDED SYNONYM  See sailboat,sailing_boat,yacht 20520",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "16708": {
     "glosses": [
@@ -22001,7 +22085,8 @@
       14647,
       "/",
       25777
-    ]
+    ],
+    "is_old": true
   },
   "16713": {
     "glosses": [
@@ -22146,7 +22231,8 @@
       13639,
       "/",
       8503
-    ]
+    ],
+    "is_old": true
   },
   "16723": {
     "glosses": [
@@ -22162,7 +22248,8 @@
       17238,
       "/",
       18209
-    ]
+    ],
+    "is_old": true
   },
   "16724": {
     "glosses": [
@@ -23209,7 +23296,8 @@
       14647,
       "/",
       16430
-    ]
+    ],
+    "is_old": true
   },
   "16962": {
     "glosses": [
@@ -23427,7 +23515,8 @@
       23619,
       "/",
       17717
-    ]
+    ],
+    "is_old": true
   },
   "16979": {
     "glosses": [
@@ -23945,7 +24034,8 @@
       8998,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "17015": {
     "glosses": [
@@ -24224,7 +24314,8 @@
       15189,
       "/",
       17192
-    ]
+    ],
+    "is_old": true
   },
   "17198": {
     "glosses": [
@@ -24569,7 +24660,8 @@
       15214,
       ";",
       9009
-    ]
+    ],
+    "is_old": true
   },
   "17223": {
     "glosses": [
@@ -24613,7 +24705,8 @@
       8998,
       "/",
       15666
-    ]
+    ],
+    "is_old": true
   },
   "17226": {
     "glosses": [
@@ -24728,7 +24821,8 @@
       12335,
       "/",
       14690
-    ]
+    ],
+    "is_old": true
   },
   "17235": {
     "glosses": [
@@ -24957,7 +25051,8 @@
       14188,
       "/",
       17252
-    ]
+    ],
+    "is_old": true
   },
   "17254": {
     "glosses": [
@@ -25149,7 +25244,8 @@
       16430,
       "/",
       13093
-    ]
+    ],
+    "is_old": true
   },
   "17270": {
     "glosses": [
@@ -25370,7 +25466,8 @@
       8998,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "17448": {
     "glosses": [
@@ -25620,7 +25717,8 @@
       13639,
       "/",
       8497
-    ]
+    ],
+    "is_old": true
   },
   "17465": {
     "glosses": [
@@ -25709,7 +25807,8 @@
       14947,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "17471": {
     "glosses": [
@@ -26433,7 +26532,8 @@
       "RK:-2",
       "/",
       25542
-    ]
+    ],
+    "is_old": true
   },
   "17523": {
     "glosses": [
@@ -26775,7 +26875,8 @@
       14390,
       "/",
       16161
-    ]
+    ],
+    "is_old": true
   },
   "17707": {
     "glosses": [
@@ -27065,7 +27166,8 @@
       13639,
       "/",
       8501
-    ]
+    ],
+    "is_old": true
   },
   "17729": {
     "glosses": [
@@ -27155,7 +27257,8 @@
       8996,
       "/",
       15701
-    ]
+    ],
+    "is_old": true
   },
   "17736": {
     "glosses": [
@@ -27498,7 +27601,8 @@
       15927,
       "/",
       18209
-    ]
+    ],
+    "is_old": true
   },
   "17763": {
     "glosses": [
@@ -27873,7 +27977,8 @@
       13639,
       "/",
       8499
-    ]
+    ],
+    "is_old": true
   },
   "17953": {
     "glosses": [
@@ -28194,7 +28299,8 @@
       25564,
       ";",
       8993
-    ]
+    ],
+    "is_old": true
   },
   "17977": {
     "glosses": [
@@ -28295,7 +28401,8 @@
     ],
     "pos": "WHITE",
     "explanation": "(up + down)  SUPERSEDED SYNONYM  See up_and_down 20524",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "17985": {
     "glosses": [
@@ -28727,7 +28834,8 @@
       8998,
       "/",
       14133
-    ]
+    ],
+    "is_old": true
   },
   "18020": {
     "glosses": [
@@ -29205,7 +29313,8 @@
       13639,
       "/",
       8500
-    ]
+    ],
+    "is_old": true
   },
   "18217": {
     "glosses": [
@@ -29817,7 +29926,8 @@
       9009,
       "/",
       23150
-    ]
+    ],
+    "is_old": true
   },
   "18266": {
     "glosses": [
@@ -30620,7 +30730,8 @@
       14647,
       "/",
       25777
-    ]
+    ],
+    "is_old": true
   },
   "20524": {
     "glosses": [
@@ -31269,7 +31380,8 @@
       20518,
       "/",
       25542
-    ]
+    ],
+    "is_old": true
   },
   "20603": {
     "glosses": [
@@ -31285,7 +31397,8 @@
       25542,
       "/",
       17493
-    ]
+    ],
+    "is_old": true
   },
   "20604": {
     "glosses": [
@@ -31300,7 +31413,8 @@
       25542,
       "/",
       12640
-    ]
+    ],
+    "is_old": true
   },
   "20605": {
     "glosses": [
@@ -33477,7 +33591,8 @@
       15474,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "21333": {
     "glosses": [
@@ -34356,7 +34471,8 @@
       16735,
       "/",
       15471
-    ]
+    ],
+    "is_old": true
   },
   "21553": {
     "glosses": [
@@ -34880,7 +34996,8 @@
       16735,
       "/",
       15471
-    ]
+    ],
+    "is_old": true
   },
   "21587": {
     "glosses": [
@@ -34895,7 +35012,8 @@
       15162,
       "/",
       15471
-    ]
+    ],
+    "is_old": true
   },
   "21588": {
     "glosses": [
@@ -34912,7 +35030,8 @@
       15162,
       "/",
       15471
-    ]
+    ],
+    "is_old": true
   },
   "21589": {
     "glosses": [
@@ -36289,7 +36408,8 @@
       23550,
       "/",
       24896
-    ]
+    ],
+    "is_old": true
   },
   "21846": {
     "glosses": [
@@ -37592,7 +37712,8 @@
       25542,
       "/",
       16687
-    ]
+    ],
+    "is_old": true
   },
   "22102": {
     "glosses": [
@@ -37609,7 +37730,8 @@
       14647,
       "/",
       16161
-    ]
+    ],
+    "is_old": true
   },
   "22103": {
     "glosses": [
@@ -41030,7 +41152,8 @@
       15927,
       "/",
       17786
-    ]
+    ],
+    "is_old": true
   },
   "22823": {
     "glosses": [
@@ -42607,7 +42730,8 @@
       15443,
       "/",
       24896
-    ]
+    ],
+    "is_old": true
   },
   "23072": {
     "glosses": [
@@ -43891,7 +44015,8 @@
       9009,
       "/",
       24896
-    ]
+    ],
+    "is_old": true
   },
   "23162": {
     "glosses": [
@@ -45856,7 +45981,8 @@
       "RK:-2",
       "/",
       14164
-    ]
+    ],
+    "is_old": true
   },
   "23450": {
     "glosses": [
@@ -50128,7 +50254,8 @@
       13918,
       "/",
       15471
-    ]
+    ],
+    "is_old": true
   },
   "23828": {
     "glosses": [
@@ -50263,7 +50390,8 @@
       14947,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "23837": {
     "glosses": [
@@ -50776,7 +50904,8 @@
       13918,
       "/",
       15471
-    ]
+    ],
+    "is_old": true
   },
   "23871": {
     "glosses": [
@@ -51928,7 +52057,8 @@
       8498,
       "/",
       25609
-    ]
+    ],
+    "is_old": true
   },
   "23949": {
     "glosses": [
@@ -55507,7 +55637,8 @@
       14430,
       "/",
       24176
-    ]
+    ],
+    "is_old": true
   },
   "24203": {
     "glosses": [
@@ -55667,7 +55798,8 @@
       14377,
       "/",
       14170
-    ]
+    ],
+    "is_old": true
   },
   "24214": {
     "glosses": [
@@ -57754,7 +57886,8 @@
       14133,
       "/",
       24896
-    ]
+    ],
+    "is_old": true
   },
   "24417": {
     "glosses": [
@@ -57931,7 +58064,8 @@
       22913,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24429": {
     "glosses": [
@@ -57959,7 +58093,8 @@
       12322,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24431": {
     "glosses": [
@@ -59351,7 +59486,8 @@
       14947,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "24602": {
     "glosses": [
@@ -59417,7 +59553,8 @@
       24750,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24607": {
     "glosses": [
@@ -59524,7 +59661,8 @@
       14390,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "24615": {
     "glosses": [
@@ -59742,7 +59880,8 @@
       15213,
       "/",
       24937
-    ]
+    ],
+    "is_old": true
   },
   "24630": {
     "glosses": [
@@ -60028,7 +60167,8 @@
       22913,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24649": {
     "glosses": [
@@ -60045,7 +60185,8 @@
       22913,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24650": {
     "glosses": [
@@ -60060,7 +60201,8 @@
       22913,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24651": {
     "glosses": [
@@ -61002,7 +61144,8 @@
       22913,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24719": {
     "glosses": [
@@ -61020,7 +61163,8 @@
       22913,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24720": {
     "glosses": [
@@ -61949,7 +62093,8 @@
       15214,
       ";",
       9009
-    ]
+    ],
+    "is_old": true
   },
   "24801": {
     "glosses": [
@@ -62699,7 +62844,8 @@
       25538,
       "/",
       14947
-    ]
+    ],
+    "is_old": true
   },
   "24857": {
     "glosses": [
@@ -63000,7 +63146,8 @@
       15474,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24893": {
     "glosses": [
@@ -63052,7 +63199,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(reference line [half-sized + reference line [half-sized]]: with a full square between them, the lines are relatively far apart) See also: nearness,closeness,proximity 25586  - Character (sequenced)  SUPERSEDED SYNONYM and SUPERSEDED CHARACTER  See farness,remoteness,farawayness 25559",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "24897": {
     "glosses": [
@@ -63285,7 +63433,8 @@
       15474,
       "/",
       15213
-    ]
+    ],
+    "is_old": true
   },
   "24916": {
     "glosses": [
@@ -67652,7 +67801,8 @@
       15172,
       "/",
       25623
-    ]
+    ],
+    "is_old": true
   },
   "25285": {
     "glosses": [
@@ -67707,7 +67857,8 @@
       9009,
       "/",
       13918
-    ]
+    ],
+    "is_old": true
   },
   "25289": {
     "glosses": [
@@ -71130,7 +71281,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(racket,racquet + racket,racquet [modification, mirrored]: pictograph of two crossed racquets)  - Character (superimposed - modified - redundant)",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "25543": {
     "glosses": [
@@ -71298,7 +71450,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(reference line + reference line + pointer, to the right on the left line + pointer, to the left on the right line : the full square between the reference lines, and the pointers pointing inwards from the outside, emphasize thickness.)  - Character (superimposed - sequenced - pointer)  SUPERSEDED SYNONYM  See fatness,thickness 25560",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "25562": {
     "glosses": [
@@ -71836,7 +71989,8 @@
     ],
     "pos": "YELLOW",
     "explanation": "(water [modification, higher position] + water + water [modification, lower position]: three channels of water used in the old Bliss-word for Denmark) - Character (superimposed - modified) SUPERSEDED CHARACTER",
-    "isCharacter": true
+    "isCharacter": true,
+    "is_old": true
   },
   "25624": {
     "glosses": [
@@ -72590,7 +72744,8 @@
       15474,
       "/",
       13175
-    ]
+    ],
+    "is_old": true
   },
   "25694": {
     "glosses": [
@@ -77850,7 +78005,8 @@
       24926,
       "/",
       13175
-    ]
+    ],
+    "is_old": true
   },
   "26102": {
     "glosses": [
