@@ -53,7 +53,7 @@ INDICATOR_SEMANTICS = {
             {"type": "NUMBER", "value": "plural", "category": "grammatical"}
         ],
     },
-    "28045": 
+    "28045":
     {
         "and": [
             {"type": "POS", "value": "noun", "category": "grammatical"},
