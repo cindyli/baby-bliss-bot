@@ -39,7 +39,12 @@ INDICATOR_SEMANTICS = {
     # the equivalent of the English present passive conditional form
     "9008": {"type": "TENSE", "value": "present_passive_conditional", "category": "grammatical"},
     # represent a concrete object
-    "9009": {"type": "POS", "value": "noun", "category": "grammatical"},
+    "9009": {
+        "and": [
+            {"type": "POS", "value": "noun", "category": "grammatical"},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
+        ]
+    },
     # represent multiple concrete objects
     "9010": {"type": "NUMBER", "value": "thing_plural", "category": "grammatical"},
     "9011": {"type": "NUMBER", "value": "plural", "category": "grammatical"},
