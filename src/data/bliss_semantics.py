@@ -2,7 +2,7 @@
 
 INDICATOR_SEMANTICS = {
     # infinitive verb or present tense verb
-    "8993": {"type": "POS", "value": "verb", "category": "grammatical"},
+    "8993": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null"}},
     # active verb
     "8994": {"type": "VOICE", "value": "active", "category": "grammatical"},
     # the equivalent of the English present conditional form
