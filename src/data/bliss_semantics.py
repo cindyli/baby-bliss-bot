@@ -1,45 +1,47 @@
 # Blissymbolics Indicators and Modifiers
 
 INDICATOR_SEMANTICS = {
-    # infinitive verb or present tense verb
-    "8993": {"type": "POS", "value": "verb", "category": "grammatical"},
-    # active verb
-    "8994": {"type": "VOICE", "value": "active", "category": "grammatical"},
+    # UPDATED SECTION
+    # action indicators
+    # infinitive verb or present tense verb; would tense be null here since we need to differentiate this with ID: 24807?
+    "8993": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null"}},
+    # active verb; action indicator active
+    "8994": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "null"}},
     # the equivalent of the English present conditional form
-    "8995": {"type": "POS", "value": "present_conditional", "category": "grammatical"},
+    "8995": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "conditional"}},
+    # description indicators
     # the equivalent of the English -ed or -en ending
-    "8996": {"type": "POS", "value": "past_participle", "category": "grammatical"},
+    "8996": {"type": "POS", "value": ["adjective", "adverb"], "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null"}},
     # equivalent to English words ending in -able
-    "8997": {"type": "POS", "value": "able", "category": "grammatical"},
+    "8997": {"type": "POS", "value": ["adjective", "adverb"], "category": "grammatical", "features": {"tense": "future", "voice": "null", "mood": "null"}},
     # the equivalent of English adjectives/adverbs
-    "8998": {
-        "or": [
-            {"type": "POS", "value": "adjective", "category": "grammatical"},
-            {"type": "POS", "value": "adverb", "category": "grammatical"}
-        ]
-    },
+    "8998": {"type": "POS", "value": ["adjective", "adverb"], "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "null"}},
+
+    # back to action indicators
     # the equivalent of the English future tense
-    "8999": {"type": "TENSE", "value": "future", "category": "grammatical"},
+    "8999": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "null", "mood": "null"}},
     # the equivalent of the English future conditional form
-    "9000": {"type": "TENSE", "value": "future_conditional", "category": "grammatical"},
+    "9000": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "active", "mood": "conditional"}},
     # the equivalent of the English future passive form
-    "9001": {"type": "TENSE", "value": "future_passive", "category": "grammatical"},
+    "9001": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "passive", "mood": "null"}},
     # the equivalent of the English future passive conditional form
-    "9002": {"type": "TENSE", "value": "future_passive_conditional", "category": "grammatical"},
-    # something is being acted upon
-    "9003": {"type": "VOICE", "value": "passive", "category": "grammatical"},
+    "9002": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "passive", "mood": "conditional"}},
+    # something is being acted upon; action indicator passive
+    "9003":  {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "null"}},
     # the equivalent of the English past tense
-    "9004": {"type": "TENSE", "value": "past", "category": "grammatical"},
+    "9004": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null"}},
     # the equivalent of the English past conditional form
-    "9005": {"type": "TENSE", "value": "past_conditional", "category": "grammatical"},
+    "9005": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "active", "mood": "conditional"}},
     # the equivalent of the English past passive conditional form
-    "9006": {"type": "TENSE", "value": "past_passive_conditional", "category": "grammatical"},
+    "9006": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "conditional"}},
     # the equivalent of the English past passive form
-    "9007": {"type": "TENSE", "value": "past_passive", "category": "grammatical"},
+    "9007": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "null"}},
     # the equivalent of the English present passive conditional form
-    "9008": {"type": "TENSE", "value": "present_passive_conditional", "category": "grammatical"},
-    # represent a concrete object
-    "9009": {
+    "9008": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "conditional"}},
+
+    ----------------------------
+    # distinction between abstract and concrete nouns
+     "9009": {
         "and": [
             {"type": "POS", "value": "noun", "category": "grammatical"},
             {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
@@ -51,7 +53,8 @@ INDICATOR_SEMANTICS = {
     "24667": {"type": "TENSE", "value": "noun", "category": "grammatical", "notes": "for teaching purposes"},
     "24668": {"type": "GENDER", "value": "feminine", "category": "grammatical"},
     "24669": {"type": "PERSON", "value": "first_person", "category": "grammatical"},
-    "28043": {"type": "ASPECT", "value": "continuous_verb", "category": "grammatical"},
+    # indicator (continuous form); has been removed, so I only included the aspect feature in this character only
+    "28043": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "conditional", "aspect": "continuous"}, "notes": "for teaching purposes"},
     "28044": {
         "and": [
             {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
@@ -72,15 +75,97 @@ INDICATOR_SEMANTICS = {
             {"type": "NUMBER", "value": "plural", "category": "grammatical"}
         ]
     },
-    "24665": {"type": "POS", "value": "adverb", "category": "grammatical"},
-    "24807": {
-        "and": [
-            {"type": "POS", "value": "verb", "category": "grammatical"},
-            {"type": "TENSE", "value": "present", "category": "grammatical"}
-        ]
-    },
+    --------------------------
+    # adverb indicator
+    "24665": {"type": "POS", "value": "adverb", "category": "grammatical", "notes": "for teaching purposes"}},
+    # verb indicator (present action); similar to ID: 8993
+    "24807": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "null"}, "notes": "for teaching purposes"},
     "25458": {"type": "SIZE", "value": "diminutive", "category": "grammatical", "notes": "for teaching purposes"},
 }
+
+
+    # PREVIOUS SECTION - DIDNT DELETE.
+    # # infinitive verb or present tense verb
+    # "8993": {"type": "POS", "value": "verb", "category": "grammatical"},
+    # # active verb
+    # "8994": {"type": "VOICE", "value": "active", "category": "grammatical"},
+    # # the equivalent of the English present conditional form
+    # "8995": {"type": "POS", "value": "present_conditional", "category": "grammatical"},
+    # # the equivalent of the English -ed or -en ending
+    # "8996": {"type": "POS", "value": "past_participle", "category": "grammatical"},
+    # # equivalent to English words ending in -able
+    # "8997": {"type": "POS", "value": "able", "category": "grammatical"},
+    # # the equivalent of English adjectives/adverbs
+    # "8998": {
+    #     "or": [
+    #         {"type": "POS", "value": "adjective", "category": "grammatical"},
+    #         {"type": "POS", "value": "adverb", "category": "grammatical"}
+    #     ]
+    # },
+    
+    # # the equivalent of the English future tense
+    # "8999": {"type": "TENSE", "value": "future", "category": "grammatical"},
+    # # the equivalent of the English future conditional form
+    # "9000": {"type": "TENSE", "value": "future_conditional", "category": "grammatical"},
+    # # the equivalent of the English future passive form
+    # "9001": {"type": "TENSE", "value": "future_passive", "category": "grammatical"},
+    # # the equivalent of the English future passive conditional form
+    # "9002": {"type": "TENSE", "value": "future_passive_conditional", "category": "grammatical"},
+    # # something is being acted upon; action indicator passive
+    # "9003":  {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "null"}},
+    # # the equivalent of the English past tense
+    # "9004": {"type": "TENSE", "value": "past", "category": "grammatical"},
+    # # the equivalent of the English past conditional form
+    # "9005": {"type": "TENSE", "value": "past_conditional", "category": "grammatical"},
+    # # the equivalent of the English past passive conditional form
+    # "9006": {"type": "TENSE", "value": "past_passive_conditional", "category": "grammatical"},
+    # # the equivalent of the English past passive form
+    # "9007": {"type": "TENSE", "value": "past_passive", "category": "grammatical"},
+    # # the equivalent of the English present passive conditional form
+    # "9008": {"type": "TENSE", "value": "present_passive_conditional", "category": "grammatical"},
+    # represent a concrete object
+#     "9009": {
+#         "and": [
+#             {"type": "POS", "value": "noun", "category": "grammatical"},
+#             {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
+#         ]
+#     },
+#     # represent multiple concrete objects
+#     "9010": {"type": "NUMBER", "value": "thing_plural", "category": "grammatical"},
+#     "9011": {"type": "NUMBER", "value": "plural", "category": "grammatical"},
+#     "24667": {"type": "TENSE", "value": "noun", "category": "grammatical", "notes": "for teaching purposes"},
+#     "24668": {"type": "GENDER", "value": "feminine", "category": "grammatical"},
+#     "24669": {"type": "PERSON", "value": "first_person", "category": "grammatical"},
+#     "28043": {"type": "ASPECT", "value": "continuous_verb", "category": "grammatical"},
+#     "28044": {
+#         "and": [
+#             {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
+#             {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+#         ],
+#     },
+#     "28045":
+#     {
+#         "and": [
+#             {"type": "POS", "value": "noun", "category": "grammatical"},
+#             {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+#         ]
+#     },
+#     "28046": {
+#         "and": [
+#             {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
+#             {"type": "POS", "value": "noun", "category": "grammatical"},
+#             {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+#         ]
+#     },
+#     "24665": {"type": "POS", "value": "adverb", "category": "grammatical"},
+#     "24807": {
+#         "and": [
+#             {"type": "POS", "value": "verb", "category": "grammatical"},
+#             {"type": "TENSE", "value": "present", "category": "grammatical"}
+#         ]
+#     },
+#     "25458": {"type": "SIZE", "value": "diminutive", "category": "grammatical", "notes": "for teaching purposes"},
+# }
 
 MODIFIER_SEMANTICS = {
     # Semantic Modifiers
