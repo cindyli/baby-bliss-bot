@@ -116,11 +116,13 @@ def process_data(json_in_path, json_id_out_path):
         sys.exit(1)
 
     # Output containers
-    id_map_output = []
+    id_map_output = {}
 
     print("Processing items...")
-    for item in data:
-        item_id = item.get("id")
+    # Handle dictionary input (keyed by ID)
+    items = [(item_id, item) for item_id, item in data.items()]
+    
+    for item_id, item in items:
         description_obj = item.get("description", {})
         pos_val = item.get("pos")
 
@@ -169,13 +171,13 @@ def process_data(json_in_path, json_id_out_path):
         if semantics:
             new_item["semantics"] = semantics
 
-        id_map_output.append(new_item)
+        id_map_output[item_id] = new_item
 
     # Write Output of ID Map
     print(f"Writing processed items to {json_id_out_path}...")
     try:
         with open(json_id_out_path, 'w', encoding='utf-8') as f:
-            # Output as a list of objects (preserving input root structure)
+            # Output as a dictionary keyed by ID
             json.dump(id_map_output, f, indent=2, ensure_ascii=False)
     except Exception as e:
         print(f"Error writing ID output: {e}")
