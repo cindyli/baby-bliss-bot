@@ -82,8 +82,10 @@ def find_duplicates(input_path, output_path):
 
     print("Analyzing glosses and metadata...")
 
-    for item in data:
-        item_id = item.get("id")
+    # Handle dictionary input (keyed by ID)
+    items = [(item_id, item) for item_id, item in data.items()]
+
+    for item_id, item in items:
         glosses = item.get("glosses", {})
 
         # Get the comparison signature for this specific item
