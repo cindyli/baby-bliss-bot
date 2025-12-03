@@ -94,62 +94,61 @@ try:
 
         # If the ID is in special_glosses, use its value directly and skip processing.
         if item_id in special_glosses:
-            primary_output_data[item_id] = special_glosses[item_id]
-            continue
+            final_glosses = special_glosses[item_id]
+        else:
+            description = item.get("description", "")
+            if not description:
+                continue
 
-        description = item.get("description", "")
-        if not description:
-            continue
+            # 1. Replace "_" with " "
+            processed_desc = description.replace("_", " ")
 
-        # 1. Replace "_" with " "
-        processed_desc = description.replace("_", " ")
+            # 2. Remove "(OLD)" suffix and any preceding space/underscore
+            if processed_desc.endswith("(OLD)"):
+                processed_desc = processed_desc[:-5].rstrip()
+                is_old = True
 
-        # 2. Remove "(OLD)" suffix and any preceding space/underscore
-        if processed_desc.endswith("(OLD)"):
-            processed_desc = processed_desc[:-5].rstrip()
-            is_old = True
+            # 3. Extract parenthetical suffix (e.g., "(ckb)")
+            parenthetical_suffix = ""
+            # This regex finds a space followed by parentheses at the end of the string
+            match = re.search(r'\s(\([^)]+\))$', processed_desc)
+            if match:
+                parenthetical_suffix = match.group(1)
+                # Remove the matched suffix from the description
+                processed_desc = processed_desc[:match.start()].strip()
 
-        # 3. Extract parenthetical suffix (e.g., "(ckb)")
-        parenthetical_suffix = ""
-        # This regex finds a space followed by parentheses at the end of the string
-        match = re.search(r'\s(\([^)]+\))$', processed_desc)
-        if match:
-            parenthetical_suffix = match.group(1)
-            # Remove the matched suffix from the description
-            processed_desc = processed_desc[:match.start()].strip()
+            # 4. Handle "-(to)" suffix and prepend "to"
+            add_to_prefix = False
+            if processed_desc.endswith("-(to)"):
+                processed_desc = processed_desc[:-5]
+                add_to_prefix = True
 
-        # 4. Handle "-(to)" suffix and prepend "to"
-        add_to_prefix = False
-        if processed_desc.endswith("-(to)"):
-            processed_desc = processed_desc[:-5]
-            add_to_prefix = True
+            # 5. Split by comma for other cases
+            initial_glosses = processed_desc.split(',')
 
-        # 5. Split by comma for other cases
-        initial_glosses = processed_desc.split(',')
+            # 6. Expand glosses containing "(s)"
+            expanded_glosses = []
+            for gloss in initial_glosses:
+                stripped_gloss = gloss.strip()
+                if '(s)' in stripped_gloss:
+                    # Add singular form (replace '(s)' with '')
+                    expanded_glosses.append(stripped_gloss.replace('(s)', '').strip())
+                    # Add plural form (replace '(s)' with 's')
+                    expanded_glosses.append(stripped_gloss.replace('(s)', 's').strip())
+                else:
+                    expanded_glosses.append(stripped_gloss)
 
-        # 6. Expand glosses containing "(s)"
-        expanded_glosses = []
-        for gloss in initial_glosses:
-            stripped_gloss = gloss.strip()
-            if '(s)' in stripped_gloss:
-                # Add singular form (replace '(s)' with '')
-                expanded_glosses.append(stripped_gloss.replace('(s)', '').strip())
-                # Add plural form (replace '(s)' with 's')
-                expanded_glosses.append(stripped_gloss.replace('(s)', 's').strip())
-            else:
-                expanded_glosses.append(stripped_gloss)
+                # Append the extracted suffix to all glosses
+                if parenthetical_suffix:
+                    suffixed_glosses = [f"{g} {parenthetical_suffix}" for g in expanded_glosses if g]
+                else:
+                    suffixed_glosses = [g for g in expanded_glosses if g]
 
-            # Append the extracted suffix to all glosses
-            if parenthetical_suffix:
-                suffixed_glosses = [f"{g} {parenthetical_suffix}" for g in expanded_glosses if g]
-            else:
-                suffixed_glosses = [g for g in expanded_glosses if g]
-
-            # Prepend "to " if needed
-            if add_to_prefix:
-                final_glosses = [f"to {g}" for g in suffixed_glosses if g]
-            else:
-                final_glosses = [g for g in suffixed_glosses if g]
+                # Prepend "to " if needed
+                if add_to_prefix:
+                    final_glosses = [f"to {g}" for g in suffixed_glosses if g]
+                else:
+                    final_glosses = [g for g in suffixed_glosses if g]
 
         new_item = {
             "glosses": final_glosses

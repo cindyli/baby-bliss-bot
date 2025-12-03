@@ -5002,7 +5002,7 @@
   {
     "id": "13349",
     "description": "citizen",
-    "pos": "YELLOW",
+    "pos": "BLUE",
     "explanation": "(earth + man + woman (combination): man or woman having a relationship to a country or territory)  - Character (superimposed - combined)",
     "isCharacter": true
   },
@@ -13922,7 +13922,7 @@
   {
     "id": "15417",
     "description": "male_genitals_(man_with_penis)",
-    "pos": "BLUE",
+    "pos": "YELLOW",
     "explanation": "(standing_(standing_person) + pictograph of penis: used as the base character for penis)  - Character (superimposed)",
     "isCharacter": true
   },
@@ -36528,7 +36528,7 @@
   {
     "id": "22654",
     "description": "Mjolnir",
-    "pos": "BLUE",
+    "pos": "YELLOW",
     "explanation": "(hammer + Nordic God: Thor's hammer)",
     "isCharacter": false,
     "composition": [
@@ -44407,7 +44407,7 @@
   {
     "id": "23705",
     "description": "wash_up,do_the_dishes-(to)",
-    "pos": "YELLOW",
+    "pos": "RED",
     "explanation": "(to wash + glassware + action indicator)",
     "isCharacter": false,
     "composition": [
@@ -45661,7 +45661,7 @@
   {
     "id": "23884",
     "description": "hum-(to)",
-    "pos": "YELLOW",
+    "pos": "RED",
     "explanation": "(to sing + without + word + action indicator)",
     "isCharacter": false,
     "composition": [
@@ -54166,7 +54166,7 @@
   {
     "id": "24664",
     "description": "I_need_more_time,give_me_time",
-    "pos": "WHITE",
+    "pos": "RED",
     "explanation": "(need + time + action indicator)",
     "isCharacter": false,
     "composition": [
@@ -55475,7 +55475,7 @@
   {
     "id": "24769",
     "description": "Take_your_time!",
-    "pos": "WHITE",
+    "pos": "RED",
     "explanation": "(use + time + action indicator)",
     "isCharacter": false,
     "composition": [
@@ -58944,7 +58944,7 @@
   {
     "id": "25121",
     "description": "mummy_(imaginary)",
-    "pos": "YELLOW",
+    "pos": "BLUE",
     "explanation": "(imaginary person + dead + cloth)",
     "isCharacter": false,
     "composition": [
@@ -60103,7 +60103,7 @@
   {
     "id": "25208",
     "description": "usually_do,habitually_do-(to)",
-    "pos": "YELLOW",
+    "pos": "RED",
     "explanation": "(habit,custom + action indicator)",
     "isCharacter": false,
     "composition": [
@@ -60480,7 +60480,7 @@
   {
     "id": "25263",
     "description": "Batman",
-    "pos": "YELLOW",
+    "pos": "BLUE",
     "explanation": "(make-believe person + bat_(animal))",
     "isCharacter": false,
     "composition": [
@@ -63895,14 +63895,14 @@
   {
     "id": "25540",
     "description": "couple_(female)",
-    "pos": "YELLOW",
+    "pos": "BLUE",
     "explanation": "(woman + woman)  - Character (superimposed)",
     "isCharacter": true
   },
   {
     "id": "25541",
     "description": "couple_(male)",
-    "pos": "YELLOW",
+    "pos": "BLUE",
     "explanation": "(man + man)  - Character (superimposed)",
     "isCharacter": true
   },
@@ -67129,7 +67129,7 @@
   {
     "id": "25845",
     "description": "balance_(walking,standing)-(to)",
-    "pos": "YELLOW",
+    "pos": "RED",
     "explanation": "(walk,go-(to) + without + fall,drop,spill,tumble + action indicator: walking without falling, change classifier to “sit”, when more appropriate)",
     "isCharacter": false,
     "composition": [
