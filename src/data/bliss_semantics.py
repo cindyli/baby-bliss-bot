@@ -4,88 +4,105 @@ INDICATOR_SEMANTICS = {
     #UPDATED SECTION
     
     # action indicators
-    # infinitive verb or present tense verb; similar to ID: 24807 (includes tense as present), here is doesn;t include tense
-    "8993": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null"}},
+    # infinitive verb or present tense verb; similar to ID: 24807 (includes tense as present), here is doesn't include tense
+    "8993": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "form": "infinitive"}, "style": ["telegraphic", "full-form"]},
     # active verb
-    "8994": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "null"}},
+    "8994": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "null", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English present conditional form
-    "8995": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "conditional"}},
+    "8995": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "conditional", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     
     # description indicators
     # the equivalent of the English -ed or -en ending
-    "8996": {"type": "POS", "value": ["adjective", "adverb"], "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null"}},
+    "8996": {"type": "POS", "value": ["adjective", "adverb"], "category": "semantic", "features": {"modality": "state"}, "style": ["telegraphic", "full-form"]},
     # equivalent to English words ending in -able
-    "8997": {"type": "POS", "value": ["adjective", "adverb"], "category": "grammatical", "features": {"tense": "future", "voice": "null", "mood": "null"}},
+    "8997": {"type": "POS", "value": ["adjective", "adverb"], "category": "semantic", "features": {"modality": "ability"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of English adjectives/adverbs
-    "8998": {"type": "POS", "value": ["adjective", "adverb"], "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "null"}},
+    "8998": {"type": "POS", "value": ["adjective", "adverb"], "category": "semantic", "features": {"modality": "null"}, "style": ["telegraphic", "full-form"]},
 
     # back to action indicators
     # the equivalent of the English future tense
-    "8999": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "active", "mood": "null"}},
+    "8999": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "active", "mood": "null", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English future conditional form
-    "9000": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "active", "mood": "conditional"}},
+    "9000": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "active", "mood": "conditional", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English future passive form
-    "9001": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "passive", "mood": "null"}},
+    "9001": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "passive", "mood": "null", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English future passive conditional form
-    "9002": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "passive", "mood": "conditional"}},
+    "9002": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "passive", "mood": "conditional", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # something is being acted upon
-    "9003": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "null"}},
+    "9003": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "null", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English past tense
-    "9004": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "active", "mood": "null"}},
+    "9004": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "active", "mood": "null", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English past conditional form
-    "9005": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "active", "mood": "conditional"}},
+    "9005": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "active", "mood": "conditional", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English past passive conditional form
-    "9006": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "conditional"}},
+    "9006": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "conditional", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English past passive form
-    "9007": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "null"}},
+    "9007": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "null", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
     # the equivalent of the English present passive conditional form
-    "9008": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "conditional"}},
+    "9008": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "conditional", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
 
-    
+       
     # represent a concrete object
     "9009": {
         "and": [
-            {"type": "POS", "value": "noun", "category": "grammatical"},
+            {"type": "POS", "value": "noun", "category": "grammatical", "style": ["telegraphic", "full-form"]},
             {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
         ]
     },
     
-    ------------------ NEED TO CHECK --------------------------
     # represent multiple concrete objects
-    "9010": {"type": "NUMBER", "value": "thing_plural", "category": "grammatical"},
-    "9011": {"type": "NUMBER", "value": "plural", "category": "grammatical"},
-    "24667": {"type": "TENSE", "value": "noun", "category": "grammatical", "notes": "for teaching purposes"},
-    "24668": {"type": "GENDER", "value": "feminine", "category": "grammatical"},
-    "24669": {"type": "PERSON", "value": "first_person", "category": "grammatical"},
-    # indicator (continuous form), removed character so only included aspect feature here
-    "28043": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect": "continuous"}, "notes": "for teaching purposes"}},
-    "28044": {
+    "9010": {
         "and": [
-            {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
-            {"type": "NUMBER", "value": "plural", "category": "grammatical"}
-        ],
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural"}, "style": ["telegraphic", "full-form"]},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
+        ]
     },
+    "9011": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural"}, "style": ["telegraphic", "full-form"]},
+    "24667": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}, "style": ["telegraphic", "full-form"]} "notes": "for teaching purposes"},
+    "24668": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "style": ["telegraphic", "full-form"]} "notes": "for teaching purposes"},
+    "24669": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "first-person"}, "style": ["telegraphic", "full-form"]}, "notes": "for teaching purposes"},
+    # indicator (continuous form), removed character so only included aspect feature here
+    "28043": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect": "continuous", "form": "inflected"}, "style": ["telegraphic", "full-form"], "notes": "for teaching purposes"},
+    "28044": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"}, "style": ["telegraphic", "full-form"]},
     "28045":
     {
         "and": [
-            {"type": "POS", "value": "noun", "category": "grammatical"},
-            {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+            "type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}, "style": ["telegraphic", "full-form"]},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
         ]
     },
     "28046": {
         "and": [
-            {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
-            {"type": "POS", "value": "noun", "category": "grammatical"},
-            {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"}, "style": ["telegraphic", "full-form"]},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
         ]
     },
------------------------------------------------------------------
     
     # indicator (adverb)
-    "24665": {"type": "POS", "value": "adverb", "category": "grammatical", "notes": "for teaching purposes"},
+    "24665": {"type": "POS", "value": "adverb", "category": "grammatical", "style": ["full-form"]},"notes": "for teaching purposes"},
     # similar to ID: 8993; 
-    "24807": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "null"}, "notes": "for teaching purposes"},
-    "25458": {"type": "SIZE", "value": "diminutive", "category": "grammatical", "notes": "for teaching purposes"},
+    "24807": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "null", "form": "inflected"}, "style": ["telegraphic"], "notes": "for teaching purposes"},
+    "25458": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"size": "diminutive"}, "style": ["telegraphic", "full-form"]}, "notes": "for teaching purposes"},
+
+    # added more indicators from WinBliss
+    "24670": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "imperative", "form": "inflected"}, "style": ["telegraphic", "full-form"]},
+    "24671": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "indefinite"}, "style": ["telegraphic", "full-form"]} "notes": "for teaching purposes"},
+    "24672": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "neutral"}, "style": ["telegraphic", "full-form"]}, "notes": "for teaching purposes"},
+    "24678": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "second-person"}, "style": ["telegraphic", "full-form"]}, "notes": "for teaching purposes"},
+    "24679": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "third-person"}, "style": ["telegraphic", "full-form"]}, "notes": "for teaching purposes"},
+    "28045": {
+        "and": [
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}, "style": ["telegraphic", "full-form"]},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
+        ]
+    },
+    "28046": {
+        "and": [
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"}, "style": ["telegraphic", "full-form"]},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
+        ]
+    },
+    # did not add possessive indicator
 }
 
 # PREVIOUS SECTION - DIDNT DELETE.
