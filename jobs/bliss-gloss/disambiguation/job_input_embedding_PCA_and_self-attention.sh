@@ -13,8 +13,8 @@
 #SBATCH --nodes=1
 #SBATCH --gpus-per-node=h100:1
 #SBATCH --mem=64G
-#SBATCH --ntasks-per-node=4
-#SBATCH --cpus-per-task=4
+#SBATCH --ntasks-per-node=1
+#SBATCH --cpus-per-task=1
 #SBATCH --account=def-whkchun
 #SBATCH --output=%x.o%j
 #SBATCH --mail-user=cli@ocadu.ca
@@ -23,17 +23,8 @@
 pip install --upgrade pip
 module load python/3.13
 
-virtualenv --no-download $SLURM_TMPDIR/env
-source $SLURM_TMPDIR/env/bin/activate
-
-pip install --upgrade pip
-
-module load StdEnv/2023
-
-pip install kneed==0.8.5
-pip install torch==2.7.1 transformers==4.56.2
-
+source ~/.virtualenvs/transformers_torch/bin/activate
 pip list
 
 echo "=== Disambiguate synonyms using PCA and self-attention methods with job ID $SLURM_JOB_ID on nodes $SLURM_JOB_NODELIST."
-python ~/bliss_gloss/disambiguation/input_embedding_PCA_and_self-attention.py > ~/bliss_gloss/disambiguation/test_results/IE_average_OE_calculated_24887_dispersion_dissemination_scattering_spread_spreading.log
+python ~/bliss_gloss/disambiguation/input_embedding_PCA_and_self-attention.py > ~/bliss_gloss/disambiguation/test_results/IE_average_PCs_OE_calculated_24852_break_fracture_injury_damage.log

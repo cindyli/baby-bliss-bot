@@ -8,30 +8,53 @@ The working directory for all steps is: [`job/bliss-gloss/integrate-bliss-symbol
 
 ## Step 1: Add Single-Token Gloss Symbols
 
+This step has two sub-steps:
+
+1. Gloss Clean-up
+2. Add Single-Token-Gloss Symbols
+
 **Working directory**: [`job/bliss-gloss/integrate-bliss-symbols/1-add-single-token-gloss-symbols`](../jobs/bliss-gloss/integrate-bliss-symbols/1-add-single-token-gloss-symbols)
+
+### Step 1.1. Gloss Clean-up
+
+Symbol glosses are provided in a spreadsheet. They have special markers and separators. This step is to normalize them into individual glosses that make sense for processing.
+
+The script performs the following processing steps:
+
+1. Handle Special Glosses: Checks if an item's symbol id matches a predefined list of special cases (e.g., punctuation, numbers, single letters). If a match is found, uses the predefined gloss value directly, skipping all other processing for that item.
+
+2. Initial Cleanup: For regular items, replace all underscores (_) with spaces to create more readable text.
+
+3. Remove Suffix "(OLD)": If a description ends with "(OLD)", this suffix and any preceding whitespace are removed.
+
+4. Handle Plurals (s): Split the description into individual glosses by commas. If any gloss contains "(s)" (e.g., "glove(s)"), it expands it into two separate glosses: a singular form ("glove") and a plural form ("gloves").
+
+    Process Verb Marker -(to): If the original description ends with -(to), the script flags it, removes the suffix, and then prepends "to " to every resulting gloss for that entry (e.g., "advance,go-(to)" becomes "to advance", "to go").
+
+### Step 1.2 Add Single-Token-Gloss Symbols
 
 This step identifies and adds symbols that meet specific criteria.
 
-### Criteria
+#### Criteria
 
 A Bliss symbol is added if:
 
 1. It has **only one gloss**.
 2. That gloss is **a single token** according to the LLaMA tokenizer.
 
-### Description
+#### Description
 
-The script:
+The script performs the following steps:
 
-- Iterates through the Bliss dictionary.
-- Checks if each symbol meets the above criteria.
-- For qualifying symbols:
-  - Adds a new token in the format of `[BLISS_{blissID}]`.
+1. Iterates through the Bliss dictionary.
+2. Checks if each symbol meets the above criteria.
+3. For qualifying symbols:
+  - Adds a new token in the format of `[BLISS_{blissID}_start]`.
   - Copies the input and output embeddings from the original gloss token to the new token.
 
 **Total tokens added in this step:** 2369
 
-### Script Details
+#### Script Details
 
 * Script: [`add_single_token_gloss_symbols.py`](../jobs/bliss-gloss/integrate-bliss-symbols/1-add-single-token-gloss-symbols/add_single_token_gloss_symbols.py)
 

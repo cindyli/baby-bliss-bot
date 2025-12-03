@@ -115,7 +115,7 @@ def process_fine_tuning_sentences(orig_fine_tuning_sentences, bci_av_id, token_t
 
     # Replace glosses of the in-processing bci_av_id with the corresponding token
     glosses_for_current_id = existing_id_gloss_list[bci_av_id]
-    processed_single_sentences = [replace_whole_word(sentence, glosses_for_current_id, token_template.format(bciAvId=bci_av_id)) for sentence in normalized_sentences]
+    processed_single_sentences = [replace_whole_word(sentence, glosses_for_current_id, " " + token_template.format(bciAvId=bci_av_id)) for sentence in normalized_sentences]
 
     # Go through the list of BCI-AV-IDs already in the model and replace their glosses with the corresponding tokens
     # This is to ensure the fine-tuning learns how different Bliss tokens interact with each other
@@ -123,7 +123,7 @@ def process_fine_tuning_sentences(orig_fine_tuning_sentences, bci_av_id, token_t
     for sentence in processed_single_sentences:
         modified = sentence
         for gloss_id, target_glosses in existing_id_gloss_list.items():
-            modified = replace_whole_word(modified, target_glosses, token_template.format(bciAvId=gloss_id))
+            modified = replace_whole_word(modified, target_glosses, " " + token_template.format(bciAvId=gloss_id))
         if modified != sentence:
             processed_sentences.append(modified)
 
@@ -197,9 +197,9 @@ def create_training_data(model, tokenizer, positive_context_sentences, negative_
 
     # Negative context sentences - low target logits
     for context in negative_context_sentences:
-        h, logits = get_hidden_state_and_next_token_logits(model, tokenizer, context)
+        h, logits = get_hidden_state_and_next_token_logits(model, tokenizer, context, True)
         hidden_states.append(h)
-        target_logits.append(-10)  # discourage predicting the target token
+        target_logits.append(logits[0, target_token_ids].min().item())  # discourage predicting the target token
 
     return torch.cat(hidden_states, dim=0).to(model.device), torch.tensor(target_logits, device=model.device)
 

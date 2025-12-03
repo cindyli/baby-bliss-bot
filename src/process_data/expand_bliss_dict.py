@@ -140,12 +140,24 @@ def process_dictionary(json_in_path, tsv_in_path, json_out_path):
 
     print(f"Updated {matched_count} entries with multilingual descriptions.")
 
-    # 4. Write Output
+    # 4. Convert list to dictionary indexed by "id"
+    print("Converting output to dictionary indexed by 'id'...")
+    json_out = {}
+    for item in data:
+        item_id = item.get("id")
+        if item_id:
+            # Remove "id" from item since it's now the key
+            item_copy = {k: v for k, v in item.items() if k != "id"}
+            json_out[item_id] = item_copy
+        else:
+            print(f"Warning: Item has no 'id' field: {item}")
+
+    # 5. Write Output
     print(f"Writing output to {json_out_path}...")
     try:
         with open(json_out_path, 'w', encoding='utf-8') as f:
-            json.dump(data, f, indent=2, ensure_ascii=False)
-        print("Done.")
+            json.dump(json_out, f, indent=2, ensure_ascii=False)
+        print(f"Done. Wrote {len(json_out)} entries.")
     except Exception as e:
         print(f"Error writing output file: {e}")
         sys.exit(1)
