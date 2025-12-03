@@ -121,7 +121,7 @@ def process_data(json_in_path, json_id_out_path):
     print("Processing items...")
     # Handle dictionary input (keyed by ID)
     items = [(item_id, item) for item_id, item in data.items()]
-    
+
     for item_id, item in items:
         description_obj = item.get("description", {})
         pos_val = item.get("pos")
