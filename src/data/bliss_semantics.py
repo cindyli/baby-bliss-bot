@@ -7,8 +7,8 @@ Features - specific properties of a word within its POS
     * Verbs:
         * tense - locates an action in time: (null, past, present, future) 
         * voice - shows relationship between the subject and action: (null, passive, active)
-        * mood  - expresses attitude or intent: (null, declarative, conditional, imperative)
-        * aspect - indicates how an action occurs over time: (null, continuous) #need to figure out if there is perfect aspect
+        * mood  - expresses attitude or intent: (null, declarative, conditional, imperative) # mood may vary language to language on how its used
+        * aspect - indicates how an action occurs over time: (null, continuous) # need to figure out if there is perfect aspect. Aspect may vary language to language on how its used
         * form - variations of verbs: (inflected, infinitive, present-participle, past-participle-1, past-participle-2) # simplifying finite (inflected) and infinite (infinitive and participles); when tense, voice, aspect, mood are null, its an infinitive
     * Nouns:
         * number: (singular, plural)
@@ -83,7 +83,8 @@ INDICATOR_SEMANTICS = {
     },
     "9011": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural"}},
     "24667": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}, "notes": "for teaching purposes"},
-    "24668": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "notes": "for teaching purposes", "equivalent_modifier": "14166", "priority":"2"}, # the female modifier is used more. Indicator is not used in communication
+   # the female modifier (ID: 14166) is used more. Indicator is not used in communication
+    "24668": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "notes": "for teaching purposes", "equivalent_modifier": "14166", "priority":"2"},
     "24669": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "first-person", "notes": "for teaching purposes"},
     "28043": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect": "continuous", "form": "inflected"}, "notes": "for teaching purposes"},
     "28044": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"},
@@ -105,15 +106,16 @@ INDICATOR_SEMANTICS = {
     "24665": {"type": "POS", "value": "adverb", "category": "grammatical", "notes": "for teaching purposes", "priority": "2"},
     # similar to ID: 8993; 
     "24807": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "declarative", "aspect" : "null", "form": "inflected"}, "notes": "for teaching purposes", "priority": "2"},
-    "25458": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"size": "diminutive", "form": "inflected"}, "notes": "for teaching purposes", "equivalent_modifier": "28052", "priority":"2"}, # the diminutive modifier is used more. Indicator is not used
+    # the diminutive modifier is used more. Indicator (ID: 28052) is not used
+    "25458": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"size": "diminutive", "form": "inflected"}, "notes": "for teaching purposes", "equivalent_modifier": "28052", "priority":"2"},
 
     # added more indicators from WinBliss
     # imperative mood
     "24670": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "imperative", "aspect" : "null", "form": "inflected"}},
     # 3 participles
-    "24674": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "past-participle-1"}, "notes": "for teaching purposes"}, # mood and aspect may vary language to lanaguage on how its used
-    "24675": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "past-participle-2"}, "notes": "for teaching purposes"}, # mood and aspect may vary language to lanaguage on how its used
-    "24677": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "present-participle"}, "notes": "for teaching purposes"}, # mood and aspect may vary language to lanaguage on how its used
+    "24674": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "past-participle-1"}, "notes": "for teaching purposes"},
+    "24675": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "past-participle-2"}, "notes": "for teaching purposes"},
+    "24677": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "present-participle"}, "notes": "for teaching purposes"},
     # back to nouns
     "24671": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "indefinite"}, "notes": "for teaching purposes"},
     "24672": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "neutral"}, "notes": "for teaching purposes"},
@@ -133,10 +135,10 @@ INDICATOR_SEMANTICS = {
     },
 
    ----------------------------------------
-   # possessive indicator
+   # possessive indicator; both indicator and modifier (ID: 12663) are used, but indicator is used more
    "24676": {"type": "POS", "value": "noun", "category": "grammatical", "features": {?}, "notes": "for teaching purposes", "equivalent_modifier": "12663", "priority":"1"},
-   # object form
-   "24673": {"type": "POS", "value": "noun", "category": "grammatical", "features": {?}, "notes": "for teaching purposes", "equivalent_modifier": "28057", "priority":["optional", "1"]}, # can use object form with or without indicator - is an alternative, modifier has never been used
+   # object form; can use object form with or without indicator - is an alternative, modifier (ID: 28057) has never been used
+   "24673": {"type": "POS", "value": "noun", "category": "grammatical", "features": {?}, "notes": "for teaching purposes", "equivalent_modifier": "28057", "priority":["optional", "1"]},
 }
 
 # PREVIOUS SECTION - DIDNT DELETE.
