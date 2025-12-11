@@ -5,16 +5,10 @@ Handles Use Case 3: Compose new Bliss words from semantic specifications.
 Takes a semantic JSON specification and returns a Bliss composition.
 """
 
-from typing import Dict, List, Optional
+from typing import Dict, Optional
 
 # Import from src.data for project-root compatibility
-try:
-    from src.data.bliss_semantics import MODIFIER_SEMANTICS, INDICATOR_SEMANTICS
-except ImportError:
-    try:
-        from data.bliss_semantics import MODIFIER_SEMANTICS, INDICATOR_SEMANTICS
-    except ImportError:
-        from ..data.bliss_semantics import MODIFIER_SEMANTICS, INDICATOR_SEMANTICS
+from src.data.bliss_semantics import MODIFIER_SEMANTICS, INDICATOR_SEMANTICS
 from .symbol_classifier import SymbolClassifier
 
 
@@ -82,7 +76,7 @@ class BlissComposer:
             semantic_spec: Dict with keys:
                 - classifier: str (gloss for the classifier)
                 - specifiers: List[str] (glosses for specifiers, optional)
-                - semantics: List[Dict] (semantic modifications, optional)
+                - semantics: Dict (semantic modifications, optional)
 
         Returns:
             Dict with composition and metadata, or error info
@@ -116,7 +110,7 @@ class BlissComposer:
                 result["warnings"].append(f"Specifier not found: {specifier_gloss}")
 
         # Add semantic modifiers and indicators
-        semantics = semantic_spec.get("semantics", [])
+        semantics = semantic_spec.get("semantics", {})
         semantic_ids = self._find_symbols_for_semantics(semantics)
         if "error" in semantic_ids:
             return {
@@ -159,12 +153,12 @@ class BlissComposer:
 
         return None
 
-    def _find_symbols_for_semantics(self, semantics: List[Dict]) -> Dict:
+    def _find_symbols_for_semantics(self, semantics: Dict) -> Dict:
         """
         Find symbol IDs for semantic specifications.
 
         Args:
-            semantics: List of semantic dicts, each with a semantic attribute.
+            semantics: Dict with semantic attributes in format {"TYPE": "value", ...}
                       Rendering markers (like "/" and ";") are ignored.
 
         Returns:
@@ -172,19 +166,15 @@ class BlissComposer:
         """
         result = {"ids": [], "warnings": []}
 
-        for semantic_item in semantics:
+        for attr_type, attr_value in semantics.items():
             # Handle simple semantic: {"ATTRIBUTE": "value"}
-            if len(semantic_item) == 1:
-                attr_type, attr_value = list(semantic_item.items())[0]
-                symbol_id = self._find_semantic_symbol(attr_type, attr_value)
-                if symbol_id:
-                    result["ids"].append(symbol_id)
-                else:
-                    result["warnings"].append(
-                        f"No symbol found for semantic {attr_type}:{attr_value}"
-                    )
+            symbol_id = self._find_semantic_symbol(attr_type, attr_value)
+            if symbol_id:
+                result["ids"].append(symbol_id)
             else:
-                result["warnings"].append(f"Complex semantic spec not fully supported: {semantic_item}")
+                result["warnings"].append(
+                    f"No symbol found for semantic {attr_type}:{attr_value}"
+                )
 
         return result
 
@@ -247,56 +237,3 @@ class BlissComposer:
                     return True
 
         return False
-
-    def compose_with_modifiers(self, classifier_id: str, specifier_ids: List[str] = None,
-                               modifier_ids: List[str] = None,
-                               indicator_ids: List[str] = None) -> Dict:
-        """
-        Compose a Bliss word by directly providing symbol IDs.
-
-        Args:
-            classifier_id: ID of the classifier symbol
-            specifier_ids: List of specifier symbol IDs (optional)
-            modifier_ids: List of modifier symbol IDs (optional)
-            indicator_ids: List of indicator symbol IDs (optional)
-
-        Returns:
-            Dict with composed sequence and validation info
-        """
-        result = {
-            "composition": [],
-            "errors": [],
-            "warnings": []
-        }
-
-        # Add modifiers first (they're typically prefixes)
-        if modifier_ids:
-            for m_id in modifier_ids:
-                if m_id in self.bliss_dict:
-                    result["composition"].append(m_id)
-                else:
-                    result["warnings"].append(f"Modifier {m_id} not found")
-
-        # Add classifier
-        if classifier_id not in self.bliss_dict:
-            result["error"] = f"Classifier {classifier_id} not found"
-            return result
-        result["composition"].append(classifier_id)
-
-        # Add specifiers
-        if specifier_ids:
-            for s_id in specifier_ids:
-                if s_id in self.bliss_dict:
-                    result["composition"].append(s_id)
-                else:
-                    result["warnings"].append(f"Specifier {s_id} not found")
-
-        # Add indicators (they're typically suffixes)
-        if indicator_ids:
-            for i_id in indicator_ids:
-                if i_id in self.bliss_dict:
-                    result["composition"].append(i_id)
-                else:
-                    result["warnings"].append(f"Indicator {i_id} not found")
-
-        return result

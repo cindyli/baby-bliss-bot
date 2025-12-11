@@ -10,14 +10,7 @@ Classifies symbols into:
 
 from typing import List, Dict
 
-# Import from src.data for project-root compatibility
-try:
-    from src.data.bliss_semantics import MODIFIER_SEMANTICS, INDICATOR_SEMANTICS
-except ImportError:
-    try:
-        from data.bliss_semantics import MODIFIER_SEMANTICS, INDICATOR_SEMANTICS
-    except ImportError:
-        from ..data.bliss_semantics import MODIFIER_SEMANTICS, INDICATOR_SEMANTICS
+from src.data.bliss_semantics import MODIFIER_SEMANTICS, INDICATOR_SEMANTICS
 
 
 class SymbolClassifier:
@@ -66,14 +59,15 @@ class SymbolClassifier:
         Classify symbols in a composition into their functional roles.
 
         Composition values may contain both symbol IDs (numbers) and rendering
-        markers (like "/" for spacing and ";" for separator). Only numeric IDs
-        are processed; rendering markers are filtered out.
+        markers (like "/" for displaying side by side, and ";" for displaying
+        indicators). Only numeric IDs are processed; rendering markers are
+        filtered out.
 
         Typical composition order: [modifier, classifier, indicator, specifier1, specifier2...]
 
         Classification rules (in priority order):
         1. **Indicator-Based**: If composition contains indicators (found in INDICATOR_SEMANTICS),
-           the classifier is the symbol immediately before the first indicator.
+           the classifier is the symbol immediately before the indicator.
            All symbols before the classifier are modifiers/prefixes.
            All symbols after the indicator are specifiers (or additional modifiers if they're in MODIFIER_SEMANTICS).
         2. **POS-Based**: Symbols with pos in {YELLOW, RED, GREEN, BLUE} are classifiers.
@@ -156,18 +150,19 @@ class SymbolClassifier:
                 result["specifiers"].append(symbol_id)
 
         # Rule 3: Special case - if no classifier found but all symbols are GREY/WHITE
+        # The first symbol is treated as the classifier
         if not has_classifier and valid_ids:
             first_id = str(valid_ids[0])
             if first_id in self.bliss_dict:
                 pos = self.bliss_dict[first_id].get("pos", "")
                 if pos in self.MODIFIER_POS:
                     result["classifier"] = first_id
-                    # Move specifiers list to include what was previously classified
-                    result["specifiers"] = [s for s in result["specifiers"] if s != first_id]
+                    # Remove the first modifier from the modifiers list
+                    result["modifiers"] = [m for m in result["modifiers"] if m != first_id]
                 else:
                     result["errors"].append("No classifier found in composition")
             else:
-                result["errors"].append(f"Symbol {first_id} not found in knowledge graph")
+                result["errors"].append(f"Symbol {first_id} not found in the Bliss dictionary")
 
         return result
 

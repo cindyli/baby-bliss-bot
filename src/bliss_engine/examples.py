@@ -1,22 +1,18 @@
+# Run from project root: python -m src.bliss_engine.examples
+
 """
 Example usage and tests for the Bliss Engine.
 
 Demonstrates all three primary use cases:
-1. Retrieve glosses for existing Bliss IDs
-2. Analyze new compositions and extract semantic meaning
+1. Look up a symbol ID in the Bliss dictionary
+2. Look up a word composition in the Bliss dictionary
 3. Compose new Bliss words from semantic specifications
 """
 
 import json
 
 # Support running from project root
-try:
-    from src.bliss_engine import BlissEngine
-except ImportError:
-    try:
-        from bliss_engine import BlissEngine
-    except ImportError:
-        from . import BlissEngine
+from src.bliss_engine import BlissEngine
 
 
 def print_section(title):
@@ -28,63 +24,74 @@ def print_section(title):
 
 def example_use_case_1(engine):
     """
-    USE CASE 1: Get glosses and explanations for existing Bliss symbols.
+    USE CASE 1: Look up a symbol ID in the Bliss dictionary.
 
-    If the input is a Bliss ID or an existing composition, return the glosses
-    and its explanation based on the requested language code.
+    Given a symbol ID, look up in the Bliss dictionary to find the symbol
+    and return its glosses and explanation. If not found, return an error.
     """
-    print_section("USE CASE 1: Retrieve Glosses for Existing Bliss Words")
+    print_section("USE CASE 1: Look Up Symbol by ID")
 
     # Example 1a: Get gloss for a single symbol
-    print("Example 1a: Get glosses for symbol ID 14905 (building)")
+    print("Example 1a: Look up symbol ID 14905 (building)")
     print("-" * 70)
-    result = engine.get_symbol_glosses("14905", language="en")
+    result = engine.get_symbol_glosses(14905, language="en")
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
-    print("\n\nExample 1b: Get gloss in another language (Swedish)")
+    print("\n\nExample 1b: Look up symbol in another language (Swedish)")
     print("-" * 70)
-    result = engine.get_symbol_glosses("14905", language="sv")
+    result = engine.get_symbol_glosses(14905, language="sv")
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
-    # Example 1c: Get glosses for a composition
-    print("\n\nExample 1c: Get glosses for a composition [14647, 14905, 9011]")
-    print("(which represents 'many buildings')")
+    # Example 1c: Look up non-existent symbol
+    print("\n\nExample 1c: Look up non-existent symbol (error case)")
     print("-" * 70)
-    result = engine.get_composition_glosses([14647, 14905, 9011], language="en")
+    result = engine.get_symbol_glosses(99999, language="en")
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 
 def example_use_case_2(engine):
     """
-    USE CASE 2: Analyze new compositions and extract semantic meaning.
+    USE CASE 2: Look up a word composition in the Bliss dictionary.
 
-    If the input is a new Bliss-word composition, analyze its component
-    Bliss IDs and return their combined semantic information.
+    Given a word composition, first look up in the Bliss dictionary to find
+    if the composition is already in the dictionary by looking up the "composition"
+    values.
+
+    If it exists, return the symbol ID with its glosses and explanation.
+    If it doesn't exist, return its semantic meaning.
+
+    Includes an "is_existing_symbol" flag to indicate if this composition
+    already exists in the dictionary.
+
+    Note: When comparing the input composition with the one in the dictionary,
+    rendering elements such as "/" and ";" are ignored.
     """
-    print_section("USE CASE 2: Analyze New Compositions")
+    print_section("USE CASE 2: Look Up Word Composition")
 
-    # Example 2a: Analyze "many hospitals"
+    # Example 2a: Look up an existing composition
+    print("Example 2a: Look up existing composition")
+    print("-" * 70)
+    result = engine.lookup_composition([14133, 8998, 17717, 23599], language="en")
+    print(json.dumps(result, indent=2, ensure_ascii=False))
+
+    # Example 2b: Look up a new composition (not in dictionary)
     # Composition: [14647, 14905, 24920, 9011]
-    # - 14647: "many" (QUANTIFIER modifier)
-    # - 14905: "building" (classifier)
-    # - 24920: "medicine" (specifier)
-    # - 9011: "plural" (NUMBER indicator)
-
-    print("Example 2a: Analyze composition for 'many hospitals'")
-    print("Composition: [14647, 14905, 24920, 9011]")
+    # This represents "many hospitals"
+    print("\n\nExample 2b: Look up new composition [14647, 14905, 24920, 9011] ('many hospitals')")
+    print("Composition structure:")
     print("  - 14647: QUANTIFIER modifier (many)")
     print("  - 14905: Classifier (building)")
     print("  - 24920: Specifier (medicine)")
     print("  - 9011: Indicator (plural)")
     print("-" * 70)
-
-    result = engine.analyze_composition([14647, 14905, 24920, 9011], language="en")
+    result = engine.lookup_composition([14647, 14905, 24920, 9011], language="en")
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
-    # Example 2b: Get composition structure
-    print("\n\nExample 2b: Get structural breakdown of the composition")
+    # Example 2c: Look up composition with rendering elements
+    print("\n\nExample 2c: Look up existing composition with rendering elements")
+    print("(Rendering elements like '/' and ';' are ignored in comparison)")
     print("-" * 70)
-    result = engine.get_composition_structure([14647, 14905, 24920, 9011])
+    result = engine.lookup_composition([14133, ";", 8998, "/", 17717, "/", 23599], language="en")
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 
@@ -103,10 +110,10 @@ def example_use_case_3(engine):
     semantic_spec = {
         "classifier": "building",
         "specifiers": ["medicine"],
-        "semantics": [
-            {"NUMBER": "plural"},
-            {"QUANTIFIER": "many"}
-        ]
+        "semantics": {
+            "NUMBER": "plural",
+            "QUANTIFIER": "many"
+        }
     }
 
     print("Input semantic specification:")
@@ -115,24 +122,6 @@ def example_use_case_3(engine):
 
     result = engine.compose_from_semantic(semantic_spec)
     print("\nOutput composition:")
-    print(json.dumps(result, indent=2, ensure_ascii=False))
-
-    # Example 3b: Compose using symbol IDs directly
-    print("\n\nExample 3b: Compose using symbol IDs directly")
-    print("-" * 70)
-    print("Composing with:")
-    print("  - Classifier: 14905 (building)")
-    print("  - Specifiers: [24920] (medicine)")
-    print("  - Modifiers: [14647] (many)")
-    print("  - Indicators: [9011] (plural)")
-
-    result = engine.compose_with_ids(
-        classifier_id="14905",
-        specifier_ids=["24920"],
-        modifier_ids=["14647"],
-        indicator_ids=["9011"]
-    )
-    print("\nComposed sequence:")
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 
@@ -162,10 +151,10 @@ def example_utility_methods(engine):
         print(f"  - Is modifier: {engine.is_modifier(sym_id)}")
         print(f"  - Is indicator: {engine.is_indicator(sym_id)}")
 
-    # Get knowledge graph statistics
-    print("\n\nExample 4: Knowledge graph information")
+    # Get Blissymbolics dictionary statistics
+    print("\n\nExample 4: Blissymbolics dictionary information")
     print("-" * 70)
-    result = engine.get_knowledge_graph_info()
+    result = engine.get_bliss_dict_info()
     print(json.dumps(result, indent=2, ensure_ascii=False))
 
 
@@ -173,7 +162,7 @@ def main():
     """
     Main function demonstrating Bliss Engine usage.
 
-    This requires a knowledge graph to be loaded. The knowledge graph is typically
+    This requires a Blissymbolics dictionary to be loaded. The dictionary is typically
     created from the Bliss dictionary.
     """
     print("\n")

@@ -2,11 +2,9 @@
 
 ## Overview
 
-The Bliss Engine is a language-independent rule-based module for Blissymbolics that supports composition rules at the word level. It provides functionality to:
+The Bliss Engine is a language-independent rule-based module for Blissymbolics supporting composition rules at the word level. For an overview and quick start guide, see [README.md](README.md).
 
-1. **Retrieve glosses** for existing Bliss symbols and compositions
-2. **Analyze new compositions** to extract combined semantic meaning
-3. **Compose new Bliss words** from semantic specifications
+This document provides complete API reference for all methods and their parameters.
 
 ## Installation
 
@@ -14,7 +12,7 @@ The Bliss Engine is a language-independent rule-based module for Blissymbolics t
 from bliss_engine import BlissEngine
 import json
 
-# Load the Bliss dictionary (already in dict format keyed by ID)
+# Load the Bliss dictionary
 with open('path/to/bliss_dict_multi_langs.json', 'r') as f:
     bliss_dict = json.load(f)
 
@@ -22,31 +20,12 @@ with open('path/to/bliss_dict_multi_langs.json', 'r') as f:
 engine = BlissEngine(bliss_dict)
 ```
 
-## Module Architecture
+## BlissEngine Class
 
-### Core Modules
+The main unified interface providing access to all engine functionality.
 
-#### `BlissEngine` (bliss_engine.py)
-Main unified interface providing access to all engine functionality.
+### Initialization
 
-#### `SymbolClassifier` (symbol_classifier.py)
-Classifies symbols into their functional roles:
-- **Classifiers**: Set the semantic category (POS: YELLOW, RED, GREEN, BLUE)
-- **Specifiers**: Refine the meaning of the classifier
-- **Indicators**: Denote grammatical information (POS: GREY, WHITE)
-- **Modifiers**: Prefix/suffix symbols that modify meaning (POS: GREY, WHITE)
-
-#### `BlissAnalyzer` (analyzer.py)
-Analyzes Bliss symbols and compositions to extract semantic meaning.
-
-#### `BlissComposer` (composer.py)
-Composes new Bliss words from semantic specifications.
-
-## API Reference
-
-### BlissEngine Class
-
-#### Initialization
 ```python
 engine = BlissEngine(bliss_dict)
 ```
@@ -56,16 +35,10 @@ engine = BlissEngine(bliss_dict)
 
 **Raises:**
 - `TypeError`: If bliss_dict is not a dictionary
-
----
-
-### Use Case 1: Retrieve Glosses
-
-#### `get_symbol_glosses(symbol_id, language="en")`
-Get glosses for a single Bliss symbol.
+Look up a symbol ID in the Bliss dictionary and return its glosses and explanation.
 
 **Parameters:**
-- `symbol_id` (str): The ID of the Bliss symbol
+- `symbol_id` (int): The ID of the Bliss symbol
 - `language` (str): ISO 639-1 language code (default: "en")
 
 **Returns:** Dict with keys:
@@ -73,48 +46,112 @@ Get glosses for a single Bliss symbol.
 - `glosses`: List of glosses in requested language
 - `explanation`: Explanation of the symbol
 - `isCharacter`: Boolean indicating if Bliss character
+- `error` (if not found): Error message
 
 **Example:**
 ```python
-result = engine.get_symbol_glosses("14905", language="en")
+result = engine.get_symbol_glosses(14905, language="en")
 # {
-#   "id": "14905",
+#   "id": 14905,
 #   "glosses": ["building"],
 #   "explanation": "A structure...",
 #   "isCharacter": true
 # }
+
+# Error case:
+result = engine.get_symbol_glosses(99999, language="en")
+# {
+#   "error": "Symbol 99999 not found"
+# }
 ```
 
-#### `get_composition_glosses(composition, language="en")`
-Get glosses for a Bliss composition/word.
+## API Methods
+
+### get_symbol_glosses(symbol_id, language="en")
+Look up a word composition in the Bliss dictionary. If the composition exists in the dictionary, returns the symbol ID with its glosses and explanation. If it doesn't exist, returns its semantic meaning.
+
+Rendering elements such as "/" and ";" are automatically ignored when comparing compositions.
 
 **Parameters:**
-- `composition` (List[str] or List[int]): Symbol IDs in composition order
+- `composition` (List[str] or List[int]): Symbol IDs composing the Bliss word (may include rendering elements)
 - `language` (str): ISO 639-1 language code
 
 **Returns:** Dict with:
-- `composition`: Input composition
-- `components`: List of gloss info for each component
+- `composition`: Normalized input composition
+- `is_existing_symbol`: Boolean indicating if composition exists in dictionary
+- **If is_existing_symbol is True:**
+  - `symbol_id`: The ID of the existing symbol
+  - `glosses`: List of glosses for the symbol
+  - `explanation`: Explanation of the symbol
+- **If is_existing_symbol is False:**
+  - `classifier`: ID of the classifier symbol
+  - `classifier_info`: Gloss info for classifier
+  - `specifiers`: List of specifier IDs
+  - `specifier_info`: Gloss info for each specifier
+  - `semantics`: Extracted semantic information
+  - `indicators`: List of indicator IDs
+  - `modifiers`: List of modifier IDs
 
-**Example:**
+**Example - Existing composition:**
 ```python
-result = engine.get_composition_glosses([14647, 14905, 9011])
-# Returns gloss info for "many buildings"
+result = engine.lookup_composition([14133, 8998, 17717, 23599], language="en")
+# {
+#   "composition": [
+#     14133,
+#     8998,
+#     17717,
+#     23599
+#   ],
+#   "is_existing_symbol": true,
+#   "symbol_id": 24924,
+#   "glosses": [
+#     "oval",
+#     "elliptic",
+#     "elliptical"
+#   ],
+#   "explanation": "(oval,ellipse + description indicator)"
+# }
 ```
 
----
+**Example - New composition:**
+```python
+result = engine.lookup_composition([14647, 14905, 24920, 9011], language="en")
+# If new composition:
+# {
+#   "composition": [14647, 14905, 24920, 9011],
+#   "is_existing_symbol": false,
+#   "classifier": 14905,
+#   "classifier_info": "building",
+#   "specifiers": [24920],
+#   "specifier_info": ["medicine"],
+#   "indicators": [9011],
+#   "modifiers": [14647],
+#   "semantics": {
+#     "NUMBER": "plural",
+#     "QUANTIFIER": "many"
+#   }
+# }
+```
 
-### Use Case 2: Analyze Compositions
+**Example - Composition with rendering elements:**
+```python
+result = engine.lookup_composition([14905, "/", 9011, ";"], language="en")
+# Rendering elements "/" and ";" are automatically filtered out
+# {
+#   "composition": [14905, 9011],
+#   "is_existing_symbol": false|true,
+#   ...
+# }
+```
 
 #### `analyze_composition(composition, language="en")`
-Analyze a new Bliss composition and extract semantic meaning.
+Analyze a composition and extract semantic meaning. This is used internally by `lookup_composition` for new compositions.
 
 **Parameters:**
 - `composition` (List[str] or List[int]): Symbol IDs to analyze
 - `language` (str): ISO 639-1 language code
 
 **Returns:** Dict with:
-- `original_composition`: Input composition
 - `classifier`: ID of the classifier symbol
 - `classifier_info`: Gloss info for classifier
 - `specifiers`: List of specifier IDs
@@ -122,32 +159,6 @@ Analyze a new Bliss composition and extract semantic meaning.
 - `semantics`: Extracted semantic information
 - `indicators`: List of indicator IDs
 - `modifiers`: List of modifier IDs
-
-**Example:**
-```python
-result = engine.analyze_composition([14647, 14905, 24920, 9011])
-# {
-#   "original_composition": ["14647", "14905", "24920", "9011"],
-#   "classifier": "14905",
-#   "classifier_info": {"gloss": ["building"]},
-#   "specifiers": ["24920"],
-#   "specifier_info": [{"gloss": ["medicine"]}],
-#   "semantics": [
-#     {"symbol_id": "14647", "modifier": {"QUANTIFIER": "many"}},
-#     {"symbol_id": "9011", "indicator": {"NUMBER": "plural"}}
-#   ],
-#   "indicators": ["9011"],
-#   "modifiers": ["14647"]
-# }
-```
-
-#### `get_composition_structure(composition)`
-Get the structural breakdown of a composition.
-
-**Parameters:**
-- `composition` (List[str] or List[int]): Symbol IDs
-
-**Returns:** Dict with structural and interpretative information
 
 ---
 
@@ -160,8 +171,8 @@ Compose a new Bliss word from semantic specification.
 - `semantic_spec` (Dict): Specification with:
   - `classifier` (str): Gloss for semantic category
   - `specifiers` (List[str], optional): Glosses refining meaning
-  - `semantics` (List[Dict], optional): Semantic modifications
-    - Each entry format: `{"SEMANTIC_TYPE": "value"}`
+  - `semantics` (Dict, optional): Semantic modifications
+    - Format: `{"SEMANTIC_TYPE": "value", "SEMANTIC_TYPE2": "value2", ...}`
 
 **Returns:** Dict with:
 - `composition`: List of symbol IDs
@@ -173,42 +184,16 @@ Compose a new Bliss word from semantic specification.
 semantic_spec = {
     "classifier": "building",
     "specifiers": ["medicine"],
-    "semantics": [
-        {"NUMBER": "plural"},
-        {"QUANTIFIER": "many"}
-    ]
+    "semantics": {
+        "NUMBER": "plural",
+        "QUANTIFIER": "many"
+    }
 }
 
 result = engine.compose_from_semantic(semantic_spec)
 # {
-#   "composition": ["14647", "14905", "24920", "9011"],
+#   "composition": [14647, 14905, 24920, 9011],
 #   "original_spec": {...},
-#   "errors": [],
-#   "warnings": []
-# }
-```
-
-#### `compose_with_ids(classifier_id, specifier_ids=None, modifier_ids=None, indicator_ids=None)`
-Compose a Bliss word using symbol IDs directly.
-
-**Parameters:**
-- `classifier_id` (str): ID of classifier symbol
-- `specifier_ids` (List[str], optional): Specifier symbol IDs
-- `modifier_ids` (List[str], optional): Modifier symbol IDs
-- `indicator_ids` (List[str], optional): Indicator symbol IDs
-
-**Returns:** Dict with composition and validation info
-
-**Example:**
-```python
-result = engine.compose_with_ids(
-    classifier_id="14905",
-    specifier_ids=["24920"],
-    modifier_ids=["14647"],
-    indicator_ids=["9011"]
-)
-# {
-#   "composition": ["14647", "14905", "24920", "9011"],
 #   "errors": [],
 #   "warnings": []
 # }
@@ -258,8 +243,8 @@ Check if a symbol is an indicator.
 
 **Returns:** Boolean
 
-#### `get_knowledge_graph_info()`
-Get statistics about the knowledge graph.
+#### `get_bliss_dict_info()`
+Get statistics about the Blissymbolics dictionary.
 
 **Returns:** Dict with:
 - `nodes`: Number of nodes
@@ -395,7 +380,7 @@ bliss_dict = {
 The engine provides graceful error handling with detailed error messages:
 
 ```python
-result = engine.get_symbol_glosses("invalid_id")
+result = engine.get_symbol_glosses(99999)
 # Returns: {"error": "Symbol invalid_id not found"}
 
 result = engine.compose_from_semantic({"specifiers": ["medicine"]})
@@ -406,55 +391,52 @@ result = engine.compose_from_semantic({"specifiers": ["medicine"]})
 
 ## Language Support
 
-The engine supports any language defined in the Bliss dictionary glosses. Common language codes:
+The engine supports multiple languages defined in the Bliss dictionary glosses. Supported language codes:
 
 - `en`: English
 - `sv`: Swedish
 - `no`: Norwegian
 - `fi`: Finnish
-- `fr`: French
+- `hu`: Hungarian
 - `de`: German
-- `es`: Spanish
+- `nl`: Dutch
+- `af`: Afrikaans
 - `ru`: Russian
+- `lv`: Latvian
+- `po`: Polish
+- `fr`: French
+- `es`: Spanish
+- `pt`: Portugese - draft
+- `it`: Italian - draft
+- `dk`: Danish - draft
 
-Example:
+Note that The dictionary definitions for Portugese, Italian and Danish are in draft.
+
+* Example:
+
 ```python
-engine.get_symbol_glosses("14905", language="fr")
+engine.get_symbol_glosses(14905, language="fr")
 # Returns French glosses
 ```
 
 ---
 
-## Performance Considerations
-
-- The composer builds reverse lookup maps on initialization for O(1) gloss lookups
-- Large compositions may be processed sequentially
-- The knowledge graph should be loaded once and reused across calls
-
----
-
 ## Examples
 
-See `examples.py` for comprehensive usage examples of all three use cases.
+Run examples demonstrating all use cases. Run commands from the project root directory:
 
-Run examples:
 ```bash
-python bliss_engine/examples.py
+python -m src.bliss_engine.examples
 ```
 
 ---
 
 ## Testing
 
-Unit tests are provided in `tests.py`:
+Run unit tests:
 
 ```bash
-python -m pytest bliss_engine/tests.py -v
-```
-
-Or:
-```bash
-python bliss_engine/tests.py
+python -m unittest src.bliss_engine.tests -v
 ```
 
 ---
@@ -463,6 +445,5 @@ python bliss_engine/tests.py
 
 The Bliss Engine is designed to work with:
 
-- **utils_knowledge_graph.py**: For loading/saving the knowledge graph
-- **bliss_semantics.py**: Source of truth for indicator/modifier semantics
 - **bliss_dict**: The underlying Blissymbolics dictionary data
+- **bliss_semantics.py**: Source of truth for indicator/modifier semantics
