@@ -16,11 +16,9 @@ Features - specific properties of a word within its POS
         * gender: (neutral, feminine, masculine)
         * person: (first-person, second-person, third-person)
         * size: (diminutive)
-        * form - variations of nouns: (inflected, present-participle) # simplifying finite (inflected) and infinite (participle)
-    * Adjectives + Adverbs:
+     * Adjectives + Adverbs:
         * modality - (semantic expression of possibility): (null, potential, completed) # modality is the state at which something is possible 
-        * form - variations of adjectives and adverbs: (inflected, present-participle, past-participle-1, past-participle-2) # simplifying finite (inflected) and infinite (participles) NEED TO FIX
-Priority - most commonly used from highest to lowest: ("1", "2") # action and description indicators are commonly used between different users, while present action and adverb indicators are used in full-form
+Priority - most commonly used from highest to lowest: (optional, 1, 2) # action and description indicators are commonly used between different users, while present action and adverb indicators are used in full-form
 
 
 # Blissymbolics Indicators and Modifiers
@@ -35,15 +33,15 @@ INDICATOR_SEMANTICS = {
     # the equivalent of the English present conditional form
     "8995": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "conditional", "aspect" : "null", "form": "inflected"}},
 
-    ----------------------NEED TO FIX
+    
     # description indicators
     # the equivalent of the English -ed or -en ending
-    "8996": {"type": "POS", "value": ["adjective", "adverb"], "category": ["semantic", "grammatical"], "features": {"semantic": {"modality": "completed"}, "grammatical": {"form": ["inflected", "past-participle-1", "past-participle-2"]}}},
+    "8996": {"type": "POS", "value": ["adjective", "adverb"], "category": "semantic", "features": {"modality": "completed"}},
     # equivalent to English words ending in -able
-    "8997": {"type": "POS", "value": ["adjective", "adverb"], "category": ["semantic", "grammatical"], "features": {"semantic": {"modality": "potential"}, "grammatical": {"form": ["inflected", "?"]}}},
+    "8997": {"type": "POS", "value": ["adjective", "adverb"],  "category": "semantic", "features": {"modality": "potential"}},
     # the equivalent of English adjectives/adverbs
-    "8998": {"type": "POS", "value": ["adjective", "adverb"], "category": ["semantic", "grammatical"], "features": {"semantic": {"modality": "null"}, "grammatical": {"form": ["inflected", "present-participle"]}}, "priority": "1"},
-    -----------------------------------------
+    "8998": {"type": "POS", "value": ["adjective", "adverb"], "category": "semantic", "features": {"modality": "null"}}, "priority": "1"},
+
 
     # back to action indicators
     # the equivalent of the English future tense
@@ -85,11 +83,10 @@ INDICATOR_SEMANTICS = {
     },
     "9011": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural"}},
     "24667": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}, "notes": "for teaching purposes"},
-    "24668": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "notes": "for teaching purposes"},
-    "24669": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "first-person"}, "notes": "for teaching purposes"},
-    # indicator (continuous form), removed character so only included aspect feature here
+    "24668": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "notes": "for teaching purposes", "equivalent_modifier": "14166", "priority":"2"}, # the female modifier is used more. Indicator is not used in communication
+    "24669": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "first-person", "notes": "for teaching purposes"},
     "28043": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect": "continuous", "form": "inflected"}, "notes": "for teaching purposes"},
-    "28044": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"}},
+    "28044": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"},
     "28045":
     {
         "and": [
@@ -108,15 +105,15 @@ INDICATOR_SEMANTICS = {
     "24665": {"type": "POS", "value": "adverb", "category": "grammatical", "notes": "for teaching purposes", "priority": "2"},
     # similar to ID: 8993; 
     "24807": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "declarative", "aspect" : "null", "form": "inflected"}, "notes": "for teaching purposes", "priority": "2"},
-    "25458": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"size": "diminutive"}, "notes": "for teaching purposes"},
+    "25458": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"size": "diminutive", "form": "inflected"}, "notes": "for teaching purposes", "equivalent_modifier": "28052", "priority":"2"}, # the diminutive modifier is used more. Indicator is not used
 
     # added more indicators from WinBliss
     # imperative mood
     "24670": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "imperative", "aspect" : "null", "form": "inflected"}},
     # 3 participles
-    "24674": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect" : "null", "form": "past-participle-1"}},
-    "24675": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect" : "null", "form": "past-participle-2"}},
-    "24677": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect" : "null", "form": "present-participle"}},
+    "24674": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "past-participle-1"}, "notes": "for teaching purposes"}, # mood and aspect may vary language to lanaguage on how its used
+    "24675": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "past-participle-2"}, "notes": "for teaching purposes"}, # mood and aspect may vary language to lanaguage on how its used
+    "24677": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "null", "aspect" : "null", "form": {"inflected", "present-participle"}, "notes": "for teaching purposes"}, # mood and aspect may vary language to lanaguage on how its used
     # back to nouns
     "24671": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "indefinite"}, "notes": "for teaching purposes"},
     "24672": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "neutral"}, "notes": "for teaching purposes"},
@@ -134,7 +131,12 @@ INDICATOR_SEMANTICS = {
             {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
         ]
     },
-    # did not add possessive indicator
+
+   ----------------------------------------
+   # possessive indicator
+   "24676": {"type": "POS", "value": "noun", "category": "grammatical", "features": {?}, "notes": "for teaching purposes", "equivalent_modifier": "12663", "priority":"1"},
+   # object form
+   "24673": {"type": "POS", "value": "noun", "category": "grammatical", "features": {?}, "notes": "for teaching purposes", "equivalent_modifier": "28057", "priority":["optional", "1"]}, # can use object form with or without indicator - is an alternative, modifier has never been used
 }
 
 # PREVIOUS SECTION - DIDNT DELETE.
