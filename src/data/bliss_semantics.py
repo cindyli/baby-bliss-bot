@@ -1,43 +1,81 @@
-# Blissymbolics Indicators and Modifiers
+# READ ME - Data Section
+Attributes
+Type - indicates what kind of annotation the data represents
+Value - specificies the content of the annotation: (POS, concretization) # POS value is the specific part of speech (e.g. noun, verb, etc). Concretization value transforms POS (e.g. verb to noun)
+Category - broad grouping of linguistic information: (grammatical, semantic, syntactical)
+Features - specific properties of a word within its POS
+    * Verbs:
+        * tense - locates an action in time: (null, past, present, future) 
+        * voice - shows relationship between the subject and action: (null, passive, active)
+        * mood  - expresses attitude or intent: (null, declarative, conditional, imperative) # mood may vary language to language on how its used. For communication purposes, question/exclamation mark is used; without question/exclamation mark, its declarative.
+        * aspect - indicates how an action occurs over time: (null, continuous) # aspect may vary language to language on how its used
+        * form - variations of verbs: (inflected, infinitive, present-participle, past-participle-1, past-participle-2) # simplifying finite (inflected) and infinite (infinitive and participles); when tense, voice, aspect, mood are null, its an infinitive
+        * intensity: (high)
+    * Nouns:
+        * number: (singular, plural)
+        * definiteness - identifies a specific or general thing: (indefinite, definite) # indefinite: an apple; definite: the apple
+        * gender: (neutral, feminine, masculine)
+        * person: (first-person, second-person, third-person)
+        * size: (diminutive)
+        * possessive: (possessor, posessed)
+        * position: (pre, post) # syntax: if modifier comes before the head (classifier) is pre; e.g. colour of the car = colour + (MODIFIER + car). If modifier comes after the head (classifier) is post; e.g. car's colour = (car + MODIFIER) + colour.
+        * default-position: (pre, post) # syntax
+        * quantifier: (many)
+        * link - distingushing grouped with something (association) versus part of something (derivative): (association, derivative) # e.g. furniture is associated with chair and table versus province is derived of a country
+        * time: (ago, now, then_future) # attached to nouns but becomes adverb
+        * numeric: (zero, one, two, three, four, five, six, seven, eight, nine)
+     * Adjectives + Adverbs:
+        * modality - (semantic expression of possibility): (null, potential, completed) # modality is the state at which something is possible 
+        * intensity: (high)
+        * degree: (comparative, superlative)
+Priority - most commonly used from highest to lowest: (optional, 1, 2) # action and description indicators are commonly used between different users, while present action and adverb indicators are used in full-form
 
+
+# Blissymbolics Indicators and Modifiers
 INDICATOR_SEMANTICS = {
-    # infinitive verb or present tense verb
-    "8993": {"type": "POS", "value": "verb", "category": "grammatical"},
+    #UPDATED SECTION
+    
+    # action indicators
+    # infinitive verb or present tense verb; similar to ID: 24807 (includes tense as present), here is doesn't include tense
+    "8993": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect" : "null", "form": "infinitive"}, "priority": "1"}
     # active verb
-    "8994": {"type": "VOICE", "value": "active", "category": "grammatical"},
+    "8994": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "declarative", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English present conditional form
-    "8995": {"type": "POS", "value": "present_conditional", "category": "grammatical"},
+    "8995": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "active", "mood": "conditional", "aspect" : "null", "form": "inflected"}},
+
+    
+    # description indicators
     # the equivalent of the English -ed or -en ending
-    "8996": {"type": "POS", "value": "past_participle", "category": "grammatical"},
+    "8996": {"type": "POS", "value": ["adjective", "adverb"], "category": "semantic", "features": {"modality": "completed"}},
     # equivalent to English words ending in -able
-    "8997": {"type": "POS", "value": "able", "category": "grammatical"},
+    "8997": {"type": "POS", "value": ["adjective", "adverb"],  "category": "semantic", "features": {"modality": "potential"}},
     # the equivalent of English adjectives/adverbs
-    "8998": {
-        "or": [
-            {"type": "POS", "value": "adjective", "category": "grammatical"},
-            {"type": "POS", "value": "adverb", "category": "grammatical"}
-        ]
-    },
+    "8998": {"type": "POS", "value": ["adjective", "adverb"], "category": "semantic", "features": {"modality": "null"}}, "priority": "1"},
+
+
+    # back to action indicators
     # the equivalent of the English future tense
-    "8999": {"type": "TENSE", "value": "future", "category": "grammatical"},
+    "8999": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "active", "mood": "declarative", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English future conditional form
-    "9000": {"type": "TENSE", "value": "future_conditional", "category": "grammatical"},
+    "9000": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "active", "mood": "conditional", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English future passive form
-    "9001": {"type": "TENSE", "value": "future_passive", "category": "grammatical"},
+    "9001": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "passive", "mood": "declarative", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English future passive conditional form
-    "9002": {"type": "TENSE", "value": "future_passive_conditional", "category": "grammatical"},
+    "9002": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "future", "voice": "passive", "mood": "conditional", "aspect" : "null", "form": "inflected"}},
     # something is being acted upon
-    "9003": {"type": "VOICE", "value": "passive", "category": "grammatical"},
+    "9003": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "declarative", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English past tense
-    "9004": {"type": "TENSE", "value": "past", "category": "grammatical"},
+    "9004": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "active", "mood": "declarative", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English past conditional form
-    "9005": {"type": "TENSE", "value": "past_conditional", "category": "grammatical"},
+    "9005": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "active", "mood": "conditional", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English past passive conditional form
-    "9006": {"type": "TENSE", "value": "past_passive_conditional", "category": "grammatical"},
+    "9006": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "conditional", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English past passive form
-    "9007": {"type": "TENSE", "value": "past_passive", "category": "grammatical"},
+    "9007": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "past", "voice": "passive", "mood": "declarative", "aspect" : "null", "form": "inflected"}},
     # the equivalent of the English present passive conditional form
-    "9008": {"type": "TENSE", "value": "present_passive_conditional", "category": "grammatical"},
+    "9008": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "conditional", "aspect" : "null", "form": "inflected"}},
+
+       
     # represent a concrete object
     "9009": {
         "and": [
@@ -45,77 +83,240 @@ INDICATOR_SEMANTICS = {
             {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
         ]
     },
+    
     # represent multiple concrete objects
-    "9010": {"type": "NUMBER", "value": "thing_plural", "category": "grammatical"},
-    "9011": {"type": "NUMBER", "value": "plural", "category": "grammatical"},
-    "24667": {"type": "TENSE", "value": "noun", "category": "grammatical", "notes": "for teaching purposes"},
-    "24668": {"type": "GENDER", "value": "feminine", "category": "grammatical"},
-    "24669": {"type": "PERSON", "value": "first_person", "category": "grammatical"},
-    "28043": {"type": "ASPECT", "value": "continuous_verb", "category": "grammatical"},
-    "28044": {
+    "9010": {
         "and": [
-            {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
-            {"type": "NUMBER", "value": "plural", "category": "grammatical"}
-        ],
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural"}},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
+        ]
     },
+    "9011": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural"}},
+    "24667": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}, "notes": "for teaching purposes"},
+   # the female modifier (ID: 14166) is used more. Indicator is not used in communication
+   "24668": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "notes": "for teaching purposes", "equivalent_modifier": "14166", "priority":"2"},
+   "14166": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "equivalent_indicator": "24668", "priority":"1"},
+   "12335": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "masculine"}, "priority":"1"},
+   # person indicators are only used for grammar teaching - not used in communication; modifiers (actually specifiers) are used for communication
+    "24669": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "first-person", "notes": "for teaching purposes", "equivalent_modifier": "8497", "priority":"2"},
+    "28043": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect": "continuous", "form": "inflected"}, "notes": "for teaching purposes"},
+    "28044": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"},
     "28045":
     {
         "and": [
-            {"type": "POS", "value": "noun", "category": "grammatical"},
-            {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
         ]
     },
     "28046": {
         "and": [
-            {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
-            {"type": "POS", "value": "noun", "category": "grammatical"},
-            {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"}},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
         ]
     },
-    "24665": {"type": "POS", "value": "adverb", "category": "grammatical"},
-    "24807": {
+    
+    # indicator (adverb)
+    "24665": {"type": "POS", "value": "adverb", "category": "grammatical", "notes": "for teaching purposes", "priority": "2"},
+    # similar to ID: 8993; 
+    "24807": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "null", "mood": "declarative", "aspect" : "null", "form": "inflected"}, "notes": "for teaching purposes", "priority": "2"},
+    # the diminutive modifier is used more. Indicator (ID: 28052) is not used
+    "25458": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"size": "diminutive", "form": "inflected"}, "notes": "for teaching purposes", "equivalent_modifier": "28052", "priority":"2"},
+
+    # added more indicators from WinBliss
+    # imperative mood
+    "24670": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "imperative", "aspect" : "null", "form": "inflected"}},
+    # 3 participles
+    "24674": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"form": {"past-participle-1"},} "notes": "for teaching purposes"},
+    "24675": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"form": {"past-participle-2"}}, "notes": "for teaching purposes"},
+    "24677": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"form": {"present-participle"}}, "notes": "for teaching purposes"},
+    # back to nouns
+    "24671": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "indefinite"}, "notes": "for teaching purposes"},
+    "24672": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "neutral"}, "notes": "for teaching purposes"},
+    # person indicators are only used for grammar teaching - not used in communication; modifiers (actually specifiers) are used for communication
+    "24678": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "second-person"}, "notes": "for teaching purposes", "equivalent_modifier": "8498", "priority":"2"},
+    "24679": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "third-person"}, "notes": "for teaching purposes", "equivalent_modifier": "8499", "priority":"2"},
+    "28045": {
         "and": [
-            {"type": "POS", "value": "verb", "category": "grammatical"},
-            {"type": "TENSE", "value": "present", "category": "grammatical"}
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
         ]
     },
-    "25458": {"type": "SIZE", "value": "diminutive", "category": "grammatical", "notes": "for teaching purposes"},
+    "28046": {
+        "and": [
+            {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural", "definiteness": "definite"}},
+            {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
+        ]
+    },
+
+   # possessive indicator; both indicator and modifier (ID: 12663) are used, but modifier is used more in English (opposite is true for Swedish).
+   "24676": {"type": "POS", "value": "noun", "category": ["grammatical", "syntactical"], "features": {"grammatical": {"possessive": "possessor"}, "syntactical": {"position": ["pre", "post"], "default-position": "post"}, "notes": "for teaching purposes", "equivalent_modifier": "12663", "priority":"2"},
+   # object form; can use object form with or without indicator - is an alternative, modifier (ID: 28057) has never been used
+   "24673": {"type": "POS", "value": "noun", "category": "syntactical", "features": {"position": ["pre", "post"], "default-position": "post"}, "notes": "for teaching purposes", "equivalent_modifier": "28057", "priority":["optional", "1"]},
 }
 
+
 MODIFIER_SEMANTICS = {
-    # Semantic Modifiers
-    "14647": {"type": "QUANTIFIER", "value": "many", "category": "semantic"},
-    "14947": {"type": "INTENSIFIER", "value": "high", "category": "semantic"},
-    "15474": {"type": "NEGATION", "value": "without", "category": "semantic"},
-    "15927": {"type": "OPERATOR", "value": "opposite", "category": "semantic"},
-    "14430": {"type": "OPERATOR", "value": "generalization", "category": "semantic"},
-    "15972": {"type": "OPERATOR", "value": "part_of", "category": "semantic"},
-    "12352": {"type": "TIME", "value": "ago", "category": "semantic"},
-    "15736": {"type": "TIME", "value": "now", "category": "semantic"},
-    "17705": {"type": "TIME", "value": "future", "category": "semantic"},
+   # Semantic Modifiers
+   "14647": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"quantifier": "many"}, "syntactical": {"position": "pre", "default-position": "pre"}}},
+   "14947": {"type": "POS", "value": ["verb", "adjective", "adverb"], "category": ["semantic", "syntactical"], "features": {"semantic": {"intensity": "high"}, "syntactical": {"position": "post", "default-position": "post"}}},
+   ------------------ need to figure out these two -----------------------
+   "15474": {"type": "NEGATION", "value": "without", "category": "semantic"},
+   "15927": {"type": "OPERATOR", "value": "opposite", "category": "semantic"},
+   -----------------------------------------------------------------------
+   # generalization modifier has a link of association; it is associated with something e.g. furniture is associated with chair and table
+   "14430": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"link": "association"}, "syntactical": {"position": "pre", "default-position": "pre"}}},
+   # constituence modifier has a link of derivative; it is a derivative of something e.g. province is a derivative of a country
+   "15972": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"link": "derivative"}, "syntactical": {"position": "pre", "default-position": "pre"}}},
+   "12352": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"time": "ago"}, "syntactical": {"position": "post", "default-position": "post"}}, "notes": "creates an adverb"},
+   "15736": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"time": "now"}, "syntactical": {"position": "post", "default-position": "post"}}, "notes": "creates an adverb"},
+   "17705": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"time": "then_future"}, "syntactical": {"position": "post", "default-position": "post"}}, "notes": "creates an adverb"},
 
     # Grammatical Modifiers
-    "15654": {"type": "COMPARISON", "value": "more", "category": "grammatical"},
-    "15661": {"type": "COMPARISON", "value": "most", "category": "grammatical"},
-    "12663": {"type": "POSSESSION", "value": "belongs_to", "category": "grammatical"},
+    "15654": {"type": "POS", "value": ["adjective", "adverb"], "category": ["grammatical", "syntactical"], "features": {"grammatical": {"degree": "comparative"}, "syntactical": {"position": "pre", "default-position": "pre"}}},
+    "15661": {"type": "POS", "value": ["adjective", "adverb"], "category": ["grammatical", "syntactical"], "features": {"grammatical": {"degree": "superlative"}, "syntactical": {"position": "pre", "default-position": "pre"}}},
+    "12663": {"type": "POS", "value": "noun", "category": ["grammatical", "syntactical"], "features": {"grammatical": {"possessive": "possessor"}, "syntactical": {"position": ["pre", "post"], "default-position": "post"}}, "equivalent_indicator": "24676", "priority":"1"}},
 
     # Semantic Numerical Modifiers
-    "8510": {"type": "NUMBER", "value": "zero", "category": "semantic"},
-    "8511": {"type": "NUMBER", "value": "one", "category": "semantic"},
-    "8512": {"type": "NUMBER", "value": "two", "category": "semantic"},
-    "8513": {"type": "NUMBER", "value": "three", "category": "semantic"},
-    "8514": {"type": "NUMBER", "value": "four", "category": "semantic"},
-    "8515": {"type": "NUMBER", "value": "five", "category": "semantic"},
-    "8516": {"type": "NUMBER", "value": "six", "category": "semantic"},
-    "8517": {"type": "NUMBER", "value": "seven", "category": "semantic"},
-    "8518": {"type": "NUMBER", "value": "eight", "category": "semantic"},
-    "8519": {"type": "NUMBER", "value": "nine", "category": "semantic"},
+    "8510": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "zero"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8511": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "one"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8512": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "two"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8513": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "three"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8514": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "four"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8515": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "five"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8516": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "six"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8517": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "seven"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8518": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "eight"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
+    "8519": {"type": "POS", "value": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"numeric": "nine"}, "syntactical": {"position": ["pre", "post"], "default-position": "pre"}}, "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"},
 
+    # Grammatical Numerical Modifiers
+    "8497": {"type": "POS", "value": "noun", "category": ["grammatical", "syntactical"], "features": {"grammatical": {"person": "first-person"}, "syntactical": {"position": "post", "default-position": "post"}}, "equivalent_indicator": "24669", "priority":"1"},
+    "8498": {"type": "POS", "value": "noun", "category": ["grammatical", "syntactical"], "features": {"grammatical": {"person": "second-person"}, "syntactical": {"position": "post", "default-position": "post"}}, "equivalent_indicator": "24678", "priority":"1"},
+    "8499": {"type": "POS", "value": "noun", "category": ["grammatical", "syntactical"], "features": {"grammatical": {"person": "third-person"}, "syntactical": {"position": "post", "default-position": "post"}}, "equivalent_modifier": "24679", "priority":"1"},
+    
     # Signalling Modifiers
-    "15460": {"type": "USAGE_NOTE", "value": "metaphor", "category": "signalling"},
-    "21624": {"type": "USAGE_NOTE", "value": "blissname", "category": "signalling"},
-    "24961": {"type": "USAGE_NOTE", "value": "slang", "category": "signalling"},
-    "24962": {"type": "USAGE_NOTE", "value": "coarse_slang", "category": "signalling"},
+    "15460": {"type": "USAGE_NOTE", "value": "signalling", "category": "syntactical", "features": {"position": "pre", "default-position": "pre"}}, "notes": "used as a metaphor"},
+    "21624": {"type": "USAGE_NOTE", "value": "signalling", "category": "syntactical", "features": {"position": "pre", "default-position": "pre"}}, "notes": "used as a Blissname"},
+    "24961": {"type": "USAGE_NOTE", "value": "signalling", "category": "syntactical", "features": {"position": "pre", "default-position": "pre"}}, "notes": "used as slang"},
+    "24962": {"type": "USAGE_NOTE", "value": "signalling", "category": "syntactical", "features": {"position": "pre", "default-position": "pre"}}, "notes": "used as course slang"},,
+
+   
+# PREVIOUS SECTION - DIDNT DELETE.
+    # # infinitive verb or present tense verb
+    # "8993": {"type": "POS", "value": "verb", "category": "grammatical"},
+    # # active verb
+    # "8994": {"type": "VOICE", "value": "active", "category": "grammatical"},
+    # # the equivalent of the English present conditional form
+    # "8995": {"type": "POS", "value": "present_conditional", "category": "grammatical"},
+    # # the equivalent of the English -ed or -en ending
+    # "8996": {"type": "POS", "value": "past_participle", "category": "grammatical"},
+    # # equivalent to English words ending in -able
+    # "8997": {"type": "POS", "value": "able", "category": "grammatical"},
+    # # the equivalent of English adjectives/adverbs
+    # "8998": {
+    #     "or": [
+    #         {"type": "POS", "value": "adjective", "category": "grammatical"},
+    #         {"type": "POS", "value": "adverb", "category": "grammatical"}
+    #     ]
+    # },
+    
+    # # the equivalent of the English future tense
+    # "8999": {"type": "TENSE", "value": "future", "category": "grammatical"},
+    # # the equivalent of the English future conditional form
+    # "9000": {"type": "TENSE", "value": "future_conditional", "category": "grammatical"},
+    # # the equivalent of the English future passive form
+    # "9001": {"type": "TENSE", "value": "future_passive", "category": "grammatical"},
+    # # the equivalent of the English future passive conditional form
+    # "9002": {"type": "TENSE", "value": "future_passive_conditional", "category": "grammatical"},
+    # # something is being acted upon; action indicator passive
+    # "9003":  {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "present", "voice": "passive", "mood": "null"}},
+    # # the equivalent of the English past tense
+    # "9004": {"type": "TENSE", "value": "past", "category": "grammatical"},
+    # # the equivalent of the English past conditional form
+    # "9005": {"type": "TENSE", "value": "past_conditional", "category": "grammatical"},
+    # # the equivalent of the English past passive conditional form
+    # "9006": {"type": "TENSE", "value": "past_passive_conditional", "category": "grammatical"},
+    # # the equivalent of the English past passive form
+    # "9007": {"type": "TENSE", "value": "past_passive", "category": "grammatical"},
+    # # the equivalent of the English present passive conditional form
+    # "9008": {"type": "TENSE", "value": "present_passive_conditional", "category": "grammatical"},
+    # represent a concrete object
+#     "9009": {
+#         "and": [
+#             {"type": "POS", "value": "noun", "category": "grammatical"},
+#             {"type": "TYPE_SHIFT", "value": "concretization", "category": "semantic"},
+#         ]
+#     },
+#     # represent multiple concrete objects
+#     "9010": {"type": "NUMBER", "value": "thing_plural", "category": "grammatical"},
+#     "9011": {"type": "NUMBER", "value": "plural", "category": "grammatical"},
+#     "24667": {"type": "TENSE", "value": "noun", "category": "grammatical", "notes": "for teaching purposes"},
+#     "24668": {"type": "GENDER", "value": "feminine", "category": "grammatical"},
+#     "24669": {"type": "PERSON", "value": "first_person", "category": "grammatical"},
+#     "28043": {"type": "ASPECT", "value": "continuous_verb", "category": "grammatical"},
+#     "28044": {
+#         "and": [
+#             {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
+#             {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+#         ],
+#     },
+#     "28045":
+#     {
+#         "and": [
+#             {"type": "POS", "value": "noun", "category": "grammatical"},
+#             {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+#         ]
+#     },
+#     "28046": {
+#         "and": [
+#             {"type": "DEFINITENESS", "value": "definite", "category": "grammatical"},
+#             {"type": "POS", "value": "noun", "category": "grammatical"},
+#             {"type": "NUMBER", "value": "plural", "category": "grammatical"}
+#         ]
+#     },
+#     "24665": {"type": "POS", "value": "adverb", "category": "grammatical"},
+#     "24807": {
+#         "and": [
+#             {"type": "POS", "value": "verb", "category": "grammatical"},
+#             {"type": "TENSE", "value": "present", "category": "grammatical"}
+#         ]
+#     },
+#     "25458": {"type": "SIZE", "value": "diminutive", "category": "grammatical", "notes": "for teaching purposes"},
+# }
+
+# MODIFIER_SEMANTICS = {
+#     # Semantic Modifiers
+#     "14647": {"type": "QUANTIFIER", "value": "many", "category": "semantic"},
+#     "14947": {"type": "INTENSIFIER", "value": "high", "category": "semantic"},
+#     "15474": {"type": "NEGATION", "value": "without", "category": "semantic"},
+#     "15927": {"type": "OPERATOR", "value": "opposite", "category": "semantic"},
+#     "14430": {"type": "OPERATOR", "value": "generalization", "category": "semantic"},
+#     "15972": {"type": "OPERATOR", "value": "part_of", "category": "semantic"},
+#     "12352": {"type": "TIME", "value": "ago", "category": "semantic"},
+#     "15736": {"type": "TIME", "value": "now", "category": "semantic"},
+#     "17705": {"type": "TIME", "value": "future", "category": "semantic"},
+
+#     # Grammatical Modifiers
+#     "15654": {"type": "COMPARISON", "value": "more", "category": "grammatical"},
+#     "15661": {"type": "COMPARISON", "value": "most", "category": "grammatical"},
+#     "12663": {"type": "POSSESSION", "value": "belongs_to", "category": "grammatical"},
+
+#     # Semantic Numerical Modifiers
+#     "8510": {"type": "NUMBER", "value": "zero", "category": "semantic"},
+#     "8511": {"type": "NUMBER", "value": "one", "category": "semantic"},
+#     "8512": {"type": "NUMBER", "value": "two", "category": "semantic"},
+#     "8513": {"type": "NUMBER", "value": "three", "category": "semantic"},
+#     "8514": {"type": "NUMBER", "value": "four", "category": "semantic"},
+#     "8515": {"type": "NUMBER", "value": "five", "category": "semantic"},
+#     "8516": {"type": "NUMBER", "value": "six", "category": "semantic"},
+#     "8517": {"type": "NUMBER", "value": "seven", "category": "semantic"},
+#     "8518": {"type": "NUMBER", "value": "eight", "category": "semantic"},
+#     "8519": {"type": "NUMBER", "value": "nine", "category": "semantic"},
+
+#     # Signalling Modifiers
+#     "15460": {"type": "USAGE_NOTE", "value": "metaphor", "category": "signalling"},
+#     "21624": {"type": "USAGE_NOTE", "value": "blissname", "category": "signalling"},
+#     "24961": {"type": "USAGE_NOTE", "value": "slang", "category": "signalling"},
+#     "24962": {"type": "USAGE_NOTE", "value": "coarse_slang", "category": "signalling"},
 }
 
 # Possible modifiers
