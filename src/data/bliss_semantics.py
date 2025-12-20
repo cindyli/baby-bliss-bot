@@ -94,7 +94,9 @@ INDICATOR_SEMANTICS = {
     "9011": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"number": "plural"}},
     "24667": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"definiteness": "definite"}, "notes": "for teaching purposes"},
    # the female modifier (ID: 14166) is used more. Indicator is not used in communication
-    "24668": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "notes": "for teaching purposes", "equivalent_modifier": "14166", "priority":"2"},
+   "24668": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "notes": "for teaching purposes", "equivalent_modifier": "14166", "priority":"2"},
+   "14166": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "feminine"}, "equivalent_indicator": "24668", "priority":"1"},
+   "12335": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"gender": "masculine"}, "priority":"1"},
    # person indicators are only used for grammar teaching - not used in communication; modifiers (actually specifiers) are used for communication
     "24669": {"type": "POS", "value": "noun", "category": "grammatical", "features": {"person": "first-person", "notes": "for teaching purposes", "equivalent_modifier": "8497", "priority":"2"},
     "28043": {"type": "POS", "value": "verb", "category": "grammatical", "features": {"tense": "null", "voice": "null", "mood": "null", "aspect": "continuous", "form": "inflected"}, "notes": "for teaching purposes"},
@@ -147,7 +149,7 @@ INDICATOR_SEMANTICS = {
     },
 
    # possessive indicator; both indicator and modifier (ID: 12663) are used, but modifier is used more in English (opposite is true for Swedish).
-   "24676": {"type": "POS", "value": "noun", "category": ["grammatical", "syntactical"], "features": {"grammatical": {"possessive": "possessor"},"features": {"position": ["pre", "post"], "default-position": "post"}, "notes": "for teaching purposes", "equivalent_modifier": "12663", "priority":"2"},
+   "24676": {"type": "POS", "value": "noun", "category": ["grammatical", "syntactical"], "features": {"grammatical": {"possessive": "possessor"}, "syntactical": {"position": ["pre", "post"], "default-position": "post"}, "notes": "for teaching purposes", "equivalent_modifier": "12663", "priority":"2"},
    # object form; can use object form with or without indicator - is an alternative, modifier (ID: 28057) has never been used
    "24673": {"type": "POS", "value": "noun", "category": "syntactical", "features": {"position": ["pre", "post"], "default-position": "post"}, "notes": "for teaching purposes", "equivalent_modifier": "28057", "priority":["optional", "1"]},
 }
