@@ -11,6 +11,7 @@ Features - Specific properties of a word within its POS. Valid values are indica
         * aspect - Indicates how an action occurs over time. Valid values are "null" and "continuous". Values cannot be more than one. # aspect may vary language to language on how its used
         * form - Variations of verbs. Valid values are "inflected", "infinitive", "present-participle", "past-participle-1", and "past-participle-2". Values cannot be more than one. # simplifying finite (inflected) and infinite (infinitive and participles); when tense, voice, aspect, mood are null, its an infinitive
         * intensity: Valid value is "high"
+        * negation: Valid values are "without", "not", and "opposite". Values cannot be more than one.
     * Nouns:
         * number: Valid values are "singular" and "plural". Values cannot be more than one.
         * definiteness - Identifies a specific or general thing. Valid values are "indefinite" and "definite". Values cannot be more than one. # indefinite: an apple; definite: the apple
@@ -24,10 +25,12 @@ Features - Specific properties of a word within its POS. Valid values are indica
         * link - Distingushes between grouped with something (association) versus part of something (derivative). Valid values are "association" and "derivative". Values cannot be more than one. # e.g. furniture is associated with chair and table versus province is derived of a country
         * time: Valid values are "ago", "now", "then_future". Values cannot be more than one. # attached to nouns but becomes adverb
         * numeric: Valid values are "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", and "nine". Values cannot be more than one.
+        * negation: Valid values are "without", "not", and "opposite". Values cannot be more than one.
      * Adjectives + Adverbs:
         * modality - Semantic expression of possibility. Valid values are "null", "potential", and "completed". Values cannot be more than one. # modality is the state at which something is possible 
         * intensity: Valid value is "high"
         * degree: Valid values are "comparative" and "superlative". Values cannot be more than one
+        * negation: Valid values are "without", "not", and "opposite". Values cannot be more than one.
 Priority (optional) - Indicates processing priority. Valid values are "1" or "2", where "1" is higher priority than "2". Values cannot be more than one. # action and description indicators are commonly used between different users, while present action and adverb indicators are used in full-form
 
 
@@ -128,7 +131,7 @@ INDICATOR_SEMANTICS = {
     # 3 participles
     "24674": {"POS": "verb", "category": "grammatical", "features": {"form": {"past-participle-1"},} "notes": "for teaching purposes"},
     "24675": {"POS": "verb", "category": "grammatical", "features": {"form": {"past-participle-2"}}, "notes": "for teaching purposes"},
-    "24677": {"POS": "verb", "category": "grammatical", "features": {"form": {"present-participle"}}, "notes": "for teaching purposes"},
+    "24677": {"POS": ["verb", "adjective"], "category": "grammatical", "features": {"form": {"present-participle"}}, "notes": "for teaching purposes"},
     # back to nouns
     "24671": {"POS": "noun", "category": "grammatical", "features": {"definiteness": "indefinite"}, "notes": "for teaching purposes"},
     "24672": {"POS": "noun", "category": "grammatical", "features": {"gender": "neutral"}, "notes": "for teaching purposes"},
@@ -147,10 +150,10 @@ MODIFIER_SEMANTICS = {
    # Semantic Modifiers
    "14647": {"POS": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"quantifier": "many"}, "syntactical": {"position": "pre", "default-position": "pre"}}},
    "14947": {"POS": ["verb", "adjective", "adverb"], "category": ["semantic", "syntactical"], "features": {"semantic": {"intensity": "high"}, "syntactical": {"position": "post", "default-position": "post"}}},
-   ------------------ need to figure out these two -----------------------
-   "15474": {"type": "NEGATION", "value": "without", "category": "semantic"},
-   "15927": {"type": "OPERATOR", "value": "opposite", "category": "semantic"},
-   -----------------------------------------------------------------------
+   # negation
+   "15474": {"POS": "noun", "category": "semantic", "features": {"negation": "without"}, "notes": "negates existence or presence, expresses lacking/missing something", "priority": "1"},
+   "15733": {"POS": ["verb", "adjective", "noun", "adverb"], "category": "semantic", "features": {"negation": "not"}, "notes": "negates property or quality of something", "priority": "2"},
+   "15927": {"POS": ["noun", "adjective"], "category": "semantic", "features": {"negation": "opposite"}, "notes": "negates relationally or conceptually, can also be used in figurative/metaphorical contexts", "priority": "3"},
    # generalization modifier has a link of association; it is associated with something e.g. furniture is associated with chair and table
    "14430": {"POS": "noun", "category": ["semantic", "syntactical"], "features": {"semantic": {"link": "association"}, "syntactical": {"position": "pre", "default-position": "pre"}}},
    # constituence modifier has a link of derivative; it is a derivative of something e.g. province is a derivative of a country
