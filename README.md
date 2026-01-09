@@ -126,6 +126,6 @@ as other explorations with RAG (Retrieval-augmented generation) and preserving c
 
 ## Utility Scripts
 
-All utility functions are in the [`utils`](./utils) directory. 
+All utility functions are in the [`image_utils`](./image_utils) directory. 
 
-See [README.md](./utils/README.md) in the [`utils`](./utils) directory for details.
+See [README.md](./image_utils/README.md) in the [`image_utils`](./image_utils) directory for details.
