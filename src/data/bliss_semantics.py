@@ -339,59 +339,444 @@ INDICATOR_SEMANTICS = {
 
 
 MODIFIER_SEMANTICS = {
+    # Structural markers
+    # "B233"
     "13382": {
         "meaning": "combine marker"
     },
+
+    # What
+    # "B699" // interrogative when used as a prefix, otherwise a specifier
+    "18229": {
+        "meaning": "what"
+    },
+
+    # Scalar degree operators
+    # "B401" // exclamatory when used as a prefix, otherwise a specifier
+    "14947": {
+        "meaning": "intensity",
+        "POS": ["verb", "adjective", "adverb"],
+        "features": {"semantic": {"intensity": "high"}, "syntactical": {"position": "post", "default-position": "post"}}
+    },
+    # "B937"
     "24879": {
         "meaning": "more (comparative)"
     },
+    # "B968"
     "24944": {
         "meaning": "most (comparative)"
     },
-    "14647": {
-        "meaning": "many, much",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
-        "features": {"semantic": {"quantifier": "many"}, "syntactical": {"position": "pre", "default-position": "pre"}}
-    },
-    "16984": {
-        "meaning": "similar to"
-    },
-    "16985": {
-        "meaning": "look similar to"
-    },
-    "16986": {
-        "meaning": "sound similar to"
-    },
-    "15474": {
-        "meaning": "without",
-        "POS": "noun",
-        "category": "semantic",
-        "features": {"negation": "without"},
-        "notes": "negates existence or presence, expresses lacking/missing something",
-        "priority": "1"
-    },
+
+    # Identity-affecting operators
+    # "B449/B401"
     "15733": {
-        "meaning": "not",
+        "meaning": "not, negative, no, don't, doesn't",
         "POS": ["verb", "adjective", "noun", "adverb"],
         "category": "semantic",
         "features": {"negation": "not"},
         "notes": "negates property or quality of something",
         "priority": "2"
     },
+    # "B486"
     "15927": {
         "meaning": "opposite",
         "POS": ["noun", "adjective"],
         "category": "semantic",
         "features": {"negation": "opposite"},
         "notes": "negates relationally or conceptually, can also be used in figurative/metaphorical contexts",
-        "priority": "3"},
+        "priority": "3"
+    },
+
+    "14647": {
+        "meaning": "many, much",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {"semantic": {"quantifier": "many"}, "syntactical": {"position": "pre", "default-position": "pre"}}
+    },
+
+    # Concept-transforming operators
+    # "B1060/B578"
+    "16984": {
+        "meaning": "similar to"
+    },
+    # "B1060/B578/B303"
+    "16985": {
+        "meaning": "look similar to"
+    },
+    # "B1060/B578/B608"
+    "16986": {
+        "meaning": "sound similar to"
+    },
+    # "B578/B608"
+    "16714": {
+        "meaning": "same sound"
+    },
+    # "B578/B303": "look same" but missing in the BCI-AV
+    # "B348"
+    "14430": {
+        "meaning": "generalization",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {"semantic": {"link": "association"}, "syntactical": {"position": "pre", "default-position": "pre"}},
+    },
+
+    # Relational operators
+    # "B449"
+    "15474": {
+        "meaning": "minus, no, without",
+        "POS": "noun",
+        "category": "semantic",
+        "features": {"negation": "without"},
+        "notes": "negates existence or presence, expresses lacking/missing something",
+        "priority": "1"
+    },
+    # "B578"
+    "16713": {
+        "meaning": "same, equal, equality"
+    },
+    # "B502/B167"
+    "12858": {
+        "meaning": "blissymbol part"
+    },
+    # "B502", // part of
     "15972": {
         "meaning": "part of",
         "POS": "noun",
         "category": ["semantic", "syntactical"],
         "features": {"semantic": {"link": "derivative"}, "syntactical": {"position": "pre", "default-position": "pre"}}
+    },
+    # "B102", // about
+    "12324": {
+        "meaning": "about, concerning, regarding, in relation to"
+    },
+    # "B104", // across
+    "12333": {
+        "meaning": "across"
+    },
+    # "B109", // after
+    "12348": {
+        "meaning": "after, behind"
+    },
+    # "B111", // against
+    "12351": {
+        "meaning": "against, opposed to"
+    },
+    # "B120/B120", // along with
+    "12364": {
+        "meaning": "along with"
+    },
+    # "B162/B368", // among
+    "25653": {
+        "meaning": "among"
+    },
+    # "B134", // around
+    "12580": {
+        "meaning": "around"
+    },
+    # "B135", // at
+    "12591": {
+        "meaning": "at"
+    },
+    # "B158", // before
+    "12656": {
+        "meaning": "before, in front of, prior to"
+    },
+    # "B162", // between
+    "12669": {
+        "meaning": "between"
+    },
+    # "B195", // by
+    "13100": {
+        "meaning": "by, by means of, of"
+    },
+    # "B482", // on
+    "15918": {
+        "meaning": "on"
+    },
+    # "B491", // out of (forward)
+    "15943": {
+        "meaning": "out of (forward)"
+    },
+    # "B492", // out of (downward)
+    "15944": {
+        "meaning": "out of (downward)"
+    },
+    # "B977", // out of (upward)
+    "25134": {
+        "meaning": "out of (upward)"
+    },
+    # "B976", // out of (backward)
+    "25133": {
+        "meaning": "out of (backward)"
+    },
+    # "B402", // into (forward)
+    "14952": {
+        "meaning": "into (forward)"
+    },
+    # "B1124", // into (downward)
+    "25895": {
+        "meaning": "into (downward)"
+    },
+    # "B1125", // into (upward)
+    "25896": {
+        "meaning": "into (upward)"
+    },
+    # "B1123", // into (backward)
+    "25894": {
+        "meaning": "into (backward)"
+    },
+    # "B490", // outside
+    "15942": {
+        "meaning": "outside"
+    },
+    # "B398", // inside
+    "14932": {
+        "meaning": "inside"
+    },
+    # "B493", // over, above
+    "15948": {
+        "meaning": "over, above"
+    },
+    # "B676", // under, below
+    "17969": {
+        "meaning": "under, below"
+    },
+    # "B1102", // under (ground level)
+    "25628": {
+        "meaning": "under (ground level)"
+    },
+    # "B331", // instead of
+    "14381": {
+        "meaning": "instead"
+    },
+    # "B332", // for the purpose of
+    "14382": {
+        "meaning": "for the purpose of, in order to"
+    },
+    # "B337", // from
+    "14403": {
+        "meaning": "from"
+    },
+    # "B657", // to, toward
+    "17739": {
+        "meaning": "to, toward"
+    },
+    # "B653", // through
+    "17724": {
+        "meaning": "through"
+    },
+    # "B677", // until
+    "17982": {
+        "meaning": "until"
+    },
+    # "B160", // belongs to
+    "12663": {
+        "meaning": "belongs to",
+        "POS": "noun",
+        "category": ["grammatical", "syntactical"],
+        "features": {
+            "grammatical": {"possessive": "possessor"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "post"
+            }
+        },
+        "equivalent_indicator": "24676",
+        "priority": "1",
+    },
+
+    # Quantifiers
+    # "B368", // many/much (lake, village)
+    "14647": {
+        "meaning": "many, much"
+    },
+    # pending: few (not yet in bliss-glyph-data.js)
+    # "B117", // all
+    "12360": {
+        "meaning": "all"
+    },
+    # "B100", // any
+    "12321": {
+        "meaning": "any"
+    },
+    # "B11/B117", // both
+    "12879": {
+        "meaning": "both"
+    },
+    # "B10/B117", // each/every
+    "13893": {
+        "meaning": "each, every"
+    },
+    # "B286", // either
+    "13914": {
+        "meaning": "either"
+    },
+    # "B449/B286", // neither
+    "15706": {
+        "meaning": "neither"
+    },
+    # "B951", // half
+    "24906": {
+        "meaning": "half"
+    },
+    # "B962", // quarter
+    "24932": {
+        "meaning": "quarter"
+    },
+    # "B1151", // one third
+    "26064": {
+        "meaning": "one third"
+    },
+    # "B1152", // two thirds
+    "26065": {
+        "meaning": "two thirds"
+    },
+    # "B1153", // three quarters
+    "26066": {
+        "meaning": "three quarters"
+    },
+    # "B559/B11", // several
+    "16762": {
+        "meaning": "several"
+    },
+    # "B9", // zero
+    "8496": {
+        "meaning": "zero",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "zero"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },
+    # "B10", // one
+    "8497": {
+        "meaning": "one",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "one"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },
+    # "B11", // two
+    "8498": {
+        "meaning": "two",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "two"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },
+    # "B12", // three
+    "8499": {
+        "meaning": "three",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "three"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },
+    # "B13", // four
+    "8500": {
+        "meaning": "four",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "four"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },
+    # "B14", // five
+    "8501": {
+        "meaning": "five",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "five"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },
+    # "B15", // six
+    "8502": {
+        "meaning": "six",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "six"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },  
+    # "B16", // seven
+    "8503": {
+        "meaning": "seven",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "seven"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },
+    # "B17", // eight
+    "8504": {
+        "meaning": "eight",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "eight"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+    },
+    # "B18", // nine
+    "8505": {
+        "meaning": "nine",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {
+            "semantic": {"numeric": "nine"},
+            "syntactical": {
+                "position": ["pre", "post"],
+                "default-position": "pre"
+            }
+        },
+        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     }
-    # "B578/B303": looks like
-    # "B578/B608": sounds like
 }
