@@ -1,4 +1,4 @@
-# LLM Prompts for Blissymbolics Sentences
+# LLM Prompts for Blissymbolics Sentences in Word Description
 
 This document explores effective LLM prompts for interpreting Blissymbolics (an AAC system), converting symbol sequences into grammatically correct English sentences, and predicting the user's next words.
 
@@ -12,6 +12,9 @@ This document explores effective LLM prompts for interpreting Blissymbolics (an 
 ## Prediction Prompt ##
 
 **Example 1**
+* **Original sentence**: I am tired so
+* **Words in list**: I am tired so
+* **Prompt**
 
 System Role:
 You are an AI assistant for a user communicating via Blissymbolics (an AAC system). Your task is to interpret a stream of raw symbol data, convert it into a grammatically correct English sentence, and predict what the user will say next.
@@ -260,88 +263,4 @@ Based on the sentence so far, I predict the top 5 most likely next words:
 3. **meeting**
 4. **event**
 5. **business**
-```
-
-#### Example 4 ####
-
-* **Original sentence**: I finished the task and sent it for review.
-* **Words in list**: I finished the task and sent it for
-* **Input List:**
-
-1. I, me, myself
-2. This word or a short phase is classified as "finish, complete", the POS attribute is "verb", the tense attribute is "past"
-3. activity, male gender (in combinations)
-4. and, also, plus, too
-5. This word or a short phase is classified as "send", the POS attribute is "verb", the tense attribute is "past"
-6. for (the purpose of), in order to
-
-* **Responses**
-
-1. Gemini 3 Pro
-```
-Sentence so-far: I finished work and sent for
-Top 5 Predictions:
-a
-the
-taxi
-food
-help
-```
-
-2. Deepseek-r1 8B
-```
-Sentence so-far: I finished male activity and sent for...
-
-Top 5 Predictions:
-work
-home
-school
-repair
-help
-```
-
-3. Llama3.1 8B
-```
-Here's my interpretation:
-
-**Analysis**
-
-1. I, me, myself
-	* Based on the grammatical context (implying a subject), I select: **I**
-2. This word or a short phase is classified as "finish, complete", POS "verb", tense attribute "past"
-	* Based on the semantic description and part-of-speech attributes, I synthesize this into a specific English word 
-that matches the definition: **finished**
-3. activity, male gender (in combinations)
-	* The user selects: **activity** (a noun), but given the context of the sentence, it's more likely they intended 
-to select **he** or **him**, implying a masculine subject
-4. and, also, plus, too
-	* The user selects: **and** (a conjunction)
-5. This word or a short phase is classified as "send", POS "verb", tense attribute "past"
-	* Based on the semantic description and part-of-speech attributes, I synthesize this into a specific English word 
-that matches the definition: **sent**
-6. for (the purpose of), in order to
-	* The user selects: **for** (a preposition indicating purpose)
-
-**Construct Sentence**
-
-Assembling the selected words, I construct a sentence:
-
-"I finished an activity and he sent..."
-
-However, this is still incomplete; we need more context to finish the sentence.
-
-Given the tense attribute "past" for both "finished" and "sent", it's likely that the user is describing completed 
-actions. Let's revise the sentence:
-
-"I finished my activity and he sent a message."
-
-**Predict Next Words**
-
-Based on the sentence so far, I predict the top 5 most likely next words:
-
-1. **because**
-2. **he** (implying another subject or pronoun)
-3. **to** (preposition indicating direction or purpose)
-4. **her** (object of the sentence)
-5. **me**
 ```
