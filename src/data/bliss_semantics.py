@@ -15,7 +15,7 @@ Features - Specific properties of a word within its POS. Valid values are indica
         * negation: Valid values are "without", "not", and "opposite". Values cannot be more than one.
     * Nouns:
         * number: Valid values are "singular" and "plural". Values cannot be more than one.
-        * definiteness - Identifies a specific or general thing. Valid values are "indefinite" and "definite". Values cannot be more than one. # indefinite: an apple; definite: the apple
+        * definiteness - Identifies a specific or general thing. Valid values are "indefinite" and "definite". Values cannot be more than one. # indefinite noun: an apple; definite noun: the apple
         * gender: Valid values are "neutral", "feminine", and "masculine". Values cannot be more than one.
         * person: Valid values are "first-person", "second-person", and "third-person". Values cannot be more than one.
         * size: Valid value is "diminutive"
@@ -32,7 +32,8 @@ Features - Specific properties of a word within its POS. Valid values are indica
         * intensity: Valid value is "high"
         * degree: Valid values are "comparative" and "superlative". Values cannot be more than one
         * negation: Valid values are "without", "not", and "opposite". Values cannot be more than one.
-Priority (optional) - Indicates processing priority. Valid values are "1" or "2", where "1" is higher priority than "2". Values cannot be more than one. # action and description indicators are commonly used between different users, while present action and adverb indicators are used in full-form
+Equivalent indicators/modifiers - Valid values are its equivalent indicator/modifier ID. Values cannot be more than one.
+Priority - Indicates processing priority. Valid values are presented as IDs and "optional" in a list from highest to least priority. Values cannot be more than one. # action and description indicators are commonly used between different users, while present action and adverb indicators are used in full-form
 """
 
 # Blissymbolics Indicators and Modifiers
@@ -45,7 +46,7 @@ INDICATOR_SEMANTICS = {
         "features": {
             "form": "infinitive"
         },
-        "priority": "1"
+        "priority": ["8993", "24807"]
     },
     # active verb
     "8994": {
@@ -77,7 +78,7 @@ INDICATOR_SEMANTICS = {
     "8998": {
         "POS": ["adjective", "adverb"],
         "category": "semantic",
-        "priority": "1"
+        "priority": ["8998", "24665"]
     },
     # back to action indicators
     # the equivalent of the English future tense
@@ -164,56 +165,41 @@ INDICATOR_SEMANTICS = {
         }]
     },
     "9011": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"number": "plural"}
     },
     "24667": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"definiteness": "definite"},
         "notes": "for teaching purposes"
     },
     # the female modifier (ID: 14166) is used more. Indicator is not used in communication
     "24668": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"gender": "feminine"},
         "notes": "for teaching purposes",
         "equivalent_modifier": "14166",
-        "priority": "2"
-    },
-    "14166": {
-        "POS": "noun",
-        "category": "grammatical",
-        "features": {"gender": "feminine"},
-        "equivalent_indicator": "24668",
-        "priority": "1"
+        "priority": ["14166", "24668"]
     },
     "12335": {
-        "POS": "noun",
         "category": "grammatical",
-        "features": {"gender": "masculine"},
-        "priority": "1"
+        "features": {"gender": "masculine"}
     },
     # person indicators are only used for grammar teaching - not used in communication; modifiers (actually specifiers) are used for communication
     "24669": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"person": "first-person"},
         "notes": "for teaching purposes",
         "equivalent_modifier": "8497",
-        "priority": "2"
+        "priority": ["8497", "24669"]
     },
     # the past participle form
     "28044": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"number": "plural", "definiteness": "definite"}
     },
     "28045": {
         "and": [{
-            "POS": "noun",
             "category": "grammatical",
             "features": {"definiteness": "definite"}
         }, {
@@ -237,7 +223,7 @@ INDICATOR_SEMANTICS = {
         "POS": "adverb",
         "category": "grammatical",
         "notes": "for teaching purposes",
-        "priority": "2"
+        "priority": ["8998", "24665"]
     },
     # similar to ID: 8993;
     "24807": {
@@ -245,15 +231,15 @@ INDICATOR_SEMANTICS = {
         "category": "grammatical",
         "features": {"tense": "present", "voice": "null", "mood": "declarative", "aspect": "null", "form": "inflected"},
         "notes": "for teaching purposes",
-        "priority": "2"
+        "priority": ["8993", "24807"]
     },
     # the diminutive modifier is used more. Indicator (ID: 28052) is not used
     "25458": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"size": "diminutive", "form": "inflected"},
         "notes": "for teaching purposes",
-        "equivalent_modifier": "28052"
+        "equivalent_modifier": "28052",
+       "priority": ["28052", "25458"]
     },
     # imperative mood
     "24670": {
@@ -282,33 +268,29 @@ INDICATOR_SEMANTICS = {
     },
     # back to nouns
     "24671": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"definiteness": "indefinite"},
         "notes": "for teaching purposes"
     },
     "24672": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"gender": "neutral"},
         "notes": "for teaching purposes"
     },
     # person indicators are only used for grammar teaching - not used in communication; modifiers (actually specifiers) are used for communication
     "24678": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"person": "second-person"},
         "notes": "for teaching purposes",
         "equivalent_modifier": "8498",
-        "priority": "2"
+        "priority": ["8498", "24678"]
     },
     "24679": {
-        "POS": "noun",
         "category": "grammatical",
         "features": {"person": "third-person"},
         "notes": "for teaching purposes",
         "equivalent_modifier": "8499",
-        "priority": "2"
+        "priority": ["8499", "24679"]
     },
 
     # possessive indicator; both indicator and modifier (ID: 12663) are used, but modifier is used more in English (opposite is true for Swedish).
@@ -324,7 +306,7 @@ INDICATOR_SEMANTICS = {
         },
         "notes": "for teaching purposes",
         "equivalent_modifier": "12663",
-        "priority": "2"
+        "priority": ["12663", "24676"]
     },
     # object form; can use object form with or without indicator - is an alternative, modifier (ID: 28057) has never been used
     "24673": {
@@ -333,12 +315,50 @@ INDICATOR_SEMANTICS = {
         "features": {"position": ["pre", "post"], "default-position": "post"},
         "notes": "for teaching purposes",
         "equivalent_modifier": "28057",
-        "priority": ["optional", "1"]
+        "priority": ["optional", "24673", "28057"]
     },
 }
 
 
 MODIFIER_SEMANTICS = {
+   "14166": {
+        "category": "grammatical",
+        "features": {"gender": "feminine"},
+        "equivalent_indicator": "24668",
+        "priority": ["14166", "24668"]
+    },
+   "8497": {
+        "category": "grammatical",
+        "features": {"person": "first-person"},
+        "equivalent_indicator": "24669",
+        "priority": ["8497", "24669"]
+    },
+   "8498": {
+        "category": "grammatical",
+        "features": {"person": "second-person"},
+        "equivalent_indicator": "24678",
+        "priority": ["8498", "24678"]
+    },
+    "8499": {
+        "category": "grammatical",
+        "features": {"person": "third-person"},
+        "equivalent_indicator": "24679",
+        "priority": ["8499", "24679"]
+    },
+   "28052": {
+        "category": "grammatical",
+        "features": {"size": "diminutive", "form": "inflected"},
+        "equivalent_indicator": "25458",
+       "priority": ["28052", "25458"]
+    },
+   "28057": {
+        "POS": "noun",
+        "category": "syntactical",
+        "features": {"position": ["pre", "post"], "default-position": "post"},
+        "notes": "never used",
+        "equivalent_indicator": "24673",
+        "priority": ["optional", "24673", "28057"]
+    },
     # Structural markers
     # "B233"
     "13382": {
@@ -358,35 +378,35 @@ MODIFIER_SEMANTICS = {
         "POS": ["verb", "adjective", "adverb"],
         "features": {"semantic": {"intensity": "high"}, "syntactical": {"position": "post", "default-position": "post"}}
     },
-    # "B937"
+    # "B937"; prefix modifier
     "24879": {
         "meaning": "more (comparative)"
     },
-    # "B968"
+    # "B968"; mostly prefix modifier
     "24944": {
         "meaning": "most (comparative)"
     },
 
     # Identity-affecting operators
-    # "B449/B401"
+    # "B449/B401"; suffix modifier
     "15733": {
         "meaning": "not, negative, no, don't, doesn't",
         "POS": ["verb", "adjective", "noun", "adverb"],
         "category": "semantic",
         "features": {"negation": "not"},
         "notes": "negates property or quality of something",
-        "priority": "2"
+        "priority": ["15474", "15733", "15927"]
     },
-    # "B486"
+    # "B486"; prefix modifier
     "15927": {
         "meaning": "opposite",
         "POS": ["noun", "adjective"],
         "category": "semantic",
         "features": {"negation": "opposite"},
         "notes": "negates relationally or conceptually, can also be used in figurative/metaphorical contexts",
-        "priority": "3"
+        "priority": ["15474", "15733", "15927"]
     },
-
+   # prefix modifier
     "14647": {
         "meaning": "many, much",
         "POS": "noun",
@@ -395,40 +415,40 @@ MODIFIER_SEMANTICS = {
     },
 
     # Concept-transforming operators
-    # "B1060/B578"
+    # "B1060/B578"; prefix modifier
     "16984": {
         "meaning": "similar to"
     },
-    # "B1060/B578/B303"
+    # "B1060/B578/B303"; prefix modifier
     "16985": {
         "meaning": "look similar to"
     },
-    # "B1060/B578/B608"
+    # "B1060/B578/B608"; prefix modifier e.g. duck + sound similar to = goose (new meaning)
     "16986": {
         "meaning": "sound similar to"
     },
-    # "B578/B608"
+    # "B578/B608"; prefix modifier e.g. bird whistle has same sound to duck (new meaning)
     "16714": {
         "meaning": "same sound"
     },
     # "B578/B303": "look same" but missing in the BCI-AV
-    # "B348"
+    # "B348"; prefix modifier
     "14430": {
         "meaning": "generalization",
         "POS": "noun",
         "category": ["semantic", "syntactical"],
         "features": {"semantic": {"link": "association"}, "syntactical": {"position": "pre", "default-position": "pre"}},
     },
-
+---------------------- CONTINUE ------------------------------------------
     # Relational operators
-    # "B449"
+    # "B449"; prefix and suffix modifier
     "15474": {
         "meaning": "minus, no, without",
         "POS": "noun",
         "category": "semantic",
         "features": {"negation": "without"},
         "notes": "negates existence or presence, expresses lacking/missing something",
-        "priority": "1"
+        "priority": ["15474", "15733", "15927"]
     },
     # "B578"
     "16713": {
@@ -582,7 +602,7 @@ MODIFIER_SEMANTICS = {
             }
         },
         "equivalent_indicator": "24676",
-        "priority": "1",
+        "priority":  ["12663", "24676"]
     },
 
     # Quantifiers
