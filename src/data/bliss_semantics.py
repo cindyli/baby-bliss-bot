@@ -360,7 +360,7 @@ MODIFIER_SEMANTICS = {
         "priority": ["optional", "24673", "28057"]
     },
     # Structural markers
-    # "B233"
+    # "B233"; no examples in blissary - not sure
     "13382": {
         "meaning": "combine marker"
     },
@@ -382,7 +382,7 @@ MODIFIER_SEMANTICS = {
     "24879": {
         "meaning": "more (comparative)"
     },
-    # "B968"; mostly prefix modifier
+    # "B968"; mostly prefix modifier, suffix modifier for "record(achievement)"
     "24944": {
         "meaning": "most (comparative)"
     },
@@ -439,7 +439,6 @@ MODIFIER_SEMANTICS = {
         "category": ["semantic", "syntactical"],
         "features": {"semantic": {"link": "association"}, "syntactical": {"position": "pre", "default-position": "pre"}},
     },
----------------------- CONTINUE ------------------------------------------
     # Relational operators
     # "B449"; prefix and suffix modifier
     "15474": {
@@ -450,61 +449,62 @@ MODIFIER_SEMANTICS = {
         "notes": "negates existence or presence, expresses lacking/missing something",
         "priority": ["15474", "15733", "15927"]
     },
-    # "B578"
+    # "B578"; suffix specifier
     "16713": {
         "meaning": "same, equal, equality"
     },
-    # "B502/B167"
+    # "B502/B167"; no examples in blissary - not sure
     "12858": {
         "meaning": "blissymbol part"
     },
-    # "B502", // part of
+    # "B502", // part of; not sure
     "15972": {
         "meaning": "part of",
         "POS": "noun",
         "category": ["semantic", "syntactical"],
         "features": {"semantic": {"link": "derivative"}, "syntactical": {"position": "pre", "default-position": "pre"}}
     },
-    # "B102", // about
+    # "B102", // about; not sure
     "12324": {
         "meaning": "about, concerning, regarding, in relation to"
     },
-    # "B104", // across
+    # "B104", // across: suffix modifier
     "12333": {
         "meaning": "across"
     },
-    # "B109", // after
+    # "B109", // after; not sure
     "12348": {
         "meaning": "after, behind"
     },
-    # "B111", // against
+    # "B111", // against; prefix and suffix modifier
     "12351": {
         "meaning": "against, opposed to"
     },
-    # "B120/B120", // along with
+    # "B120/B120", // along with; no examples in blissary - not sure
     "12364": {
         "meaning": "along with"
     },
-    # "B162/B368", // among
+    # "B162/B368", // among; no examples in blissary - not sure
     "25653": {
         "meaning": "among"
     },
-    # "B134", // around
+    # "B134", // around; suffix modifier
     "12580": {
         "meaning": "around"
     },
-    # "B135", // at
+    # "B135", // at; no examples in blissary - not sure
     "12591": {
         "meaning": "at"
     },
-    # "B158", // before
+    # "B158", // before; not sure
     "12656": {
         "meaning": "before, in front of, prior to"
     },
-    # "B162", // between
+    # "B162", // between; prefix and suffix modifier
     "12669": {
         "meaning": "between"
     },
+   -----------------CONTINUE----------------------------------
     # "B195", // by
     "13100": {
         "meaning": "by, by means of, of"
