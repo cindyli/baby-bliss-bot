@@ -321,36 +321,42 @@ INDICATOR_SEMANTICS = {
 
 
 MODIFIER_SEMANTICS = {
+   # "B314"; TBD
    "14166": {
         "category": "grammatical",
         "features": {"gender": "feminine"},
         "equivalent_indicator": "24668",
         "priority": ["14166", "24668"]
     },
+   # "B10"; TBD
    "8497": {
         "category": "grammatical",
         "features": {"person": "first-person"},
         "equivalent_indicator": "24669",
         "priority": ["8497", "24669"]
     },
+   # "B11"; TBD
    "8498": {
         "category": "grammatical",
         "features": {"person": "second-person"},
         "equivalent_indicator": "24678",
         "priority": ["8498", "24678"]
     },
+   # "B12"; TBD
     "8499": {
         "category": "grammatical",
         "features": {"person": "third-person"},
         "equivalent_indicator": "24679",
         "priority": ["8499", "24679"]
     },
+   # "B5999"; TBD
    "28052": {
         "category": "grammatical",
         "features": {"size": "diminutive", "form": "inflected"},
         "equivalent_indicator": "25458",
        "priority": ["28052", "25458"]
     },
+   # "B6003"; TBD
    "28057": {
         "POS": "noun",
         "category": "syntactical",
@@ -360,35 +366,35 @@ MODIFIER_SEMANTICS = {
         "priority": ["optional", "24673", "28057"]
     },
     # Structural markers
-    # "B233"; no examples in blissary - not sure
+    # "B233";  special case (combine marker, acts like quotation marks surrounding a set of symbols)
     "13382": {
         "meaning": "combine marker"
     },
 
     # What
-    # "B699" // interrogative when used as a prefix, otherwise a specifier
+    # "B699" // interrogative when used as a prefix, otherwise a specifier. position: suffix; if its middle, its suffix for the first part of the word
     "18229": {
         "meaning": "what"
     },
 
     # Scalar degree operators
-    # "B401" // exclamatory when used as a prefix, otherwise a specifier
+    # "B401" // exclamatory when used as a prefix, otherwise a specifier. position: suffix; if its middle, its suffix for the first part of the word
     "14947": {
         "meaning": "intensity",
         "POS": ["verb", "adjective", "adverb"],
         "features": {"semantic": {"intensity": "high"}, "syntactical": {"position": "post", "default-position": "post"}}
     },
-    # "B937"; prefix modifier
+    # "B937"; position: suffix, prefix (if positive context); if its middle, its prefix for the second part of the word
     "24879": {
         "meaning": "more (comparative)"
     },
-    # "B968"; mostly prefix modifier, suffix modifier for "record(achievement)"
+    # "B968"; position: suffix, prefix (if positive context); if its middle, its prefix for the second part of the word
     "24944": {
         "meaning": "most (comparative)"
     },
 
     # Identity-affecting operators
-    # "B449/B401"; suffix modifier
+    # "B449/B401"; position: suffix; if its middle, its suffix for the first part of the word
     "15733": {
         "meaning": "not, negative, no, don't, doesn't",
         "POS": ["verb", "adjective", "noun", "adverb"],
@@ -397,7 +403,7 @@ MODIFIER_SEMANTICS = {
         "notes": "negates property or quality of something",
         "priority": ["15474", "15733", "15927"]
     },
-    # "B486"; prefix modifier
+    # "B486"; position: suffix (using B486, behaves like 1st option for not), prefix (using 15927, behaves like 1st option for without); if its middle, its prefix for the second part of the word (behaves like middle position option for without)
     "15927": {
         "meaning": "opposite",
         "POS": ["noun", "adjective"],
@@ -406,33 +412,25 @@ MODIFIER_SEMANTICS = {
         "notes": "negates relationally or conceptually, can also be used in figurative/metaphorical contexts",
         "priority": ["15474", "15733", "15927"]
     },
-   # prefix modifier
-    "14647": {
-        "meaning": "many, much",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
-        "features": {"semantic": {"quantifier": "many"}, "syntactical": {"position": "pre", "default-position": "pre"}}
-    },
-
     # Concept-transforming operators
-    # "B1060/B578"; prefix modifier
+    # "B1060/B578"; position: prefix; if its middle, its prefix for the second part of the word
     "16984": {
         "meaning": "similar to"
     },
-    # "B1060/B578/B303"; prefix modifier
+    # "B1060/B578/B303"; position: prefix; if its middle, its prefix for the second part of the word
     "16985": {
         "meaning": "look similar to"
     },
-    # "B1060/B578/B608"; prefix modifier e.g. duck + sound similar to = goose (new meaning)
+    # "B1060/B578/B608"; position: prefix; if its middle, its prefix for the second part of the word
     "16986": {
         "meaning": "sound similar to"
     },
-    # "B578/B608"; prefix modifier e.g. bird whistle has same sound to duck (new meaning)
+    # "B578/B608"; position: prefix; if its middle, its prefix for the second part of the word
     "16714": {
         "meaning": "same sound"
     },
     # "B578/B303": "look same" but missing in the BCI-AV
-    # "B348"; prefix modifier
+    # "B348"; position: prefix; if its middle, its prefix for the second part of the word
     "14430": {
         "meaning": "generalization",
         "POS": "noun",
@@ -440,7 +438,7 @@ MODIFIER_SEMANTICS = {
         "features": {"semantic": {"link": "association"}, "syntactical": {"position": "pre", "default-position": "pre"}},
     },
     # Relational operators
-    # "B449"; prefix and suffix modifier
+    # "B449"; position: prefix; if its middle, its prefix for the second part of the word
     "15474": {
         "meaning": "minus, no, without",
         "POS": "noun",
@@ -449,58 +447,58 @@ MODIFIER_SEMANTICS = {
         "notes": "negates existence or presence, expresses lacking/missing something",
         "priority": ["15474", "15733", "15927"]
     },
-    # "B578"; suffix specifier
+    # "B578"; position: suffix; if its middle, its suffix for the first part of the word
     "16713": {
         "meaning": "same, equal, equality"
     },
-    # "B502/B167"; no examples in blissary - not sure
+    # "B502/B167"; position: suffix?; if its middle, its prefix for the second part of the word
     "12858": {
         "meaning": "blissymbol part"
     },
-    # "B502", // part of; not sure
+    # "B502", position: prefix (describing part of/component of X), suffix (describing into parts, divided into/produces components); if its middle, its prefix for the second part of the word
     "15972": {
         "meaning": "part of",
         "POS": "noun",
         "category": ["semantic", "syntactical"],
         "features": {"semantic": {"link": "derivative"}, "syntactical": {"position": "pre", "default-position": "pre"}}
     },
-    # "B102", // about; not sure
+    # "B102", position: prefix; if its middle, its prefix for the second part of the word. exception: #17214
     "12324": {
         "meaning": "about, concerning, regarding, in relation to"
     },
-    # "B104", // across: suffix modifier
+    # "B104", position: suffix
     "12333": {
         "meaning": "across"
     },
-    # "B109", // after; not sure
+    # "B109", position: suffix; if its middle, its prefix for the second part of the word. exception: #15177, #21292
     "12348": {
         "meaning": "after, behind"
     },
-    # "B111", // against; prefix and suffix modifier
+    # "B111", // against; prefix and suffix modifier; TBD
     "12351": {
         "meaning": "against, opposed to"
     },
-    # "B120/B120", // along with; no examples in blissary - not sure
+    # "B120/B120", position: suffix (addition/plus); if its middle, it concatenates first and second word
     "12364": {
         "meaning": "along with"
     },
-    # "B162/B368", // among; no examples in blissary - not sure
+    # "B162/B368", // among; no examples in blissary - not sure; TBD
     "25653": {
         "meaning": "among"
     },
-    # "B134", // around; suffix modifier
+    # "B134", position: suffix; if its middle, its suffix for the first part of the word
     "12580": {
         "meaning": "around"
     },
-    # "B135", // at; no examples in blissary - not sure
+    # "B135", // at; no examples in blissary - not sure; TBD
     "12591": {
         "meaning": "at"
     },
-    # "B158", // before; not sure
+    # "B158", position: suffix; if its middle, its prefix for the second part of the word. exception: #16242, #25293, #13896
     "12656": {
         "meaning": "before, in front of, prior to"
     },
-    # "B162", // between; prefix and suffix modifier
+    # "B162", position: suffix; if its middle, its suffic for the first part of the word
     "12669": {
         "meaning": "between"
     },
@@ -607,8 +605,12 @@ MODIFIER_SEMANTICS = {
 
     # Quantifiers
     # "B368", // many/much (lake, village)
+   # prefix modifier
     "14647": {
-        "meaning": "many, much"
+        "meaning": "many, much",
+        "POS": "noun",
+        "category": ["semantic", "syntactical"],
+        "features": {"semantic": {"quantifier": "many"}, "syntactical": {"position": "pre", "default-position": "pre"}}
     },
     # pending: few (not yet in bliss-glyph-data.js)
     # "B117", // all
