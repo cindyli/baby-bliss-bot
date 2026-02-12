@@ -474,7 +474,7 @@ MODIFIER_SEMANTICS = {
     "12348": {
         "meaning": "after, behind"
     },
-    # "B111", // against; prefix and suffix modifier; TBD
+    # "B111", position: prefix (most cases), suffix (when specifying what type) ; if its middle, its prefix for the second part of the word.
     "12351": {
         "meaning": "against, opposed to"
     },
@@ -482,7 +482,7 @@ MODIFIER_SEMANTICS = {
     "12364": {
         "meaning": "along with"
     },
-    # "B162/B368", // among; no examples in blissary - not sure; TBD
+    # "B162/B368", suffix; if its middle, its prefix for the second part of the word.
     "25653": {
         "meaning": "among"
     },
@@ -498,59 +498,59 @@ MODIFIER_SEMANTICS = {
     "12656": {
         "meaning": "before, in front of, prior to"
     },
-    # "B162", position: suffix; if its middle, its suffic for the first part of the word
+    # "B162", position: suffix; if its middle, its suffix for the first part of the word
     "12669": {
         "meaning": "between"
     },
-   -----------------CONTINUE----------------------------------
-    # "B195", // by
+    # "B195", if its middle, its prefix for the second part of the word
     "13100": {
         "meaning": "by, by means of, of"
     },
-    # "B482", // on
+    # "B482", suffix; if its middle, its suffix for the first part of the word.
     "15918": {
         "meaning": "on"
     },
-    # "B491", // out of (forward)
+    # "B491", position: prefix (motion - something leaves), suffix (direction - goes outward); if its middle, its prefix for the second part of the word.
     "15943": {
         "meaning": "out of (forward)"
     },
-    # "B492", // out of (downward)
+    # "B492", suffix
     "15944": {
         "meaning": "out of (downward)"
     },
-    # "B977", // out of (upward)
+    # "B977", suffix
     "25134": {
         "meaning": "out of (upward)"
     },
-    # "B976", // out of (backward)
+    # "B976", prefix
     "25133": {
         "meaning": "out of (backward)"
     },
-    # "B402", // into (forward)
+    # "B402", position: prefix (motion - something enters), suffix (direction - goes inward); if its middle, its prefix for the second part of the word.
     "14952": {
         "meaning": "into (forward)"
     },
-    # "B1124", // into (downward)
+    # "B1124", suffix
     "25895": {
         "meaning": "into (downward)"
     },
-    # "B1125", // into (upward)
+    # "B1125", suffix
     "25896": {
         "meaning": "into (upward)"
     },
-    # "B1123", // into (backward)
+    # "B1123", suffix
     "25894": {
         "meaning": "into (backward)"
     },
-    # "B490", // outside
+    # "B490", position: suffix (physical), prefix (abstract)
     "15942": {
         "meaning": "outside"
     },
-    # "B398", // inside
+    # "B398", position: prefix (physical), suffix (abstract); if its middle, its prefix for the second part of the word.
     "14932": {
         "meaning": "inside"
     },
+   -----------------CONTINUE----------------------------------
     # "B493", // over, above
     "15948": {
         "meaning": "over, above"
