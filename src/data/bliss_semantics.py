@@ -462,7 +462,7 @@ MODIFIER_SEMANTICS = {
         "category": ["semantic", "syntactical"],
         "features": {"semantic": {"link": "derivative"}, "syntactical": {"position": "pre", "default-position": "pre"}}
     },
-    # "B102", position: prefix; if its middle, its prefix for the second part of the word. exception: #17214
+    # "B102", position: suffix; if its middle, its prefix for the second part of the word.
     "12324": {
         "meaning": "about, concerning, regarding, in relation to"
     },
@@ -482,7 +482,7 @@ MODIFIER_SEMANTICS = {
     "12364": {
         "meaning": "along with"
     },
-    # "B162/B368", suffix; if its middle, its prefix for the second part of the word.
+    # "B162/B368", suffix; if its middle, its prefix for the second part of the word. Related meanings include between, to, inside.
     "25653": {
         "meaning": "among"
     },
@@ -490,7 +490,7 @@ MODIFIER_SEMANTICS = {
     "12580": {
         "meaning": "around"
     },
-    # "B135", // at; no examples in blissary - not sure; TBD
+    # "B135", position: suffix (inferred by related meanings: about (most related), on, around (time), of); if its middle, its suffix for the first part of the word (inferred by related meanings according to specificness: on and around (time))
     "12591": {
         "meaning": "at"
     },
@@ -502,11 +502,11 @@ MODIFIER_SEMANTICS = {
     "12669": {
         "meaning": "between"
     },
-    # "B195", if its middle, its prefix for the second part of the word
+    # "B195", position: suffix (inferred by related meanings: about (most related), on, around (time), of) ; if its middle, its prefix for the second part of the word
     "13100": {
         "meaning": "by, by means of, of"
     },
-    # "B482", suffix; if its middle, its suffix for the first part of the word.
+    # "B482", postition: suffix; if its middle, its suffix for the first part of the word.
     "15918": {
         "meaning": "on"
     },
@@ -514,15 +514,15 @@ MODIFIER_SEMANTICS = {
     "15943": {
         "meaning": "out of (forward)"
     },
-    # "B492", suffix
+    # "B492", position: suffix
     "15944": {
         "meaning": "out of (downward)"
     },
-    # "B977", suffix
+    # "B977", position: suffix
     "25134": {
         "meaning": "out of (upward)"
     },
-    # "B976", prefix
+    # "B976", position: prefix
     "25133": {
         "meaning": "out of (backward)"
     },
@@ -530,15 +530,15 @@ MODIFIER_SEMANTICS = {
     "14952": {
         "meaning": "into (forward)"
     },
-    # "B1124", suffix
+    # "B1124", position: suffix
     "25895": {
         "meaning": "into (downward)"
     },
-    # "B1125", suffix
+    # "B1125", position: suffix
     "25896": {
         "meaning": "into (upward)"
     },
-    # "B1123", suffix
+    # "B1123", position: suffix
     "25894": {
         "meaning": "into (backward)"
     },
@@ -550,44 +550,43 @@ MODIFIER_SEMANTICS = {
     "14932": {
         "meaning": "inside"
     },
-   -----------------CONTINUE----------------------------------
-    # "B493", // over, above
+    # "B493", position: suffix; if its middle, its prefix for the second part of the word. Exception: #24325
     "15948": {
         "meaning": "over, above"
     },
-    # "B676", // under, below
+    # "B676", position: suffix; if its middle, its prefix for the second part of the word. Exception: #24296
     "17969": {
         "meaning": "under, below"
     },
-    # "B1102", // under (ground level)
+    # "B1102", position: suffix; if its middle, its prefix for the second part of the word.
     "25628": {
         "meaning": "under (ground level)"
     },
-    # "B331", // instead of
+    # "B331", position: suffix; if its middle, its prefix for the second part of the word.
     "14381": {
         "meaning": "instead"
     },
-    # "B332", // for the purpose of
+    # "B332", position: suffix; if its middle, its suffix for the first part of the word.
     "14382": {
         "meaning": "for the purpose of, in order to"
     },
-    # "B337", // from
+    # "B337", position: suffix; if its middle, its prefix for the second part of the word (inferred by related meaning: to).
     "14403": {
         "meaning": "from"
     },
-    # "B657", // to, toward
+    # "B657", position: suffix; if its middle, its prefix for the second part of the word. Exception: #29032
     "17739": {
         "meaning": "to, toward"
     },
-    # "B653", // through
+    # "B653", position: suffix; if its middle, its prefix for the second part of the word.
     "17724": {
         "meaning": "through"
     },
-    # "B677", // until
+    # "B677", position: prefix (physical/concrete ending), suffix (abstract - final state); if its middle, its prefix for the second part of the word.
     "17982": {
         "meaning": "until"
     },
-    # "B160", // belongs to
+    # "B160", position: suffix; if its middle, its prefix for the second part of the word.
     "12663": {
         "meaning": "belongs to",
         "POS": "noun",
@@ -602,9 +601,9 @@ MODIFIER_SEMANTICS = {
         "equivalent_indicator": "24676",
         "priority":  ["12663", "24676"]
     },
-
-    # Quantifiers
-    # "B368", // many/much (lake, village)
+   -----------------CONTINUE----------------------------------
+   # Quantifiers
+   # "B368", // many/much (lake, village)
    # prefix modifier
     "14647": {
         "meaning": "many, much",
