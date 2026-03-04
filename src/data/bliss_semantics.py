@@ -601,9 +601,8 @@ MODIFIER_SEMANTICS = {
         "equivalent_indicator": "24676",
         "priority":  ["12663", "24676"]
     },
-   -----------------CONTINUE----------------------------------
    # Quantifiers
-   # "B368", // many/much (lake, village)
+   # "B368", position: prefix; if its middle, its prefix for the second part of the word.
    # prefix modifier
     "14647": {
         "meaning": "many, much",
@@ -612,55 +611,55 @@ MODIFIER_SEMANTICS = {
         "features": {"semantic": {"quantifier": "many"}, "syntactical": {"position": "pre", "default-position": "pre"}}
     },
     # pending: few (not yet in bliss-glyph-data.js)
-    # "B117", // all
+    # "B117", position: suffix; if its middle, its suffix for the first part of the word. Exceptions: #14117, #29036, #12361, #22836, #24520.
     "12360": {
         "meaning": "all"
     },
-    # "B100", // any
+    # "B100", position: prefix
     "12321": {
         "meaning": "any"
     },
-    # "B11/B117", // both
+    # "B11/B117", position: suffix
     "12879": {
         "meaning": "both"
     },
-    # "B10/B117", // each/every
+    # "B10/B117", position: suffix (inferred by related meanings: both (most related), all)
     "13893": {
         "meaning": "each, every"
     },
-    # "B286", // either
+    # "B286", position: suffix
     "13914": {
         "meaning": "either"
     },
-    # "B449/B286", // neither
+    # "B449/B286", position: suffix (inferred by related meanings: either)
     "15706": {
         "meaning": "neither"
     },
-    # "B951", // half
+    # "B951", position: prefix
     "24906": {
         "meaning": "half"
     },
-    # "B962", // quarter
+    # "B962", position: prefix
     "24932": {
         "meaning": "quarter"
     },
-    # "B1151", // one third
+    # "B1151", position: prefix
     "26064": {
         "meaning": "one third"
     },
-    # "B1152", // two thirds
+    # "B1152", position: prefix
     "26065": {
         "meaning": "two thirds"
     },
-    # "B1153", // three quarters
+    # "B1153", position: prefix
     "26066": {
         "meaning": "three quarters"
     },
-    # "B559/B11", // several
+    # "B559/B11", position: prefix (inferred related meanings: many/much)
     "16762": {
         "meaning": "several"
     },
-    # "B9", // zero
+    # "B9", position: prefix
     "8496": {
         "meaning": "zero",
         "POS": "noun",
@@ -674,7 +673,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B10", // one
+    # "B10", position: prefix
     "8497": {
         "meaning": "one",
         "POS": "noun",
@@ -688,7 +687,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B11", // two
+    # "B11", position: prefix
     "8498": {
         "meaning": "two",
         "POS": "noun",
@@ -702,7 +701,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B12", // three
+    # "B12", position: prefix
     "8499": {
         "meaning": "three",
         "POS": "noun",
@@ -716,7 +715,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B13", // four
+    # "B13", position: prefix
     "8500": {
         "meaning": "four",
         "POS": "noun",
@@ -730,7 +729,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B14", // five
+    # "B14", position: prefix
     "8501": {
         "meaning": "five",
         "POS": "noun",
@@ -744,7 +743,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B15", // six
+    # "B15", position: prefix
     "8502": {
         "meaning": "six",
         "POS": "noun",
@@ -758,7 +757,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },  
-    # "B16", // seven
+    # "B16", position: prefix
     "8503": {
         "meaning": "seven",
         "POS": "noun",
@@ -772,7 +771,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B17", // eight
+    # "B17", position: prefix
     "8504": {
         "meaning": "eight",
         "POS": "noun",
@@ -786,7 +785,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B18", // nine
+    # "B18", position: prefix
     "8505": {
         "meaning": "nine",
         "POS": "noun",
