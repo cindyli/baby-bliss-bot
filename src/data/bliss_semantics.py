@@ -251,19 +251,19 @@ INDICATOR_SEMANTICS = {
     "24674": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"form": {"past-participle-1"}},
+        "features": {"form": "past-participle-1"},
         "notes": "for teaching purposes"
     },
     "24675": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"form": {"past-participle-2"}},
+        "features": {"form": "past-participle-2"},
         "notes": "for teaching purposes"
     },
     "24677": {
         "POS": ["verb", "adjective"],
         "category": "grammatical",
-        "features": {"form": {"present-participle"}},
+        "features": {"form": "present-participle"},
         "notes": "for teaching purposes"
     },
     # back to nouns
@@ -366,182 +366,309 @@ MODIFIER_SEMANTICS = {
         "priority": ["optional", "24673", "28057"]
     },
     # Structural markers
-    # "B233";  special case (combine marker, acts like quotation marks surrounding a set of symbols)
+    # "B233"
     "13382": {
-        "meaning": "combine marker"
+        "meaning": "combine marker",
+        "notes": "special case (combine marker acts like quotation marks surrounding a set of symbols)"
     },
 
     # What
-    # "B699" // interrogative when used as a prefix, otherwise a specifier. position: suffix; if its middle, its suffix for the first part of the word
+    # "B699"
     "18229": {
-        "meaning": "what"
+        "meaning": "what",
+        "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
+       "notes": "interrogative when used as a prefix, otherwise a specifier"
     },
 
     # Scalar degree operators
-    # "B401" // exclamatory when used as a prefix, otherwise a specifier. position: suffix; if its middle, its suffix for the first part of the word
+    # "B401"
     "14947": {
         "meaning": "intensity",
-        "POS": ["verb", "adjective", "adverb"],
-        "features": {"semantic": {"intensity": "high"}, "syntactical": {"position": "post", "default-position": "post"}}
+        "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
+       "notes": "exclamatory when used as a prefix, otherwise a specifier"
     },
-    # "B937"; position: suffix, prefix (if positive context); if its middle, its prefix for the second part of the word
+    # "B937", has different position for different context - need to discuss
     "24879": {
-        "meaning": "more (comparative)"
+        "meaning": "more (comparative)",
+        "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "position is prefix if positive context"
     },
-    # "B968"; position: suffix, prefix (if positive context); if its middle, its prefix for the second part of the word
+    # "B968", has different position for different context - need to discuss
     "24944": {
-        "meaning": "most (comparative)"
+        "meaning": "most (comparative)",
+        "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "position is prefix if positive context"
     },
 
     # Identity-affecting operators
-    # "B449/B401"; position: suffix; if its middle, its suffix for the first part of the word
+    # "B449/B401"
     "15733": {
         "meaning": "not, negative, no, don't, doesn't",
-        "POS": ["verb", "adjective", "noun", "adverb"],
-        "category": "semantic",
-        "features": {"negation": "not"},
-        "notes": "negates property or quality of something",
+        "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        },
         "priority": ["15474", "15733", "15927"]
     },
-    # "B486"; position: suffix (using B486, behaves like 1st option for not), prefix (using 15927, behaves like 1st option for without); if its middle, its prefix for the second part of the word (behaves like middle position option for without)
+    # "B486"
     "15927": {
         "meaning": "opposite",
-        "POS": ["noun", "adjective"],
-        "category": "semantic",
-        "features": {"negation": "opposite"},
-        "notes": "negates relationally or conceptually, can also be used in figurative/metaphorical contexts",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        },
         "priority": ["15474", "15733", "15927"]
     },
     # Concept-transforming operators
-    # "B1060/B578"; position: prefix; if its middle, its prefix for the second part of the word
+    # "B1060/B578"
     "16984": {
-        "meaning": "similar to"
+        "meaning": "similar to",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B1060/B578/B303"; position: prefix; if its middle, its prefix for the second part of the word
+    # "B1060/B578/B303"
     "16985": {
-        "meaning": "look similar to"
+        "meaning": "look similar to",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B1060/B578/B608"; position: prefix; if its middle, its prefix for the second part of the word
+    # "B1060/B578/B608"
     "16986": {
-        "meaning": "sound similar to"
+        "meaning": "sound similar to",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B578/B608"; position: prefix; if its middle, its prefix for the second part of the word
+    # "B578/B608"
     "16714": {
-        "meaning": "same sound"
+        "meaning": "same sound",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        }
     },
     # "B578/B303": "look same" but missing in the BCI-AV
-    # "B348"; position: prefix; if its middle, its prefix for the second part of the word
+    # "B348"
     "14430": {
         "meaning": "generalization",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
-        "features": {"semantic": {"link": "association"}, "syntactical": {"position": "pre", "default-position": "pre"}},
+        "features": {
+           "link": "association",
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        }
     },
     # Relational operators
-    # "B449"; position: prefix; if its middle, its prefix for the second part of the word
+    # "B449"
     "15474": {
         "meaning": "minus, no, without",
-        "POS": "noun",
-        "category": "semantic",
-        "features": {"negation": "without"},
-        "notes": "negates existence or presence, expresses lacking/missing something",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        },
         "priority": ["15474", "15733", "15927"]
     },
-    # "B578"; position: suffix; if its middle, its suffix for the first part of the word
+    # "B578"
     "16713": {
-        "meaning": "same, equal, equality"
+        "meaning": "same, equal, equality",
+        "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        }
     },
-    # "B502/B167"; position: suffix?; if its middle, its prefix for the second part of the word
+    # "B502/B167"
     "12858": {
-        "meaning": "blissymbol part"
+        "meaning": "blissymbol part",
+        "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        }
     },
-    # "B502", position: prefix (describing part of/component of X), suffix (describing into parts, divided into/produces components); if its middle, its prefix for the second part of the word
+    # "B502", has different position for different context - need to discuss
     "15972": {
         "meaning": "part of",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
-        "features": {"semantic": {"link": "derivative"}, "syntactical": {"position": "pre", "default-position": "pre"}}
+        "features": {
+           "link": "derivative",
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "position is prefix when describing part of/component of X (e.g. tonsils are a part of the throat, gene is part of DNA). Position is suffix when describing X into parts, divided into/produces components (e.g. suit, jigsaw puzzle)"
     },
-    # "B102", position: suffix; if its middle, its prefix for the second part of the word.
+    # "B102"
     "12324": {
-        "meaning": "about, concerning, regarding, in relation to"
+        "meaning": "about, concerning, regarding, in relation to",
+        "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B104", position: suffix
+    # "B104", cannot identify middle-position due to lack of data
     "12333": {
-        "meaning": "across"
+        "meaning": "across",
+        "features": {
+           "position": "suffix"
+        }
     },
-    # "B109", position: suffix; if its middle, its prefix for the second part of the word. exception: #15177, #21292
+    # "B109", exception: #15177, #21292
     "12348": {
-        "meaning": "after, behind"
+        "meaning": "after, behind",
+        "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B111", position: prefix (most cases), suffix (when specifying what type) ; if its middle, its prefix for the second part of the word.
+    # "B111", has different position for different context - need to discuss
     "12351": {
-        "meaning": "against, opposed to"
+        "meaning": "against, opposed to",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "Position is prefix (most cases), suffix (when specifying what type)"
     },
-    # "B120/B120", position: suffix (addition/plus); if its middle, it concatenates first and second word
+    # "B120/B120", cannot identify middle-position due to lack of data
     "12364": {
-        "meaning": "along with"
+        "meaning": "along with",
+        "features": {
+           "position": "suffix",
+        }
     },
-    # "B162/B368", suffix; if its middle, its prefix for the second part of the word. Related meanings include between, to, inside.
+    # "B162/B368"
     "25653": {
-        "meaning": "among"
+        "meaning": "among",
+        "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "Related meanings: between, to, inside"
     },
-    # "B134", position: suffix; if its middle, its suffix for the first part of the word
+    # "B134"
     "12580": {
-        "meaning": "around"
+        "meaning": "around",
+        "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
     },
-    # "B135", position: suffix (inferred by related meanings: about (most related), on, around (time), of); if its middle, its suffix for the first part of the word (inferred by related meanings according to specificness: on and around (time))
+    # "B135"
     "12591": {
-        "meaning": "at"
+        "meaning": "at",
+        "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
+       "notes": "position is suffix (inferred by related meanings: about (most related), on, around (time), of). Middle-position is suffix for the first part of the word (inferred by related meanings according to specificness: on and around (time))"
     },
-    # "B158", position: suffix; if its middle, its prefix for the second part of the word. exception: #16242, #25293, #13896
+    # "B158", exception: #16242, #25293, #13896
     "12656": {
-        "meaning": "before, in front of, prior to"
+        "meaning": "before, in front of, prior to",
+        "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        },
     },
-    # "B162", position: suffix; if its middle, its suffix for the first part of the word
+    # "B162"
     "12669": {
-        "meaning": "between"
+        "meaning": "between",
+        "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
     },
-    # "B195", position: suffix (inferred by related meanings: about (most related), on, around (time), of) ; if its middle, its prefix for the second part of the word
+    # "B195"
     "13100": {
-        "meaning": "by, by means of, of"
+        "meaning": "by, by means of, of",
+        "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "position is suffix (inferred by related meanings: about (most related), on, around (time), of"
     },
-    # "B482", postition: suffix; if its middle, its suffix for the first part of the word.
+    # "B482"
     "15918": {
-        "meaning": "on"
+        "meaning": "on",
+        "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        }
     },
-    # "B491", position: prefix (motion - something leaves), suffix (direction - goes outward); if its middle, its prefix for the second part of the word.
+    # "B491", has different position for different context - need to discuss
     "15943": {
-        "meaning": "out of (forward)"
+        "meaning": "out of (forward)",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "position is prefix when related to motion - something leaves. Position is suffix when related to direction - goes outward"
     },
-    # "B492", position: suffix
+    # "B492", cannot identify middle-position due to lack of data
     "15944": {
-        "meaning": "out of (downward)"
+        "meaning": "out of (downward)",
+        "features": {
+           "position": "suffix"
+        }
     },
-    # "B977", position: suffix
+    # "B977", cannot identify middle-position due to lack of data
     "25134": {
-        "meaning": "out of (upward)"
+        "meaning": "out of (upward)",
+        "features": {
+           "position": "suffix"
+        }
     },
-    # "B976", position: prefix
+    # "B976", cannot identify middle-position due to lack of data
     "25133": {
-        "meaning": "out of (backward)"
+        "meaning": "out of (backward)",
+        "features": {
+           "position": "prefix"
+        }
     },
-    # "B402", position: prefix (motion - something enters), suffix (direction - goes inward); if its middle, its prefix for the second part of the word.
+    # "B402", has different position for different context - need to discuss
     "14952": {
-        "meaning": "into (forward)"
+        "meaning": "into (forward)",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "position is prefix when related to motion - something enters. Position is suffix when related to direction - goes inward"
     },
-    # "B1124", position: suffix
+    # "B1124", cannot identify middle-position due to lack of data
     "25895": {
-        "meaning": "into (downward)"
+        "meaning": "into (downward)",
+        "features": {
+           "position": "suffix"
+        }
     },
-    # "B1125", position: suffix
+    # "B1125", cannot identify middle-position due to lack of data
     "25896": {
-        "meaning": "into (upward)"
+        "meaning": "into (upward)",
+        "features": {
+           "position": "suffix"
+        }
     },
-    # "B1123", position: suffix
+    # "B1123", cannot identify middle-position due to lack of data
     "25894": {
-        "meaning": "into (backward)"
+        "meaning": "into (backward)",
+        "features": {
+           "position": "suffix"
+        }
     },
+   -------------CONTINUE------------------
     # "B490", position: suffix (physical), prefix (abstract)
     "15942": {
         "meaning": "outside"
