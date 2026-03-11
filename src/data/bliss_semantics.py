@@ -321,50 +321,57 @@ INDICATOR_SEMANTICS = {
 
 
 MODIFIER_SEMANTICS = {
-   # "B314"; TBD
+   # "B314"
    "14166": {
-        "category": "grammatical",
-        "features": {"gender": "feminine"},
+        "features": {
+           "gender": "feminine",
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
         "equivalent_indicator": "24668",
         "priority": ["14166", "24668"]
     },
-   # "B10"; TBD
+   # "B10"
    "8497": {
-        "category": "grammatical",
-        "features": {"person": "first-person"},
+        "features": {
+           "person": "first-person",
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
         "equivalent_indicator": "24669",
         "priority": ["8497", "24669"]
     },
-   # "B11"; TBD
+   # "B11"
    "8498": {
-        "category": "grammatical",
-        "features": {"person": "second-person"},
+        "features": {
+           "person": "second-person",
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
         "equivalent_indicator": "24678",
         "priority": ["8498", "24678"]
     },
-   # "B12"; TBD
+   # "B12"
     "8499": {
-        "category": "grammatical",
-        "features": {"person": "third-person"},
+        "features": {
+           "person": "third-person",
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
         "equivalent_indicator": "24679",
         "priority": ["8499", "24679"]
     },
-   # "B5999"; TBD
+   # "B5999"
    "28052": {
-        "category": "grammatical",
-        "features": {"size": "diminutive", "form": "inflected"},
+        "features": {
+           "size": "diminutive",
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        },
         "equivalent_indicator": "25458",
        "priority": ["28052", "25458"]
     },
-   # "B6003"; TBD
-   "28057": {
-        "POS": "noun",
-        "category": "syntactical",
-        "features": {"position": ["pre", "post"], "default-position": "post"},
-        "notes": "never used",
-        "equivalent_indicator": "24673",
-        "priority": ["optional", "24673", "28057"]
-    },
+   
     # Structural markers
     # "B233"
     "13382": {
@@ -668,261 +675,283 @@ MODIFIER_SEMANTICS = {
            "position": "suffix"
         }
     },
-   -------------CONTINUE------------------
-    # "B490", position: suffix (physical), prefix (abstract)
+    # "B490", has different position for different context - need to discuss
     "15942": {
-        "meaning": "outside"
+        "meaning": "outside",
+        "features": {
+           "position": "prefix"
+        },
+       "notes": "position is prefix if abstract. position is suffix if physical"
     },
-    # "B398", position: prefix (physical), suffix (abstract); if its middle, its prefix for the second part of the word.
+    # "B398", has different position for different context - need to discuss
     "14932": {
-        "meaning": "inside"
+        "meaning": "inside",
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "Position is prefix if physical. Position is suffix if abtract"
     },
-    # "B493", position: suffix; if its middle, its prefix for the second part of the word. Exception: #24325
+    # "B493", exception: #24325
     "15948": {
-        "meaning": "over, above"
+        "meaning": "over, above",
+       "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B676", position: suffix; if its middle, its prefix for the second part of the word. Exception: #24296
+    # "B676", exception: #24296
     "17969": {
-        "meaning": "under, below"
+        "meaning": "under, below",
+       "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B1102", position: suffix; if its middle, its prefix for the second part of the word.
+    # "B1102"
     "25628": {
-        "meaning": "under (ground level)"
+        "meaning": "under (ground level)",
+       "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B331", position: suffix; if its middle, its prefix for the second part of the word.
+    # "B331"
     "14381": {
-        "meaning": "instead"
+        "meaning": "instead",
+       "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B332", position: suffix; if its middle, its suffix for the first part of the word.
+    # "B332"
     "14382": {
-        "meaning": "for the purpose of, in order to"
+        "meaning": "for the purpose of, in order to",
+       "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        }
     },
-    # "B337", position: suffix; if its middle, its prefix for the second part of the word (inferred by related meaning: to).
+    # "B337"
     "14403": {
-        "meaning": "from"
+        "meaning": "from",
+       "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        },
+       "notes": "position is suffix (inferred by related meaning: to)"
     },
-    # "B657", position: suffix; if its middle, its prefix for the second part of the word. Exception: #29032
+    # "B657", exception: #29032
     "17739": {
-        "meaning": "to, toward"
+        "meaning": "to, toward",
+       "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B653", position: suffix; if its middle, its prefix for the second part of the word.
+    # "B653"
     "17724": {
-        "meaning": "through"
+        "meaning": "through",
+       "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        }
     },
-    # "B677", position: prefix (physical/concrete ending), suffix (abstract - final state); if its middle, its prefix for the second part of the word.
+    # "B677"
     "17982": {
-        "meaning": "until"
+        "meaning": "until",
+      "features": {
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
+        },
+      "notes": "Position is suffix when it is the final state of something. Position is prefix when its related to the end of a cycle-related event. Related meaning:  end"
     },
-    # "B160", position: suffix; if its middle, its prefix for the second part of the word.
+    # "B160"
     "12663": {
         "meaning": "belongs to",
-        "POS": "noun",
-        "category": ["grammatical", "syntactical"],
         "features": {
-            "grammatical": {"possessive": "possessor"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "post"
-            }
+           "position": "suffix",
+           "middle-position": "prefix-second-part"
         },
         "equivalent_indicator": "24676",
         "priority":  ["12663", "24676"]
     },
    # Quantifiers
-   # "B368", position: prefix; if its middle, its prefix for the second part of the word.
+   # "B368"
    # prefix modifier
     "14647": {
         "meaning": "many, much",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
-        "features": {"semantic": {"quantifier": "many"}, "syntactical": {"position": "pre", "default-position": "pre"}}
+        "features": {
+           "position": "prefix",
+           "middle-position": "prefix-second-part"
+        }
     },
     # pending: few (not yet in bliss-glyph-data.js)
-    # "B117", position: suffix; if its middle, its suffix for the first part of the word. Exceptions: #14117, #29036, #12361, #22836, #24520.
+    # "B117", exceptions: #14117, #29036, #12361, #22836, #24520.
     "12360": {
-        "meaning": "all"
+        "meaning": "all",
+       "features": {
+           "position": "suffix",
+           "middle-position": "suffix-first-part"
+        }
     },
-    # "B100", position: prefix
+    # "B100", cannot identify middle-position due to lack of data
     "12321": {
-        "meaning": "any"
+        "meaning": "any",
+       "features": {
+           "position": "prefix"
+        }
     },
-    # "B11/B117", position: suffix
+    # "B11/B117", cannot identify middle-position due to lack of data
     "12879": {
-        "meaning": "both"
+        "meaning": "both",
+       "features": {
+           "position": "suffix"
+        }
     },
-    # "B10/B117", position: suffix (inferred by related meanings: both (most related), all)
+    # "B10/B117", cannot identify middle-position due to lack of data
     "13893": {
         "meaning": "each, every"
+       "features": {
+           "position": "suffix"
+        },
+       "notes": "position is suffix (inferred by related meanings: both (most related), all)"
     },
-    # "B286", position: suffix
+    # "B286", cannot identify middle-position due to lack of data
     "13914": {
-        "meaning": "either"
+        "meaning": "either",
+       "features": {
+           "position": "suffix"
+        }
     },
-    # "B449/B286", position: suffix (inferred by related meanings: either)
+    # "B449/B286", cannot identify middle-position due to lack of data
     "15706": {
-        "meaning": "neither"
+        "meaning": "neither",
+       "features": {
+           "position": "suffix"
+        },
+       "notes": "position is suffix (inferred by related meaning: either)"
     },
-    # "B951", position: prefix
+    # "B951", cannot identify middle-position due to lack of data
     "24906": {
-        "meaning": "half"
+        "meaning": "half",
+       "features": {
+           "position": "prefix"
+        }
     },
-    # "B962", position: prefix
+    # "B962", cannot identify middle-position due to lack of data
     "24932": {
-        "meaning": "quarter"
+        "meaning": "quarter",
+       "features": {
+           "position": "prefix"
+        }
     },
-    # "B1151", position: prefix
+    # "B1151", cannot identify middle-position due to lack of data
     "26064": {
-        "meaning": "one third"
+        "meaning": "one third",
+       "features": {
+           "position": "prefix"
+        }
     },
-    # "B1152", position: prefix
+    # "B1152", cannot identify middle-position due to lack of data
     "26065": {
-        "meaning": "two thirds"
+        "meaning": "two thirds",
+       "features": {
+           "position": "prefix"
+        }
     },
-    # "B1153", position: prefix
+    # "B1153", cannot identify middle-position due to lack of data
     "26066": {
-        "meaning": "three quarters"
+        "meaning": "three quarters",
+       "features": {
+           "position": "prefix"
+        }
     },
-    # "B559/B11", position: prefix (inferred related meanings: many/much)
+    # "B559/B11", cannot identify middle-position due to lack of data
     "16762": {
-        "meaning": "several"
+        "meaning": "several",
+       "features": {
+           "position": "prefix"
+        },
+       "notes": "position is prefix (inferred by related meaning: many/much)"
     },
-    # "B9", position: prefix
+    # "B9", cannot identify middle-position due to lack of data
     "8496": {
         "meaning": "zero",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "zero"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B10", position: prefix
+    # "B10", cannot identify middle-position due to lack of data
     "8497": {
         "meaning": "one",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "one"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B11", position: prefix
+    # "B11", cannot identify middle-position due to lack of data
     "8498": {
         "meaning": "two",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "two"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B12", position: prefix
+    # "B12", cannot identify middle-position due to lack of data
     "8499": {
         "meaning": "three",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "three"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B13", position: prefix
+    # "B13", cannot identify middle-position due to lack of data
     "8500": {
         "meaning": "four",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "four"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B14", position: prefix
+    # "B14", cannot identify middle-position due to lack of data
     "8501": {
         "meaning": "five",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "five"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B15", position: prefix
+    # "B15", cannot identify middle-position due to lack of data
     "8502": {
         "meaning": "six",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "six"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },  
-    # "B16", position: prefix
+    # "B16", cannot identify middle-position due to lack of data
     "8503": {
         "meaning": "seven",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "seven"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B17", position: prefix
+    # "B17", cannot identify middle-position due to lack of data
     "8504": {
         "meaning": "eight",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "eight"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    # "B18", position: prefix
+    # "B18", cannot identify middle-position due to lack of data
     "8505": {
         "meaning": "nine",
-        "POS": "noun",
-        "category": ["semantic", "syntactical"],
         "features": {
-            "semantic": {"numeric": "nine"},
-            "syntactical": {
-                "position": ["pre", "post"],
-                "default-position": "pre"
-            }
+           "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     }
