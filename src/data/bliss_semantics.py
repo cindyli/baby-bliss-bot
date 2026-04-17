@@ -1,42 +1,125 @@
 """
-# README
-Attributes
-Type - Specifies the kind of annotation the data represents. Valid values are "POS", "TYPE_SHIFT" and "USAGE_NOTE". Values cannot be more than one. # POS value is the specific part of speech (e.g. noun, verb, etc). TYPE_SHIFT value transforms POS (e.g. verb to noun). USAGE_NOTE is for signalling modifiers.
-Value -  Identifies type of POS, TYPE_SHIFT or USAGE_NOTE values. For POS, valid values are "noun", "verb" "adjective", and "adverb". For TYPE_SHIFT, valid value is "concretization". Values can be more than one value. For USAGE_NOTE, valid value is "signalling"
-Category - Broad grouping of linguistic information. Valid values are "grammatical", "semantic", and "syntactical". Values can be more than one value.
-Features - Specific properties of a word within its POS. Valid values are indicated below. Values can be more than one value.
-    * Verbs:
-        * tense - Locates an action in time. Valid values are "null", "past", "present", and "future". Values cannot be more than one.
-        * voice - Shows relationship between the subject and action. Valid values are "null", "passive", and "active". Values cannot be more than one.
-        * mood  - Expresses attitude or intent. Valid values are "null", "declarative", "conditional", and "imperative". Values cannot be more than one. # mood may vary language to language on how its used. For communication purposes, question/exclamation mark is used; without question/exclamation mark, its declarative.
-        * aspect - Indicates how an action occurs over time. Valid values are "null" and "continuous". Values cannot be more than one. # aspect may vary language to language on how its used
-        * form - Variations of verbs. Valid values are "inflected", "infinitive", "present-participle", "past-participle-1", and "past-participle-2". Values cannot be more than one. # simplifying finite (inflected) and infinite (infinitive and participles); when tense, voice, aspect, mood are null, its an infinitive
-        * intensity: Valid value is "high"
-        * negation: Valid values are "without", "not", and "opposite". Values cannot be more than one.
-    * Nouns:
-        * number: Valid values are "singular" and "plural". Values cannot be more than one.
-        * definiteness - Identifies a specific or general thing. Valid values are "indefinite" and "definite". Values cannot be more than one. # indefinite noun: an apple; definite noun: the apple
-        * gender: Valid values are "neutral", "feminine", and "masculine". Values cannot be more than one.
-        * person: Valid values are "first-person", "second-person", and "third-person". Values cannot be more than one.
-        * size: Valid value is "diminutive"
-        * possessive: Valid values are "possessor" and "posessed". Values cannot be more than one.
-        * position: Valid values are "pre" and "post". Values can be more than one. # syntax: if modifier comes before the head (classifier) is pre; e.g. colour of the car = colour + (MODIFIER + car). If modifier comes after the head (classifier) is post; e.g. car's colour = (car + MODIFIER) + colour.
-        * default-position: Valid values are "pre" and "post". Values cannot be more than one. # syntax
-        * quantifier: Valid value is "many"
-        * link - Distingushes between grouped with something (association) versus part of something (derivative). Valid values are "association" and "derivative". Values cannot be more than one. # e.g. furniture is associated with chair and table versus province is derived of a country
-        * time: Valid values are "ago", "now", "then_future". Values cannot be more than one. # attached to nouns but becomes adverb
-        * numeric: Valid values are "zero", "one", "two", "three", "four", "five", "six", "seven", "eight", and "nine". Values cannot be more than one.
-        * negation: Valid values are "without", "not", and "opposite". Values cannot be more than one.
-     * Adjectives + Adverbs:
-        * modality - Semantic expression of possibility. Valid values are "null", "potential", and "completed". Values cannot be more than one. # modality is the state at which something is possible
-        * intensity: Valid value is "high"
-        * degree: Valid values are "comparative" and "superlative". Values cannot be more than one
-        * negation: Valid values are "without", "not", and "opposite". Values cannot be more than one.
-Equivalent indicators/modifiers - Valid values are its equivalent indicator/modifier ID. Values cannot be more than one.
-Priority - Indicates processing priority. Valid values are presented as IDs and "optional" in a list from highest to least priority. Values cannot be more than one. # action and description indicators are commonly used between different users, while present action and adverb indicators are used in full-form
+===============================================================================
+README — Blissymbolics Linguistic Annotation Schema
+===============================================================================
+This file defines metadata and semantics for Blissymbolics indicators
+and modifiers. It uses a structured annotation schema to represent
+linguistic information such as part of speech, grammatical features,
+semantic shifts, and usage notes.
+
+-------------------------------------------------------------------------------
+Core Attributes
+-------------------------------------------------------------------------------
+
+Each entry may contain the following attributes:
+
+1. Type: Optional. Specifies the kind of annotation the symbol represents.
+Valid values (exactly one):
+     - POS          : Part of speech (e.g., noun, verb)
+     - TYPE_SHIFT   : Transforms one POS into another (e.g., verb → noun)
+
+2. Type Value: Optional. Identifies the specific value for the selected Type.
+   - POS values: "noun", "verb", "adjective", "adverb" (Exactly one)
+   - TYPE_SHIFT value: "concretization"
+
+3. Category: Optional. Broad linguistic grouping. Valid values (one or more):
+     - "grammatical"
+     - "semantic"
+     - "syntactical"
+
+4. Features: Fine‑grained linguistic properties. Available features depend on
+POS and may have single or multiple values, as specified below.
+
+-------------------------------------------------------------------------------
+Features by Part of Speech
+-------------------------------------------------------------------------------
+VERBS
+-----
+- tense: Locates an action in time.
+Valid values: "null" | "past" | "present" | "future" (one)
+
+- voice: Shows relationship between the subject and action.
+Valid values: "null" | "active" | "passive" (one)
+
+- mood: Expresses attitude or intent.
+Valid values: "declarative" | "conditional" | "imperative" (one)
+Note: mood may vary language to language on how its used. Declarative is
+assumed unless question/exclamation markers are present.
+
+- aspect: Indicates how an action occurs over time.
+Valid values: "continuous"
+
+- form: Variations of verbs.
+Valid values: "inflected" | "infinitive" | "present-participle" | "past-participle-1" |
+ "past-participle-2" (one)
+Note: If tense, voice, aspect, and mood are all "null", the verb is treated as infinitive.
+
+- intensity: "high"
+- negation: "without" | "not" | "opposite"                  (one)
+
+NOUNS
+-----
+- number: "singular" | "plural" (one)
+
+- definiteness: Identifies a specific or general thing.
+Valid values: "indefinite" | "definite" (one)
+Example: "an apple" (indefinite), "the apple" (definite)
+
+- gender: "neutral" | "feminine" | "masculine" (one)
+
+- person: "first-person" | "second-person" | "third-person" (one)
+
+- size: "diminutive"
+
+- possessive: "possessor" | "possessed" (one)
+
+- position: "pre" | "post" (one or more)
+Syntax note:
+    - pre: modifier before head (e.g., "colour of the car")
+    - post : modifier after head (e.g., "car's colour")
+
+- default-position  : "pre" | "post" (one)
+
+- quantifier: "many"
+
+- link: "association" | "derivative" (one)
+Example:
+    - furniture ↔ chair (association)
+    - province → country (derivative)
+
+- time: "ago" | "now" | "then_future" (one)
+Note: Attaches to nouns but functions adverbially.
+
+- numeric: "zero" → "nine" (one)
+
+- negation: "without" | "not" | "opposite" (one)
+
+ADJECTIVES & ADVERBS
+-------------------
+- modality: Represents whether something is possible or realized.
+Valid values: "potential" | "completed" (one)
+
+- intensity: "high"
+
+- degree: "comparative" | "superlative" (one)
+
+- negation: "without" | "not" | "opposite" (one)
+
+-------------------------------------------------------------------------------
+Additional Metadata
+-------------------------------------------------------------------------------
+
+- equivalent_modifier / equivalent_indicator: References the ID of an equivalent
+Blissymbolics indicator or modifier. (one)
+
+- priority: Determines processing precedence. Represented as a list of IDs ordered
+from highest to lowest priority.
+
+Note: Action and description indicators are commonly used across users, while
+present‑action and adverb indicators are more typical in full‑form usage.
 """
 
-# Blissymbolics Indicators and Modifiers
+# Blissymbolics Indicators
 INDICATOR_SEMANTICS = {
     # action indicators
     # infinitive verb or present tense verb; similar to ID: 24807 (includes tense as present), here is doesn't include tense
@@ -319,7 +402,7 @@ INDICATOR_SEMANTICS = {
     },
 }
 
-
+# Blissymbolics Modifiers
 MODIFIER_SEMANTICS = {
    # "B314"
    "14166": {
