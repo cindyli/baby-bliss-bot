@@ -322,7 +322,7 @@ INDICATOR_SEMANTICS = {
         "features": {"size": "diminutive", "form": "inflected"},
         "notes": "for teaching purposes",
         "equivalent_modifier": "28052",
-       "priority": ["28052", "25458"]
+        "priority": ["28052", "25458"]
     },
     # imperative mood
     "24670": {
@@ -404,8 +404,8 @@ INDICATOR_SEMANTICS = {
 
 # Blissymbolics Modifiers
 MODIFIER_SEMANTICS = {
-   # "B314"
-   "14166": {
+    # "B314"
+    "14166": {
         "features": {
            "gender": "feminine",
            "position": "suffix",
@@ -414,47 +414,47 @@ MODIFIER_SEMANTICS = {
         "equivalent_indicator": "24668",
         "priority": ["14166", "24668"]
     },
-   # "B10"
-   "8497": {
+    # "B10"
+    "8497": {
         "features": {
            "person": "first-person",
            "position": "suffix",
            "middle-position": "suffix-first-part"
         },
         "equivalent_indicator": "24669",
-        "priority": ["8497", "24669"]
+        "priority": ["8497", "24669"],
     },
-   # "B11"
-   "8498": {
+    # "B11"
+    "8498": {
         "features": {
-           "person": "second-person",
-           "position": "suffix",
-           "middle-position": "suffix-first-part"
+            "person": "second-person",
+            "position": "suffix",
+            "middle-position": "suffix-first-part",
         },
         "equivalent_indicator": "24678",
-        "priority": ["8498", "24678"]
+        "priority": ["8498", "24678"],
     },
-   # "B12"
+    # "B12"
     "8499": {
         "features": {
-           "person": "third-person",
-           "position": "suffix",
-           "middle-position": "suffix-first-part"
+            "person": "third-person",
+            "position": "suffix",
+            "middle-position": "suffix-first-part",
         },
         "equivalent_indicator": "24679",
-        "priority": ["8499", "24679"]
+        "priority": ["8499", "24679"],
     },
-   # "B5999"
-   "28052": {
+    # "B5999"
+    "28052": {
         "features": {
-           "size": "diminutive",
-           "position": "suffix",
-           "middle-position": "suffix-first-part"
+            "size": "diminutive",
+            "position": "suffix",
+            "middle-position": "suffix-first-part",
         },
         "equivalent_indicator": "25458",
-       "priority": ["28052", "25458"]
+        "priority": ["28052", "25458"],
     },
-   
+
     # Structural markers
     # "B233"
     "13382": {
@@ -470,7 +470,7 @@ MODIFIER_SEMANTICS = {
            "position": "suffix",
            "middle-position": "suffix-first-part"
         },
-       "notes": "interrogative when used as a prefix, otherwise a specifier"
+        "notes": "interrogative when used as a prefix, otherwise a specifier"
     },
 
     # Scalar degree operators
@@ -481,7 +481,7 @@ MODIFIER_SEMANTICS = {
            "position": "suffix",
            "middle-position": "suffix-first-part"
         },
-       "notes": "exclamatory when used as a prefix, otherwise a specifier"
+        "notes": "exclamatory when used as a prefix, otherwise a specifier"
     },
     # "B937", has different position for different context - need to discuss
     "24879": {
@@ -490,7 +490,7 @@ MODIFIER_SEMANTICS = {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "position is prefix if positive context"
+        "notes": "position is prefix if positive context"
     },
     # "B968", has different position for different context - need to discuss
     "24944": {
@@ -499,7 +499,7 @@ MODIFIER_SEMANTICS = {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "position is prefix if positive context"
+        "notes": "position is prefix if positive context"
     },
 
     # Identity-affecting operators
@@ -598,7 +598,7 @@ MODIFIER_SEMANTICS = {
            "position": "prefix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "position is prefix when describing part of/component of X (e.g. tonsils are a part of the throat, gene is part of DNA). Position is suffix when describing X into parts, divided into/produces components (e.g. suit, jigsaw puzzle)"
+        "notes": "position is prefix when describing part of/component of X (e.g. tonsils are a part of the throat, gene is part of DNA). Position is suffix when describing X into parts, divided into/produces components (e.g. suit, jigsaw puzzle)"
     },
     # "B102"
     "12324": {
@@ -630,7 +630,7 @@ MODIFIER_SEMANTICS = {
            "position": "prefix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "Position is prefix (most cases), suffix (when specifying what type)"
+        "notes": "Position is prefix (most cases), suffix (when specifying what type)"
     },
     # "B120/B120", cannot identify middle-position due to lack of data
     "12364": {
@@ -646,7 +646,7 @@ MODIFIER_SEMANTICS = {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "Related meanings: between, to, inside"
+        "notes": "Related meanings: between, to, inside"
     },
     # "B134"
     "12580": {
@@ -663,7 +663,7 @@ MODIFIER_SEMANTICS = {
            "position": "suffix",
            "middle-position": "suffix-first-part"
         },
-       "notes": "position is suffix (inferred by related meanings: about (most related), on, around (time), of). Middle-position is suffix for the first part of the word (inferred by related meanings according to specificness: on and around (time))"
+        "notes": "position is suffix (inferred by related meanings: about (most related), on, around (time), of). Middle-position is suffix for the first part of the word (inferred by related meanings according to specificness: on and around (time))"
     },
     # "B158", exception: #16242, #25293, #13896
     "12656": {
@@ -688,7 +688,7 @@ MODIFIER_SEMANTICS = {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "position is suffix (inferred by related meanings: about (most related), on, around (time), of"
+        "notes": "position is suffix (inferred by related meanings: about (most related), on, around (time), of"
     },
     # "B482"
     "15918": {
@@ -705,7 +705,7 @@ MODIFIER_SEMANTICS = {
            "position": "prefix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "position is prefix when related to motion - something leaves. Position is suffix when related to direction - goes outward"
+        "notes": "position is prefix when related to motion - something leaves. Position is suffix when related to direction - goes outward"
     },
     # "B492", cannot identify middle-position due to lack of data
     "15944": {
@@ -735,7 +735,7 @@ MODIFIER_SEMANTICS = {
            "position": "prefix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "position is prefix when related to motion - something enters. Position is suffix when related to direction - goes inward"
+        "notes": "position is prefix when related to motion - something enters. Position is suffix when related to direction - goes inward"
     },
     # "B1124", cannot identify middle-position due to lack of data
     "25895": {
@@ -764,7 +764,7 @@ MODIFIER_SEMANTICS = {
         "features": {
            "position": "prefix"
         },
-       "notes": "position is prefix if abstract. position is suffix if physical"
+        "notes": "position is prefix if abstract. position is suffix if physical"
     },
     # "B398", has different position for different context - need to discuss
     "14932": {
@@ -773,12 +773,12 @@ MODIFIER_SEMANTICS = {
            "position": "prefix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "Position is prefix if physical. Position is suffix if abtract"
+        "notes": "Position is prefix if physical. Position is suffix if abtract"
     },
     # "B493", exception: #24325
     "15948": {
         "meaning": "over, above",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         }
@@ -786,7 +786,7 @@ MODIFIER_SEMANTICS = {
     # "B676", exception: #24296
     "17969": {
         "meaning": "under, below",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         }
@@ -794,7 +794,7 @@ MODIFIER_SEMANTICS = {
     # "B1102"
     "25628": {
         "meaning": "under (ground level)",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         }
@@ -802,7 +802,7 @@ MODIFIER_SEMANTICS = {
     # "B331"
     "14381": {
         "meaning": "instead",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         }
@@ -810,7 +810,7 @@ MODIFIER_SEMANTICS = {
     # "B332"
     "14382": {
         "meaning": "for the purpose of, in order to",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
         }
@@ -818,16 +818,16 @@ MODIFIER_SEMANTICS = {
     # "B337"
     "14403": {
         "meaning": "from",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
-       "notes": "position is suffix (inferred by related meaning: to)"
+        "notes": "position is suffix (inferred by related meaning: to)"
     },
     # "B657", exception: #29032
     "17739": {
         "meaning": "to, toward",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         }
@@ -835,7 +835,7 @@ MODIFIER_SEMANTICS = {
     # "B653"
     "17724": {
         "meaning": "through",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         }
@@ -843,11 +843,11 @@ MODIFIER_SEMANTICS = {
     # "B677"
     "17982": {
         "meaning": "until",
-      "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
-      "notes": "Position is suffix when it is the final state of something. Position is prefix when its related to the end of a cycle-related event. Related meaning:  end"
+        "notes": "Position is suffix when it is the final state of something. Position is prefix when its related to the end of a cycle-related event. Related meaning:  end"
     },
     # "B160"
     "12663": {
@@ -859,9 +859,9 @@ MODIFIER_SEMANTICS = {
         "equivalent_indicator": "24676",
         "priority":  ["12663", "24676"]
     },
-   # Quantifiers
-   # "B368"
-   # prefix modifier
+    # Quantifiers
+    # "B368"
+    # prefix modifier
     "14647": {
         "meaning": "many, much",
         "features": {
@@ -873,7 +873,7 @@ MODIFIER_SEMANTICS = {
     # "B117", exceptions: #14117, #29036, #12361, #22836, #24520.
     "12360": {
         "meaning": "all",
-       "features": {
+        "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
         }
@@ -881,82 +881,82 @@ MODIFIER_SEMANTICS = {
     # "B100", cannot identify middle-position due to lack of data
     "12321": {
         "meaning": "any",
-       "features": {
+        "features": {
            "position": "prefix"
         }
     },
     # "B11/B117", cannot identify middle-position due to lack of data
     "12879": {
         "meaning": "both",
-       "features": {
+        "features": {
            "position": "suffix"
         }
     },
     # "B10/B117", cannot identify middle-position due to lack of data
     "13893": {
-        "meaning": "each, every"
-       "features": {
+        "meaning": "each, every",
+        "features": {
            "position": "suffix"
         },
-       "notes": "position is suffix (inferred by related meanings: both (most related), all)"
+        "notes": "position is suffix (inferred by related meanings: both (most related), all)"
     },
     # "B286", cannot identify middle-position due to lack of data
     "13914": {
         "meaning": "either",
-       "features": {
+        "features": {
            "position": "suffix"
         }
     },
     # "B449/B286", cannot identify middle-position due to lack of data
     "15706": {
         "meaning": "neither",
-       "features": {
+        "features": {
            "position": "suffix"
         },
-       "notes": "position is suffix (inferred by related meaning: either)"
+        "notes": "position is suffix (inferred by related meaning: either)"
     },
     # "B951", cannot identify middle-position due to lack of data
     "24906": {
         "meaning": "half",
-       "features": {
+        "features": {
            "position": "prefix"
         }
     },
     # "B962", cannot identify middle-position due to lack of data
     "24932": {
         "meaning": "quarter",
-       "features": {
+        "features": {
            "position": "prefix"
         }
     },
     # "B1151", cannot identify middle-position due to lack of data
     "26064": {
         "meaning": "one third",
-       "features": {
+        "features": {
            "position": "prefix"
         }
     },
     # "B1152", cannot identify middle-position due to lack of data
     "26065": {
         "meaning": "two thirds",
-       "features": {
+        "features": {
            "position": "prefix"
         }
     },
     # "B1153", cannot identify middle-position due to lack of data
     "26066": {
         "meaning": "three quarters",
-       "features": {
+        "features": {
            "position": "prefix"
         }
     },
     # "B559/B11", cannot identify middle-position due to lack of data
     "16762": {
         "meaning": "several",
-       "features": {
+        "features": {
            "position": "prefix"
         },
-       "notes": "position is prefix (inferred by related meaning: many/much)"
+        "notes": "position is prefix (inferred by related meaning: many/much)"
     },
     # "B9", cannot identify middle-position due to lack of data
     "8496": {
@@ -1013,7 +1013,7 @@ MODIFIER_SEMANTICS = {
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
-    },  
+    },
     # "B16", cannot identify middle-position due to lack of data
     "8503": {
         "meaning": "seven",
