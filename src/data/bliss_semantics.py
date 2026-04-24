@@ -93,6 +93,10 @@ Note: Attaches to nouns but functions adverbially.
 
 - negation: "without" | "not" | "opposite" (one)
 
+- relational: "same, equal, equality" | "blissymbol part" | "part of" | "about, concerning, regarding, in relation to" | "across" | "after, behind" | "against, opposed to" | "along with" | "among" | "around" | "at" | "before, in front of, prior to" | "between" | "by, by means of, of" | "on" | "out of (forward)" | "out of (downward)" | "out of (upward)" | "out of (backward)" | "into (forward)" | "into (downward)" | "into (upward)" | "into (backward)" | "outside" | "inside" | "over, above" | "under, below" | "under (ground level)" | "instead" | "for the purpose of, in order to" | "from" | "to, toward" | "through" | "until" | "belongs to" (one)
+
+- concept-transforming: "similar to" | "look similar to" | "sound similar to" | "same sound" | "generalization" (one)
+
 ADJECTIVES & ADVERBS
 -------------------
 - modality: Represents whether something is possible or realized.
@@ -101,6 +105,10 @@ Valid values: "potential" | "completed" (one)
 - degree: "intensity" | "more (comparative)" | "most (comparative)" (one)
 
 - negation: "without" | "not" | "opposite" (one)
+
+OTHER
+-----
+- structural-marker: "combine marker" | "what" (one)
 
 -------------------------------------------------------------------------------
 Additional Metadata
@@ -111,6 +119,14 @@ Blissymbolics indicator or modifier. (one)
 
 - priority: Determines processing precedence. Represented as a list of IDs ordered
 from highest to lowest priority.
+
+- position: default position when it is not between other characters.
+Valid values: "prefix" | "suffix" (one)
+Example: "peace: opposite + war" (prefix), "danger: creation + intensity" (suffix)
+
+- middle-position: position of a character when it is between other characters. Either the character associates its meaning with the character that comes before it (first part) or after it (second part).
+Valid values: "prefix-second-part" | "suffix-first-part" (one)
+Example: "remembrance day: day + opposite + forgetting" (prefix-second-part), "justification: support (oral) + correctness" (suffix-first-par)
 
 Note: Action and description indicators are commonly used across users, while
 present‑action and adverb indicators are more typical in full‑form usage.
@@ -414,36 +430,60 @@ MODIFIER_SEMANTICS = {
     },
     # "B10"
     "8497": {
-        "features": {
-           "person": "first-person",
-           "number": "singular",
-           "position": "suffix",
-           "middle-position": "suffix-first-part"
-        },
-        "equivalent_indicator": "24669",
-        "priority": ["8497", "24669"],
+        "or": [{
+             "features": {
+                "person": "first-person",
+                "number": "singular",
+                "position": "suffix",
+                "middle-position": "suffix-first-part"
+             },
+             "equivalent_indicator": "24669",
+             "priority": ["8497", "24669"],
+          }, {
+              "numeric": "one",
+             "features": {
+                "position": "prefix"
+             },
+             "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+         }]
     },
     # "B11"
     "8498": {
-        "features": {
-            "person": "second-person",
-            "number": "singular",
-            "position": "suffix",
-            "middle-position": "suffix-first-part",
-        },
-        "equivalent_indicator": "24678",
-        "priority": ["8498", "24678"],
+          "or": [{
+                  "features": {
+                 "person": "second-person",
+                 "number": "singular",
+                 "position": "suffix",
+                 "middle-position": "suffix-first-part",
+             },
+             "equivalent_indicator": "24678",
+             "priority": ["8498", "24678"],
+               }, {
+                   "features": {
+                    "numeric": "two",
+                     "position": "prefix"
+                  },
+                  "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+              }]
     },
     # "B12"
     "8499": {
-        "features": {
+         "or": [{
+             "features": {
             "person": "third-person",
             "number": "singular",
             "position": "suffix",
             "middle-position": "suffix-first-part",
-        },
-        "equivalent_indicator": "24679",
-        "priority": ["8499", "24679"],
+             },
+             "equivalent_indicator": "24679",
+             "priority": ["8499", "24679"],
+          }, {
+              "features": {
+               "numeric": "three",
+                "position": "prefix"
+             },
+             "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+         }]
     },
     # "B5999"
     "28052": {
@@ -458,36 +498,36 @@ MODIFIER_SEMANTICS = {
 
     # "B112"
     "12352": {
+          "time": "ago, then (past)",
         "features": {
-           "time": "ago, then (past)",
            "position": "suffix",
     },
 
     # "B648"
     "17705": {
+         "time": "then_future, so, later",
         "features": {
-           "time": "then_future, so, later",
            "position": "suffix",
     },
 
     # "B474"
     "15736": {
+         "time": "now",
         "features": {
-           "time": "now",
            "position": "suffix",
     },
          
     # Structural markers
     # "B233"
     "13382": {
-        "meaning": "combine marker",
+        "structural-marker": "combine marker",
         "notes": "special case (combine marker acts like quotation marks surrounding a set of symbols)"
     },
 
     # What
     # "B699"
     "18229": {
-        "meaning": "what",
+        "structural-marker": "what",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -498,8 +538,8 @@ MODIFIER_SEMANTICS = {
     # Scalar degree operators
     # "B401"
     "14947": {
+          "degree": "intensity",
         "features": {
-           "degree": "intensity",
            "position": "suffix",
            "middle-position": "suffix-first-part"
         },
@@ -507,8 +547,8 @@ MODIFIER_SEMANTICS = {
     },
     # "B937", has different position for different context - need to discuss
     "24879": {
+         "degree": "more (comparative)",
         "features": {
-           "degree": "more (comparative)",
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
@@ -516,8 +556,8 @@ MODIFIER_SEMANTICS = {
     },
     # "B968", has different position for different context - need to discuss
     "24944": {
+         "degree": "most (comparative)",
         "features": {
-          "degree": "most (comparative)",
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
@@ -527,8 +567,8 @@ MODIFIER_SEMANTICS = {
     # Identity-affecting operators
     # "B449/B401"
     "15733": {
+         "negation": "not, negative, no, don't, doesn't",
         "features": {
-          "negation": "not, negative, no, don't, doesn't",
            "position": "suffix",
            "middle-position": "prefix-second-part"
         },
@@ -536,8 +576,8 @@ MODIFIER_SEMANTICS = {
     },
     # "B486"
     "15927": {
+         "negation": "opposite",
         "features": {
-          "negation": "opposite",
            "position": "prefix",
            "middle-position": "prefix-second-part"
         },
@@ -546,7 +586,7 @@ MODIFIER_SEMANTICS = {
     # Concept-transforming operators
     # "B1060/B578"
     "16984": {
-        "meaning": "similar to",
+        "concept-transforming": "similar to",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -554,7 +594,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B1060/B578/B303"
     "16985": {
-        "meaning": "look similar to",
+        "concept-transforming": "look similar to",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -562,7 +602,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B1060/B578/B608"
     "16986": {
-        "meaning": "sound similar to",
+        "concept-transforming": "sound similar to",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -570,7 +610,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B578/B608"
     "16714": {
-        "meaning": "same sound",
+        "concept-transforming": "same sound",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -579,7 +619,7 @@ MODIFIER_SEMANTICS = {
     # "B578/B303": "look same" but missing in the BCI-AV
     # "B348"
     "14430": {
-        "meaning": "generalization",
+        "concept-transforming": "generalization",
         "features": {
            "link": "association",
            "position": "prefix",
@@ -589,8 +629,8 @@ MODIFIER_SEMANTICS = {
     # Relational operators
     # "B449"
     "15474": {
+         "negation": "minus, no, without",
         "features": {
-          "negation": "minus, no, without",
            "position": "prefix",
            "middle-position": "prefix-second-part"
         },
@@ -598,7 +638,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B578"
     "16713": {
-        "meaning": "same, equal, equality",
+        "relational": "same, equal, equality",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -606,7 +646,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B502/B167"
     "12858": {
-        "meaning": "blissymbol part",
+        "relational": "blissymbol part",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -614,7 +654,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B502", has different position for different context - need to discuss
     "15972": {
-        "meaning": "part of",
+        "relational": "part of",
         "features": {
            "link": "derivative",
            "position": "prefix",
@@ -624,7 +664,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B102"
     "12324": {
-        "meaning": "about, concerning, regarding, in relation to",
+        "relational": "about, concerning, regarding, in relation to",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -632,14 +672,14 @@ MODIFIER_SEMANTICS = {
     },
     # "B104", cannot identify middle-position due to lack of data
     "12333": {
-        "meaning": "across",
+        "relational": "across",
         "features": {
            "position": "suffix"
         }
     },
     # "B109", exception: #15177, #21292
     "12348": {
-        "meaning": "after, behind",
+        "relational": "after, behind",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -647,7 +687,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B111", has different position for different context - need to discuss
     "12351": {
-        "meaning": "against, opposed to",
+        "relational": "against, opposed to",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -656,14 +696,14 @@ MODIFIER_SEMANTICS = {
     },
     # "B120/B120", cannot identify middle-position due to lack of data
     "12364": {
-        "meaning": "along with",
+        "relational": "along with",
         "features": {
            "position": "suffix",
         }
     },
     # "B162/B368"
     "25653": {
-        "meaning": "among",
+        "relational": "among",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -672,7 +712,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B134"
     "12580": {
-        "meaning": "around",
+        "relational": "around",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -680,7 +720,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B135"
     "12591": {
-        "meaning": "at",
+        "relational": "at",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -689,7 +729,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B158", exception: #16242, #25293, #13896
     "12656": {
-        "meaning": "before, in front of, prior to",
+        "relational": "before, in front of, prior to",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -697,7 +737,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B162"
     "12669": {
-        "meaning": "between",
+        "relational": "between",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -705,7 +745,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B195"
     "13100": {
-        "meaning": "by, by means of, of",
+        "relational": "by, by means of, of",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -714,7 +754,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B482"
     "15918": {
-        "meaning": "on",
+        "relational": "on",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -722,7 +762,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B491", has different position for different context - need to discuss
     "15943": {
-        "meaning": "out of (forward)",
+        "relational": "out of (forward)",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -731,28 +771,28 @@ MODIFIER_SEMANTICS = {
     },
     # "B492", cannot identify middle-position due to lack of data
     "15944": {
-        "meaning": "out of (downward)",
+        "relational": "out of (downward)",
         "features": {
            "position": "suffix"
         }
     },
     # "B977", cannot identify middle-position due to lack of data
     "25134": {
-        "meaning": "out of (upward)",
+        "relational": "out of (upward)",
         "features": {
            "position": "suffix"
         }
     },
     # "B976", cannot identify middle-position due to lack of data
     "25133": {
-        "meaning": "out of (backward)",
+        "relational": "out of (backward)",
         "features": {
            "position": "prefix"
         }
     },
     # "B402", has different position for different context - need to discuss
     "14952": {
-        "meaning": "into (forward)",
+        "relational": "into (forward)",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -761,28 +801,28 @@ MODIFIER_SEMANTICS = {
     },
     # "B1124", cannot identify middle-position due to lack of data
     "25895": {
-        "meaning": "into (downward)",
+        "relational": "into (downward)",
         "features": {
            "position": "suffix"
         }
     },
     # "B1125", cannot identify middle-position due to lack of data
     "25896": {
-        "meaning": "into (upward)",
+        "relational": "into (upward)",
         "features": {
            "position": "suffix"
         }
     },
     # "B1123", cannot identify middle-position due to lack of data
     "25894": {
-        "meaning": "into (backward)",
+        "relational": "into (backward)",
         "features": {
            "position": "suffix"
         }
     },
     # "B490", has different position for different context - need to discuss
     "15942": {
-        "meaning": "outside",
+        "relational": "outside",
         "features": {
            "position": "prefix"
         },
@@ -790,7 +830,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B398", has different position for different context - need to discuss
     "14932": {
-        "meaning": "inside",
+        "relational": "inside",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -799,7 +839,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B493", exception: #24325
     "15948": {
-        "meaning": "over, above",
+        "relational": "over, above",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -807,7 +847,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B676", exception: #24296
     "17969": {
-        "meaning": "under, below",
+        "relational": "under, below",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -815,7 +855,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B1102"
     "25628": {
-        "meaning": "under (ground level)",
+        "relational": "under (ground level)",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -823,7 +863,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B331"
     "14381": {
-        "meaning": "instead",
+        "relational": "instead",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -831,7 +871,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B332"
     "14382": {
-        "meaning": "for the purpose of, in order to",
+        "relational": "for the purpose of, in order to",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -839,7 +879,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B337"
     "14403": {
-        "meaning": "from",
+        "relational": "from",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -848,7 +888,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B657", exception: #29032
     "17739": {
-        "meaning": "to, toward",
+        "relational": "to, toward",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -856,7 +896,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B653"
     "17724": {
-        "meaning": "through",
+        "relational": "through",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -864,7 +904,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B677"
     "17982": {
-        "meaning": "until",
+        "relational": "until",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -873,7 +913,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B160"
     "12663": {
-        "meaning": "belongs to",
+        "relational": "belongs to",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -885,8 +925,8 @@ MODIFIER_SEMANTICS = {
     # "B368"
     # prefix modifier
     "14647": {
+         "quantifier": "many, much",
         "features": {
-           "quantifier": "many, much",
            "position": "prefix",
            "middle-position": "prefix-second-part"
         }
@@ -894,168 +934,161 @@ MODIFIER_SEMANTICS = {
     # pending: few (not yet in bliss-glyph-data.js)
     # "B117", exceptions: #14117, #29036, #12361, #22836, #24520.
     "12360": {
+         "quantifier": "all",
         "features": {
-          "quantifier": "all",
            "position": "suffix",
            "middle-position": "suffix-first-part"
         }
     },
     # "B100", cannot identify middle-position due to lack of data
     "12321": {
+         "quantifier": "any",
         "features": {
-           "quantifier": "any",
            "position": "prefix"
         }
     },
     # "B11/B117", cannot identify middle-position due to lack of data
     "12879": {
+         "quantifier": "both",
         "features": {
-          "quantifier": "both",
            "position": "suffix"
         }
     },
     # "B10/B117", cannot identify middle-position due to lack of data
     "13893": {
+         "quantifier": "each, every",
         "features": {
-          "quantifier": "each, every",
            "position": "suffix"
         },
         "notes": "position is suffix (inferred by related meanings: both (most related), all)"
     },
     # "B286", cannot identify middle-position due to lack of data
     "13914": {
+         "quantifier": "either",
         "features": {
-          "quantifier": "either",
            "position": "suffix"
         }
     },
     # "B449/B286", cannot identify middle-position due to lack of data
     "15706": {
+         "quantifier": "neither",
         "features": {
-          "quantifier": "neither",
            "position": "suffix"
         },
         "notes": "position is suffix (inferred by related meaning: either)"
     },
     # "B951", cannot identify middle-position due to lack of data
     "24906": {
+         "quantifier": "half",
         "features": {
-          "quantifier": "half",
            "position": "prefix"
         }
     },
     # "B962", cannot identify middle-position due to lack of data
     "24932": {
+         "quantifier": "quarter",
         "features": {
-          "quantifier": "quarter",
            "position": "prefix"
         }
     },
     # "B1151", cannot identify middle-position due to lack of data
     "26064": {
+         "quantifier": "one third",
         "features": {
-          "quantifier": "one third",
            "position": "prefix"
         }
     },
     # "B1152", cannot identify middle-position due to lack of data
     "26065": {
+         "quantifier": "two thirds",
         "features": {
-           "quantifier": "two thirds",
            "position": "prefix"
         }
     },
     # "B1153", cannot identify middle-position due to lack of data
     "26066": {
+         "quantifier": "three quarters",
         "features": {
-          "quantifier": "three quarters",
            "position": "prefix"
         }
     },
     # "B559/B11", cannot identify middle-position due to lack of data
     "16762": {
+         "quantifier": "several",
         "features": {
-          "quantifier": "several",
            "position": "prefix"
         },
         "notes": "position is prefix (inferred by related meaning: many/much)"
     },
     # "B9", cannot identify middle-position due to lack of data
     "8496": {
-        "features": {
           "numeric": "zero",
-           "position": "prefix"
-        },
-        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
-    },
-    # "B10", cannot identify middle-position due to lack of data
-    "8497": {
         "features": {
-          "numeric": "one",
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
+    
     # "B11", cannot identify middle-position due to lack of data
     "8498": {
+         "numeric": "two",
         "features": {
-          "numeric": "two",
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
     # "B12", cannot identify middle-position due to lack of data
     "8499": {
+         "numeric": "three",
         "features": {
-          "numeric": "three",
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
     # "B13", cannot identify middle-position due to lack of data
     "8500": {
+         "numeric": "four",
         "features": {
-          "numeric": "four",
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
     # "B14", cannot identify middle-position due to lack of data
     "8501": {
-        "features": {
           "numeric": "five",
+        "features": {
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
     # "B15", cannot identify middle-position due to lack of data
     "8502": {
+         "numeric": "six",
         "features": {
-          "numeric": "six",
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
     # "B16", cannot identify middle-position due to lack of data
     "8503": {
+         "numeric": "seven",
         "features": {
-          "numeric": "seven",
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
     # "B17", cannot identify middle-position due to lack of data
     "8504": {
+         "numeric": "eight",
         "features": {
-          "numeric": "eight",
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
     # "B18", cannot identify middle-position due to lack of data
     "8505": {
+         "numeric": "nine",
         "features": {
-          "numeric": "nine",
            "position": "prefix"
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
