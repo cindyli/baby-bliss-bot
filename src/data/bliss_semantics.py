@@ -50,9 +50,9 @@ assumed unless question/exclamation markers are present.
 Valid values: "continuous"
 
 - form: Variations of verbs.
-Valid values: "inflected" | "infinitive" | "present-participle" | "past-participle-1" |
+Valid values: "finite" | "infinitive" | "present-participle" | "past-participle-1" |
  "past-participle-2" (one)
-Note: If tense, voice, aspect, and mood are all "null", the verb is treated as infinitive.
+Note: If tense and mood are "null", the verb is treated as non-finite (infinitive or participle).
 
 - negation: "without" | "not" | "opposite" (one)
 
@@ -148,13 +148,13 @@ INDICATOR_SEMANTICS = {
     "8994": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "present", "voice": "active", "mood": "declarative", "form": "inflected"}
+        "features": {"tense": "present", "voice": "active", "mood": "declarative", "form": "finite"}
     },
     # the equivalent of the English present conditional form
     "8995": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "present", "voice": "active", "mood": "conditional", "form": "inflected"}
+        "features": {"tense": "present", "voice": "active", "mood": "conditional", "form": "finite"}
     },
 
     # description indicators
@@ -181,61 +181,61 @@ INDICATOR_SEMANTICS = {
     "8999": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "future", "voice": "active", "mood": "declarative", "form": "inflected"}
+        "features": {"tense": "future", "voice": "active", "mood": "declarative", "form": "finite"}
     },
     # the equivalent of the English future conditional form
     "9000": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "future", "voice": "active", "mood": "conditional", "form": "inflected"}
+        "features": {"tense": "future", "voice": "active", "mood": "conditional", "form": "finite"}
     },
     # the equivalent of the English future passive form
     "9001": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "future", "voice": "passive", "mood": "declarative", "form": "inflected"}
+        "features": {"tense": "future", "voice": "passive", "mood": "declarative", "form": "finite"}
     },
     # the equivalent of the English future passive conditional form
     "9002": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "future", "voice": "passive", "mood": "conditional", "form": "inflected"}
+        "features": {"tense": "future", "voice": "passive", "mood": "conditional", "form": "finite"}
     },
     # something is being acted upon
     "9003": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "present", "voice": "passive", "mood": "declarative", "form": "inflected"}
+        "features": {"tense": "present", "voice": "passive", "mood": "declarative", "form": "finite"}
     },
     # the equivalent of the English past tense
     "9004": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "past", "voice": "active", "mood": "declarative", "form": "inflected"}
+        "features": {"tense": "past", "voice": "active", "mood": "declarative", "form": "finite"}
     },
     # the equivalent of the English past conditional form
     "9005": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "past", "voice": "active", "mood": "conditional", "form": "inflected"}
+        "features": {"tense": "past", "voice": "active", "mood": "conditional", "form": "finite"}
     },
     # the equivalent of the English past passive conditional form
     "9006": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "past", "voice": "passive", "mood": "conditional", "form": "inflected"}
+        "features": {"tense": "past", "voice": "passive", "mood": "conditional", "form": "finite"}
     },
     # the equivalent of the English past passive form
     "9007": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "past", "voice": "passive", "mood": "declarative", "form": "inflected"}
+        "features": {"tense": "past", "voice": "passive", "mood": "declarative", "form": "finite"}
     },
     # the equivalent of the English present passive conditional form
     "9008": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "present", "voice": "passive", "mood": "conditional", "form": "inflected"}
+        "features": {"tense": "present", "voice": "passive", "mood": "conditional", "form": "finite"}
     },
 
     # represent a concrete object
@@ -325,14 +325,14 @@ INDICATOR_SEMANTICS = {
     "24807": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"tense": "present", "voice": "null", "mood": "declarative", "aspect": "null", "form": "inflected"},
+        "features": {"tense": "present", "mood": "declarative", "form": "finite"},
         "notes": "for teaching purposes",
         "priority": ["8993", "24807"]
     },
     # the diminutive modifier is used more. Indicator (ID: 28052) is not used
     "25458": {
         "category": "grammatical",
-        "features": {"size": "diminutive", "form": "inflected"},
+        "features": {"size": "diminutive", "form": "finite"},
         "notes": "for teaching purposes",
         "equivalent_modifier": "28052",
         "priority": ["28052", "25458"]
@@ -341,7 +341,7 @@ INDICATOR_SEMANTICS = {
     "24670": {
         "POS": "verb",
         "category": "grammatical",
-        "features": {"form": "inflected"}
+        "features": {"mood": "imperative", "form": "finite"}
     },
     # 3 participles
     "24674": {
