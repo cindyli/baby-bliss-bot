@@ -431,21 +431,21 @@ MODIFIER_SEMANTICS = {
     # "B10"
     "8497": {
         "or": [{
-             "features": {
+            "features": {
                 "person": "first-person",
                 "number": "singular",
                 "position": "suffix",
                 "middle-position": "suffix-first-part"
-             },
-             "equivalent_indicator": "24669",
-             "priority": ["8497", "24669"],
-          }, {
+            },
+            "equivalent_indicator": "24669",
+            "priority": ["8497", "24669"],
+        }, {
             "numeric": "one",
-             "features": {
+            "features": {
                 "position": "prefix"
-             },
-             "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
-         }]
+            },
+            "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+        }]
     },
     # "B11"
     "8498": {
@@ -458,9 +458,9 @@ MODIFIER_SEMANTICS = {
             },
             "equivalent_indicator": "24678",
             "priority": ["8498", "24678"],
-            }, {
+        }, {
             "features": {
-        "numeric": "two",
+                "numeric": "two",
                 "position": "prefix"
             },
             "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
@@ -474,12 +474,12 @@ MODIFIER_SEMANTICS = {
                 "number": "singular",
                 "position": "suffix",
                 "middle-position": "suffix-first-part",
-             },
-             "equivalent_indicator": "24679",
-             "priority": ["8499", "24679"],
+            },
+            "equivalent_indicator": "24679",
+            "priority": ["8499", "24679"],
           }, {
             "features": {
-            "numeric": "three",
+                "numeric": "three",
                 "position": "prefix"
             },
             "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
@@ -519,7 +519,7 @@ MODIFIER_SEMANTICS = {
            "position": "suffix"
         }
     },
-         
+
     # Structural markers
     # "B233"
     "13382": {
@@ -1031,7 +1031,7 @@ MODIFIER_SEMANTICS = {
         },
         "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
     },
-    
+
     # "B11", cannot identify middle-position due to lack of data
     "8498": {
         "numeric": "two",
