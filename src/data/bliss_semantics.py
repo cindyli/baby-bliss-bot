@@ -440,7 +440,7 @@ MODIFIER_SEMANTICS = {
              "equivalent_indicator": "24669",
              "priority": ["8497", "24669"],
           }, {
-              "numeric": "one",
+            "numeric": "one",
              "features": {
                 "position": "prefix"
              },
@@ -449,40 +449,40 @@ MODIFIER_SEMANTICS = {
     },
     # "B11"
     "8498": {
-          "or": [{
-                  "features": {
-                 "person": "second-person",
-                 "number": "singular",
-                 "position": "suffix",
-                 "middle-position": "suffix-first-part",
-             },
-             "equivalent_indicator": "24678",
-             "priority": ["8498", "24678"],
-               }, {
-                   "features": {
-                    "numeric": "two",
-                     "position": "prefix"
-                  },
-                  "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
-              }]
+        "or": [{
+            "features": {
+                "person": "second-person",
+                "number": "singular",
+                "position": "suffix",
+                "middle-position": "suffix-first-part",
+            },
+            "equivalent_indicator": "24678",
+            "priority": ["8498", "24678"],
+            }, {
+            "features": {
+        "numeric": "two",
+                "position": "prefix"
+            },
+            "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+        }]
     },
     # "B12"
     "8499": {
          "or": [{
-             "features": {
-            "person": "third-person",
-            "number": "singular",
-            "position": "suffix",
-            "middle-position": "suffix-first-part",
+            "features": {
+                "person": "third-person",
+                "number": "singular",
+                "position": "suffix",
+                "middle-position": "suffix-first-part",
              },
              "equivalent_indicator": "24679",
              "priority": ["8499", "24679"],
           }, {
-              "features": {
-               "numeric": "three",
+            "features": {
+            "numeric": "three",
                 "position": "prefix"
-             },
-             "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
+            },
+            "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
          }]
     },
     # "B5999"
@@ -498,23 +498,26 @@ MODIFIER_SEMANTICS = {
 
     # "B112"
     "12352": {
-          "time": "ago, then (past)",
+        "time": "ago, then (past)",
         "features": {
            "position": "suffix",
+        }
     },
 
     # "B648"
     "17705": {
-         "time": "then_future, so, later",
+        "time": "then_future, so, later",
         "features": {
            "position": "suffix",
+        }
     },
 
     # "B474"
     "15736": {
-         "time": "now",
+        "time": "now",
         "features": {
-           "position": "suffix",
+           "position": "suffix"
+        }
     },
          
     # Structural markers
@@ -538,7 +541,7 @@ MODIFIER_SEMANTICS = {
     # Scalar degree operators
     # "B401"
     "14947": {
-          "degree": "intensity",
+        "degree": "intensity",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -547,7 +550,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B937", has different position for different context - need to discuss
     "24879": {
-         "degree": "more (comparative)",
+        "degree": "more (comparative)",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -556,7 +559,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B968", has different position for different context - need to discuss
     "24944": {
-         "degree": "most (comparative)",
+        "degree": "most (comparative)",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -567,7 +570,7 @@ MODIFIER_SEMANTICS = {
     # Identity-affecting operators
     # "B449/B401"
     "15733": {
-         "negation": "not, negative, no, don't, doesn't",
+        "negation": "not, negative, no, don't, doesn't",
         "features": {
            "position": "suffix",
            "middle-position": "prefix-second-part"
@@ -576,7 +579,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B486"
     "15927": {
-         "negation": "opposite",
+        "negation": "opposite",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -629,7 +632,7 @@ MODIFIER_SEMANTICS = {
     # Relational operators
     # "B449"
     "15474": {
-         "negation": "minus, no, without",
+        "negation": "minus, no, without",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -925,7 +928,7 @@ MODIFIER_SEMANTICS = {
     # "B368"
     # prefix modifier
     "14647": {
-         "quantifier": "many, much",
+        "quantifier": "many, much",
         "features": {
            "position": "prefix",
            "middle-position": "prefix-second-part"
@@ -934,7 +937,7 @@ MODIFIER_SEMANTICS = {
     # pending: few (not yet in bliss-glyph-data.js)
     # "B117", exceptions: #14117, #29036, #12361, #22836, #24520.
     "12360": {
-         "quantifier": "all",
+        "quantifier": "all",
         "features": {
            "position": "suffix",
            "middle-position": "suffix-first-part"
@@ -942,21 +945,21 @@ MODIFIER_SEMANTICS = {
     },
     # "B100", cannot identify middle-position due to lack of data
     "12321": {
-         "quantifier": "any",
+        "quantifier": "any",
         "features": {
            "position": "prefix"
         }
     },
     # "B11/B117", cannot identify middle-position due to lack of data
     "12879": {
-         "quantifier": "both",
+        "quantifier": "both",
         "features": {
            "position": "suffix"
         }
     },
     # "B10/B117", cannot identify middle-position due to lack of data
     "13893": {
-         "quantifier": "each, every",
+        "quantifier": "each, every",
         "features": {
            "position": "suffix"
         },
@@ -964,14 +967,14 @@ MODIFIER_SEMANTICS = {
     },
     # "B286", cannot identify middle-position due to lack of data
     "13914": {
-         "quantifier": "either",
+        "quantifier": "either",
         "features": {
            "position": "suffix"
         }
     },
     # "B449/B286", cannot identify middle-position due to lack of data
     "15706": {
-         "quantifier": "neither",
+        "quantifier": "neither",
         "features": {
            "position": "suffix"
         },
@@ -979,42 +982,42 @@ MODIFIER_SEMANTICS = {
     },
     # "B951", cannot identify middle-position due to lack of data
     "24906": {
-         "quantifier": "half",
+        "quantifier": "half",
         "features": {
            "position": "prefix"
         }
     },
     # "B962", cannot identify middle-position due to lack of data
     "24932": {
-         "quantifier": "quarter",
+        "quantifier": "quarter",
         "features": {
            "position": "prefix"
         }
     },
     # "B1151", cannot identify middle-position due to lack of data
     "26064": {
-         "quantifier": "one third",
+        "quantifier": "one third",
         "features": {
            "position": "prefix"
         }
     },
     # "B1152", cannot identify middle-position due to lack of data
     "26065": {
-         "quantifier": "two thirds",
+        "quantifier": "two thirds",
         "features": {
            "position": "prefix"
         }
     },
     # "B1153", cannot identify middle-position due to lack of data
     "26066": {
-         "quantifier": "three quarters",
+        "quantifier": "three quarters",
         "features": {
            "position": "prefix"
         }
     },
     # "B559/B11", cannot identify middle-position due to lack of data
     "16762": {
-         "quantifier": "several",
+        "quantifier": "several",
         "features": {
            "position": "prefix"
         },
@@ -1022,7 +1025,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B9", cannot identify middle-position due to lack of data
     "8496": {
-          "numeric": "zero",
+        "numeric": "zero",
         "features": {
            "position": "prefix"
         },
@@ -1031,7 +1034,7 @@ MODIFIER_SEMANTICS = {
     
     # "B11", cannot identify middle-position due to lack of data
     "8498": {
-         "numeric": "two",
+        "numeric": "two",
         "features": {
            "position": "prefix"
         },
@@ -1039,7 +1042,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B12", cannot identify middle-position due to lack of data
     "8499": {
-         "numeric": "three",
+        "numeric": "three",
         "features": {
            "position": "prefix"
         },
@@ -1047,7 +1050,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B13", cannot identify middle-position due to lack of data
     "8500": {
-         "numeric": "four",
+        "numeric": "four",
         "features": {
            "position": "prefix"
         },
@@ -1055,7 +1058,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B14", cannot identify middle-position due to lack of data
     "8501": {
-          "numeric": "five",
+        "numeric": "five",
         "features": {
            "position": "prefix"
         },
@@ -1063,7 +1066,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B15", cannot identify middle-position due to lack of data
     "8502": {
-         "numeric": "six",
+        "numeric": "six",
         "features": {
            "position": "prefix"
         },
@@ -1071,7 +1074,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B16", cannot identify middle-position due to lack of data
     "8503": {
-         "numeric": "seven",
+        "numeric": "seven",
         "features": {
            "position": "prefix"
         },
@@ -1079,7 +1082,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B17", cannot identify middle-position due to lack of data
     "8504": {
-         "numeric": "eight",
+        "numeric": "eight",
         "features": {
            "position": "prefix"
         },
@@ -1087,7 +1090,7 @@ MODIFIER_SEMANTICS = {
     },
     # "B18", cannot identify middle-position due to lack of data
     "8505": {
-         "numeric": "nine",
+        "numeric": "nine",
         "features": {
            "position": "prefix"
         },
