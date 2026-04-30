@@ -49,9 +49,9 @@ assumed unless question/exclamation markers are present.
 - aspect: Indicates how an action occurs over time.
 Valid values: "continuous"
 
-- form: Variations of verbs.
+- form: Variations of verbs and nouns.
 Valid values: "finite" | "infinitive" | "present-participle" | "past-participle-1" |
- "past-participle-2" (one)
+ "past-participle-2" | "gerund" (one)
 Note: If tense and mood are "null", the verb is treated as non-finite (infinitive or participle).
 
 - negation: "without" | "not" | "opposite" (one)
@@ -388,7 +388,17 @@ INDICATOR_SEMANTICS = {
         "equivalent_modifier": "8499",
         "priority": ["8499", "24679"]
     },
-
+    # continuous indicator
+    "28043": {
+         "POS": "noun",
+         "category": "grammatical",
+         "features": {
+             "form": "gerund"
+         },
+         "notes": "Primary indicator for noun-ING (gerunds).",
+         # first priority is the continuous indicator, then second priority is the present tense indicator
+         "priority": ["28043", "8994"] 
+     },
     # possessive indicator; both indicator and modifier (ID: 12663) are used, but modifier is used more in English (opposite is true for Swedish).
     "24676": {
         "POS": "noun",
@@ -1026,23 +1036,6 @@ MODIFIER_SEMANTICS = {
     # "B9", cannot identify middle-position due to lack of data
     "8496": {
         "numeric": "zero",
-        "features": {
-           "position": "prefix"
-        },
-        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
-    },
-
-    # "B11", cannot identify middle-position due to lack of data
-    "8498": {
-        "numeric": "two",
-        "features": {
-           "position": "prefix"
-        },
-        "notes": "when in default position (prefix), functions as a cardinal to indicate number of items. otherwise (suffixed), functions as an ordinal"
-    },
-    # "B12", cannot identify middle-position due to lack of data
-    "8499": {
-        "numeric": "three",
         "features": {
            "position": "prefix"
         },
