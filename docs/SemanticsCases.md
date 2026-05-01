@@ -10,5 +10,5 @@ A **gerund** functions as a noun, while having the verb ending -ING. Gerunds rep
 * Example 1. activity (classifier) [12335] + run (specifier) [26234]
 * Example 2. LEGS [15189] + arrow forward [14390] + FAST (quickly) [16446]
 * Example 3. running (sport) [21839]
-5) with the present tense [8994]
+4) with the present tense [8994]
 * Example 1. Sing [16990] + [8994]
