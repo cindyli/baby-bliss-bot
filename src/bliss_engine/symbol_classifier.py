@@ -2,10 +2,10 @@
 Symbol classifier for identifying symbol types in Blissymbolics compositions.
 
 Classifies symbols into:
-- Classifiers: Set the semantic category (POS: YELLOW, RED, GREEN, BLUE)
+- Classifiers: Set the semantic category (POS: noun, action, person, description)
 - Specifiers: Refine the meaning of the classifier
-- Indicators: Denote grammatical information (POS: GREY or WHITE)
-- Modifiers: Prefix/suffix symbols that modify meaning (POS: GREY or WHITE)
+- Indicators: Denote grammatical information (POS: expression or function)
+- Modifiers: Prefix/suffix symbols that modify meaning (POS: expression or function)
 """
 
 from typing import List, Dict
@@ -17,9 +17,9 @@ class SymbolClassifier:
     """Classifies Bliss symbols based on their properties and context."""
 
     # Color-coded part-of-speech categories
-    CLASSIFIER_POS = {"YELLOW", "RED", "GREEN", "BLUE"}
-    MODIFIER_POS = {"GREY", "WHITE"}
-    INDICATOR_POS = {"GREY", "WHITE"}
+    CLASSIFIER_POS = {"noun", "action", "person", "description"}
+    MODIFIER_POS = {"expression", "function"}
+    INDICATOR_POS = {"expression", "function"}
 
     def __init__(self, bliss_dict):
         """
@@ -70,8 +70,8 @@ class SymbolClassifier:
            the classifier is the symbol immediately before the indicator.
            All symbols before the classifier are modifiers/prefixes.
            All symbols after the indicator are specifiers (or additional modifiers if they're in MODIFIER_SEMANTICS).
-        2. **POS-Based**: Symbols with pos in {YELLOW, RED, GREEN, BLUE} are classifiers.
-        3. **First Symbol**: If all symbols are GREY/WHITE (modifiers/indicators only),
+        2. **POS-Based**: Symbols with pos in {noun, action, person, description} are classifiers.
+        3. **First Symbol**: If all symbols are expression/function (modifiers/indicators only),
            the first symbol is the classifier.
         4. **Default**: Any remaining symbols are specifiers.
 
@@ -149,7 +149,7 @@ class SymbolClassifier:
                 # Default to specifier
                 result["specifiers"].append(symbol_id)
 
-        # Rule 3: Special case - if no classifier found but all symbols are GREY/WHITE
+        # Rule 3: Special case - if no classifier found but all symbols are expression/function
         # The first symbol is treated as the classifier
         if not has_classifier and valid_ids:
             first_id = str(valid_ids[0])

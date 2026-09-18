@@ -7,10 +7,32 @@ Provides integrated functionality for:
 - Use Case 3: Compose new Bliss words from semantic specifications
 """
 
+import json
 from typing import List, Dict, Union
 from .analyzer import BlissAnalyzer
 from .composer import BlissComposer
 from .symbol_classifier import SymbolClassifier
+
+
+def load_bliss_dict(path: str) -> Dict:
+    """
+    Load a Bliss dictionary from a bliss_symbol_explanations JSON file.
+
+    Records are keyed by their B-id ("id" field, without the leading "B") as a string.
+    The comma-separated "gloss" is split into the "glosses" format used by the engine.
+
+    Args:
+        path: Path to the JSON file (e.g. src/data/bliss_dict/bliss_symbol_explanations_english.json)
+
+    Returns:
+        Dict of Bliss symbol definitions keyed by B-id
+    """
+    with open(path, 'r', encoding='utf-8') as f:
+        records = json.load(f)["data"]
+    return {
+        str(r["id"]): {**r, "glosses": {"en": [g.strip() for g in r["gloss"].split(",")]}}
+        for r in records
+    }
 
 
 class BlissEngine:
@@ -28,7 +50,7 @@ class BlissEngine:
         Initialize the Bliss Engine with a Bliss dictionary.
 
         Args:
-            bliss_dict: Dict of Bliss symbol definitions (typically loaded from bliss_dict_multi_langs.json)
+            bliss_dict: Dict of Bliss symbol definitions keyed by B-id (typically loaded with load_bliss_dict())
 
         Raises:
             TypeError: If bliss_dict is not a dictionary

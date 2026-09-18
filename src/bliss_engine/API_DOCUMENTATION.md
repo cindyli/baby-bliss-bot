@@ -9,12 +9,10 @@ This document provides complete API reference for all methods and their paramete
 ## Installation
 
 ```python
-from bliss_engine import BlissEngine
-import json
+from src.bliss_engine import BlissEngine, load_bliss_dict
 
-# Load the Bliss dictionary
-with open('path/to/bliss_dict_multi_langs.json', 'r') as f:
-    bliss_dict = json.load(f)
+# Load the Bliss dictionary, keyed by B-id
+bliss_dict = load_bliss_dict('src/data/bliss_dict/bliss_symbol_explanations_english.json')
 
 # Initialize the engine
 engine = BlissEngine(bliss_dict)
@@ -31,7 +29,7 @@ engine = BlissEngine(bliss_dict)
 ```
 
 **Parameters:**
-- `bliss_dict` (Dict): Python dictionary keyed by symbol ID, with symbol data as values
+- `bliss_dict` (Dict): Python dictionary keyed by B-id (the "id" field, without the leading "B"), with symbol data as values
 
 **Raises:**
 - `TypeError`: If bliss_dict is not a dictionary
@@ -50,9 +48,9 @@ Look up a symbol ID in the Bliss dictionary and return its glosses and explanati
 
 **Example:**
 ```python
-result = engine.get_symbol_glosses(14905, language="en")
+result = engine.get_symbol_glosses(392, language="en")
 # {
-#   "id": 14905,
+#   "id": 392,
 #   "glosses": ["building"],
 #   "explanation": "A structure...",
 #   "isCharacter": true
@@ -94,16 +92,16 @@ Rendering elements such as "/" and ";" are automatically ignored when comparing 
 
 **Example - Existing composition:**
 ```python
-result = engine.lookup_composition([14133, 8998, 17717, 23599], language="en")
+result = engine.lookup_composition([303, 86, 651, 842], language="en")
 # {
 #   "composition": [
-#     14133,
-#     8998,
-#     17717,
-#     23599
+#     303,
+#     86,
+#     651,
+#     842
 #   ],
 #   "is_existing_symbol": true,
-#   "symbol_id": 24924,
+#   "symbol_id": 4809,
 #   "glosses": [
 #     "oval",
 #     "elliptic",
@@ -115,17 +113,17 @@ result = engine.lookup_composition([14133, 8998, 17717, 23599], language="en")
 
 **Example - New composition:**
 ```python
-result = engine.lookup_composition([14647, 14905, 24920, 9011], language="en")
+result = engine.lookup_composition([368, 392, 958, 99], language="en")
 # If new composition:
 # {
-#   "composition": [14647, 14905, 24920, 9011],
+#   "composition": [368, 392, 958, 99],
 #   "is_existing_symbol": false,
-#   "classifier": 14905,
+#   "classifier": 392,
 #   "classifier_info": "building",
-#   "specifiers": [24920],
+#   "specifiers": [958],
 #   "specifier_info": ["medicine"],
-#   "indicators": [9011],
-#   "modifiers": [14647],
+#   "indicators": [99],
+#   "modifiers": [368],
 #   "semantics": {
 #     "NUMBER": "plural",
 #     "QUANTIFIER": "many"
@@ -135,10 +133,10 @@ result = engine.lookup_composition([14647, 14905, 24920, 9011], language="en")
 
 **Example - Composition with rendering elements:**
 ```python
-result = engine.lookup_composition([14905, "/", 9011, ";"], language="en")
+result = engine.lookup_composition([392, "/", 99, ";"], language="en")
 # Rendering elements "/" and ";" are automatically filtered out
 # {
-#   "composition": [14905, 9011],
+#   "composition": [392, 99],
 #   "is_existing_symbol": false|true,
 #   ...
 # }
@@ -192,7 +190,7 @@ semantic_spec = {
 
 result = engine.compose_from_semantic(semantic_spec)
 # {
-#   "composition": [14647, 14905, 24920, 9011],
+#   "composition": [368, 392, 958, 99],
 #   "original_spec": {...},
 #   "errors": [],
 #   "warnings": []
@@ -263,8 +261,8 @@ The standard Blissymbolics composition order is:
 ```
 
 Examples:
-- `[14905, 9011, 24920]` → classifier=14905, indicator=9011, specifier=24920
-- `[14647, 14905, 9011]` → modifier=14647, classifier=14905, indicator=9011
+- `[392, 99, 958]` → classifier=392, indicator=99, specifier=958
+- `[368, 392, 99]` → modifier=368, classifier=392, indicator=99
 
 ### Finding Classifiers (Priority Order)
 
@@ -273,19 +271,19 @@ The engine uses a multi-layered approach to identify classifiers:
 **Rule 1: Indicator-Based (Highest Priority)**
 If the composition contains any indicators (symbols in `INDICATOR_SEMANTICS`), the **classifier is the symbol immediately before the first indicator**. All symbols before the classifier are modifiers/prefixes.
 
-Example: In `[14905, 9011, 24920]` where 9011 is an indicator, 14905 is the classifier.
+Example: In `[392, 99, 958]` where 99 is an indicator, 392 is the classifier.
 
 **Rule 2: POS-Based**
-Symbols with pos in: `{YELLOW, RED, GREEN, BLUE}` are classifiers.
+Symbols with pos in: `{noun, action, person, description}` are classifiers.
 
 **Rule 3: First Symbol Convention**
-If all symbols have pos in `{GREY, WHITE}` (no standard classifiers or indicators), assume the first symbol is the classifier.
+If all symbols have pos in `{expression, function}` (no standard classifiers or indicators), assume the first symbol is the classifier.
 
 ### Specifiers
 Symbols that appear after indicators (typically refining the classifier's meaning) or between the classifier and first indicator if no indicators exist.
 
 ### Indicators
-Symbols with pos in: `{GREY, WHITE}`
+Symbols with pos in: `{expression, function}`
 
 Found in `INDICATOR_SEMANTICS` in `bliss_semantics.py`
 
@@ -298,7 +296,7 @@ Denote grammatical information like:
 Typically appear after the classifier in compositions.
 
 ### Modifiers
-Symbols with pos in: `{GREY, WHITE}`
+Symbols with pos in: `{expression, function}`
 
 Found in `MODIFIER_SEMANTICS` in `bliss_semantics.py`
 
@@ -311,7 +309,7 @@ Used as prefixes and suffixes to modify meaning:
 Typically appear before the classifier (prefixes) or after indicators (suffixes).
 
 ### Special Case
-If all symbols in a composition have pos in `{GREY, WHITE}`, the first symbol is assumed to be the classifier.
+If all symbols in a composition have pos in `{expression, function}`, the first symbol is assumed to be the classifier.
 
 ---
 
@@ -346,7 +344,7 @@ If all symbols in a composition have pos in `{GREY, WHITE}`, the first symbol is
 The Bliss dictionary is a **Python dictionary keyed by symbol ID**, where each key is a symbol ID (string) and each value contains the symbol data.
 
 **Symbol Data:**
-- `pos`: Part-of-speech category (YELLOW, RED, GREEN, BLUE, GREY, WHITE)
+- `pos`: Part-of-speech category (noun, action, person, description, expression, function)
 - `glosses`: Dict mapping language codes to gloss lists (e.g., `{"en": ["building"], "sv": ["byggnad"]}`)
 - `isCharacter`: Boolean indicating if it's a Bliss character
 - `explanation`: Text explanation of the symbol
@@ -356,15 +354,15 @@ The Bliss dictionary is a **Python dictionary keyed by symbol ID**, where each k
 **Example:**
 ```python
 bliss_dict = {
-    "14905": {
-        "pos": "YELLOW",
+    "392": {
+        "pos": "noun",
         "glosses": {"en": ["building"], "sv": ["byggnad"]},
         "isCharacter": True,
         "explanation": "A structure...",
         "symbolSemantics": {...}  # optional
     },
-    "9011": {
-        "pos": "WHITE",
+    "99": {
+        "pos": "function",
         "glosses": {"en": ["plural"]},
         "isCharacter": False,
         "semantics": {"type": "NUMBER", "value": "plural"}
@@ -415,7 +413,7 @@ Note that The dictionary definitions for Portugese, Italian and Danish are in dr
 * Example:
 
 ```python
-engine.get_symbol_glosses(14905, language="fr")
+engine.get_symbol_glosses(392, language="fr")
 # Returns French glosses
 ```
 

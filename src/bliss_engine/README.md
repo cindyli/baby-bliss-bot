@@ -15,12 +15,10 @@ The Bliss Engine is an interface for working with Blissymbolics symbols and comp
 ### Installation
 
 ```python
-from bliss_engine import BlissEngine
-import json
+from src.bliss_engine import BlissEngine, load_bliss_dict
 
-# Load the Bliss dictionary
-with open('path/to/bliss_dict_multi_langs.json', 'r') as f:
-    bliss_dict = json.load(f)
+# Load the Bliss dictionary, keyed by B-id
+bliss_dict = load_bliss_dict('src/data/bliss_dict/bliss_symbol_explanations_english.json')
 
 # Initialize the engine
 engine = BlissEngine(bliss_dict)
@@ -32,11 +30,11 @@ When the `language` parameter is not provided, the default language is `en` (Eng
 
 ```python
 # Use Case 1: Get glosses for a symbol
-result = engine.get_symbol_glosses(14905, language="en")
-# Returns: {"id": 14905, "glosses": ["building"], "explanation": "...", "isCharacter": true}
+result = engine.get_symbol_glosses(392, language="en")
+# Returns: {"id": 392, "glosses": ["building"], "explanation": "...", "isCharacter": true}
 
 # Use Case 2: Analyze a composition
-result = engine.lookup_composition([14647, 14905, 24920, 9011])
+result = engine.lookup_composition([368, 392, 958, 99])
 # Returns: semantic breakdown or symbol ID if exists
 
 # Use Case 3: Compose from semantic specification
@@ -46,7 +44,7 @@ semantic_spec = {
     "semantics": {"NUMBER": "plural", "QUANTIFIER": "many"}
 }
 result = engine.compose_from_semantic(semantic_spec)
-# Returns: {"composition": [14647, 14905, 24920, 9011], ...}
+# Returns: {"composition": [368, 392, 958, 99], ...}
 ```
 
 For detailed API reference, see [API_DOCUMENTATION.md](API_DOCUMENTATION.md).
@@ -57,7 +55,7 @@ The Bliss Engine recognizes four types of symbols in compositions:
 
 ### Classifiers
 - Set the semantic category of the composition
-- Part-of-speech (pos): YELLOW, RED, GREEN, BLUE
+- Part-of-speech (pos): noun, action, person, description
 - Typically the primary meaning-bearing element
 
 ### Specifiers
@@ -66,23 +64,23 @@ The Bliss Engine recognizes four types of symbols in compositions:
 - Appear after the classifier in typical compositions
 
 ### Indicators
-- Denote grammatical information (pos: GREY, WHITE)
+- Denote grammatical information (pos: expression, function)
 - Examples: number, tense, voice, aspect, case
 - Appear after the classifier in composition order
 
 ### Modifiers
-- Modify the classifier's meaning (pos: GREY, WHITE)
+- Modify the classifier's meaning (pos: expression, function)
 - Can be prefixes (before classifier) or suffixes (after indicators)
 - Examples: quantifiers ("many", "few"), intensifiers ("very"), operators ("opposite")
 
 ## Knowledge Base
 
-The Bliss Engine uses the Bliss dictionary from [../data/bliss_dict/bliss_dict_multi_langs.json](../data/bliss_dict/bliss_dict_multi_langs.json). The dictionary is a Python dictionary keyed by symbol ID where each entry contains:
+The Bliss Engine uses the Bliss dictionary from [../data/bliss_dict/bliss_symbol_explanations_english.json](../data/bliss_dict/bliss_symbol_explanations_english.json), loaded with `load_bliss_dict()`. The dictionary is a Python dictionary keyed by B-id where each entry contains:
 
 - `isCharacter`: Boolean indicating if it's a Bliss character (True) or composed word (False)
 - `composition`: Component symbol IDs for composed words
 - `glosses`: Multi-language glosses keyed by language code
-- `pos`: Part-of-speech category (YELLOW, RED, GREEN, BLUE, GREY, WHITE)
+- `pos`: Part-of-speech category (noun, action, person, description, expression, function)
 - `explanation`: Description of the symbol
 - `symbolSemantics`: Optional semantic disambiguation information
 
@@ -113,10 +111,10 @@ The engine supports multiple languages defined in the Bliss dictionary glosses:
 
 ```python
 # Swedish glosses
-engine.get_symbol_glosses(14905, language="sv")  # "byggnad"
+engine.get_symbol_glosses(392, language="sv")  # "byggnad"
 
 # French glosses
-engine.get_symbol_glosses(14905, language="fr")  # "bâtiment"
+engine.get_symbol_glosses(392, language="fr")  # "bâtiment"
 ```
 
 ## Running Examples and Tests

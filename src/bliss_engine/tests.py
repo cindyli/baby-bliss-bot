@@ -6,19 +6,17 @@ Unit tests for the Bliss Engine module.
 Tests all three use cases and utility functions.
 """
 
-import json
 import unittest
 
 # Run from project root
-from src.bliss_engine import BlissEngine
+from src.bliss_engine import BlissEngine, load_bliss_dict
 from src.bliss_engine.symbol_classifier import SymbolClassifier
 from src.bliss_engine.analyzer import BlissAnalyzer
 from src.bliss_engine.composer import BlissComposer
 
-dict_path = "src/data/bliss_dict/bliss_dict_multi_langs.json"
+dict_path = "src/data/bliss_dict/bliss_symbol_explanations_english.json"
 
-with open(dict_path, 'r', encoding='utf-8') as f:
-    bliss_dict = json.load(f)
+bliss_dict = load_bliss_dict(dict_path)
 
 
 class TestBlissEngineInitialization(unittest.TestCase):
@@ -55,17 +53,17 @@ class TestBlissEngineUseCases(unittest.TestCase):
     def test_use_case_1_get_symbol_glosses(self):
         """Test Use Case 1: Look up a symbol ID and get its glosses and explanation."""
         expected = {
-            "id": 14905,
+            "id": 392,
             "glosses": [
                 "house",
                 "building",
                 "dwelling",
                 "residence"
             ],
-            "explanation": "(foundation + protection: pictograph of the outline of a house.The symbol can also be explained as: combination of enclosure and protection.)  - Character (superimposed)",
+            "explanation": "foundation + protection: pictograph of the outline of a house.The symbol can also be explained as: combination of enclosure and protection.",
             "isCharacter": True
         }
-        result = self.engine.get_symbol_glosses(14905, language="en")
+        result = self.engine.get_symbol_glosses(392, language="en")
         self.assertEqual(expected, result)
 
     def test_use_case_1_nonexistent_symbol(self):
@@ -78,61 +76,61 @@ class TestBlissEngineUseCases(unittest.TestCase):
         """Test Use Case 2: Look up existing composition returns symbol ID."""
         # Test with an existing composition (if available in dictionary)
         expected = {
-            "composition": [14133, 8998, 17717, 23599],
+            "composition": [303, 86, 651, 842],
             "is_existing_symbol": True,
-            "symbol_id": 24924,
-            "explanation": "(oval,ellipse + description indicator)",
+            "symbol_id": 4809,
+            "explanation": "oval,ellipse + description indicator",
             "glosses": ["oval", "elliptic", "elliptical"],
         }
-        result = self.engine.lookup_composition([14133, 8998, 17717, 23599], language="en")
+        result = self.engine.lookup_composition([303, 86, 651, 842], language="en")
         self.assertEqual(expected, result)
 
     def test_use_case_2_lookup_existing_composition_with_rendering_components(self):
         """Test Use Case 2: Look up existing composition returns symbol ID."""
         # Test with an existing composition (if available in dictionary)
         expected = {
-            "composition": [14133, ";", 8998, "/", 17717, "/", 23599],
+            "composition": [303, ";", 86, "/", 651, "/", 842],
             "is_existing_symbol": True,
-            "symbol_id": 24924,
-            "explanation": "(oval,ellipse + description indicator)",
+            "symbol_id": 4809,
+            "explanation": "oval,ellipse + description indicator",
             "glosses": ["oval", "elliptic", "elliptical"],
         }
-        result = self.engine.lookup_composition([14133, ";", 8998, "/", 17717, "/", 23599], language="en")
+        result = self.engine.lookup_composition([303, ";", 86, "/", 651, "/", 842], language="en")
         self.assertEqual(expected, result)
 
     def test_use_case_2_lookup_new_composition(self):
         """Test Use Case 2: Look up new composition returns semantic meaning."""
         # Test with a composition unlikely to exist
         expected = {
-            "composition": [14647, 14905, 9011, 24920],
+            "composition": [368, 392, 99, 958],
             "is_existing_symbol": False,
-            "classifier": 14905,
+            "classifier": 392,
             "classifier_info": "house",
-            "specifiers": [24920],
+            "specifiers": [958],
             "specifier_info": ["medicine"],
             "semantics": {
                 "NUMBER": "plural",
                 "QUANTIFIER": "many"
             },
-            "indicators": [9011],
-            "modifiers": [14647]
+            "indicators": [99],
+            "modifiers": [368]
         }
-        result = self.engine.lookup_composition([14647, 14905, 9011, 24920], language="en")
+        result = self.engine.lookup_composition([368, 392, 99, 958], language="en")
         self.assertEqual(expected, result)
 
     def test_use_case_2_lookup_with_rendering_elements(self):
         """Test Use Case 2: Lookup ignores rendering elements like / and ;."""
         # Composition with rendering elements
-        result = self.engine.lookup_composition([14905, "/", 9011, ";"], language="en")
+        result = self.engine.lookup_composition([392, "/", 99, ";"], language="en")
         expected = {
-            "composition": [14905, "/", 9011, ";"],
+            "composition": [392, "/", 99, ";"],
             "is_existing_symbol": False,
-            "classifier": 14905,
+            "classifier": 392,
             "classifier_info": "house",
             "specifiers": [],
             "specifier_info": [],
             "semantics": {"NUMBER": "plural"},
-            "indicators": [9011],
+            "indicators": [99],
             "modifiers": []
         }
 
@@ -152,7 +150,7 @@ class TestBlissEngineUseCases(unittest.TestCase):
                 "specifiers": ["medicine"],
                 "semantics": {"NUMBER": "plural"}
             },
-            "composition": ["14905", "24920", "9011"],
+            "composition": ["392", "958", "99"],
             "errors": [],
             "warnings": []
         }
@@ -171,60 +169,60 @@ class TestSymbolClassifier(unittest.TestCase):
 
     def test_is_classifier(self):
         """Test classifier identification."""
-        self.assertTrue(self.classifier.is_classifier("14905"))
-        self.assertTrue(self.classifier.is_classifier("24920"))
-        self.assertTrue(self.classifier.is_classifier("14647"))  # 14647 has POS=YELLOW, so it IS a classifier
+        self.assertTrue(self.classifier.is_classifier("392"))
+        self.assertTrue(self.classifier.is_classifier("958"))
+        self.assertTrue(self.classifier.is_classifier("368"))  # 368 has POS=noun, so it IS a classifier
 
     def test_is_modifier(self):
         """Test modifier identification."""
-        self.assertTrue(self.classifier.is_modifier("14647"))
-        self.assertFalse(self.classifier.is_modifier("14905"))
+        self.assertTrue(self.classifier.is_modifier("368"))
+        self.assertFalse(self.classifier.is_modifier("392"))
 
     def test_is_indicator(self):
         """Test indicator identification."""
-        self.assertTrue(self.classifier.is_indicator("9011"))
-        self.assertFalse(self.classifier.is_indicator("14905"))
+        self.assertTrue(self.classifier.is_indicator("99"))
+        self.assertFalse(self.classifier.is_indicator("392"))
 
     def test_classify_composition(self):
         """Test composition classification."""
-        # Composition: [14647 (modifier), 14905 (classifier), 9011 (indicator), 24920 (specifier)]
+        # Composition: [368 (modifier), 392 (classifier), 99 (indicator), 958 (specifier)]
         expected = {
-            "classifier": "14905",
-            "specifiers": ["24920"],
-            "indicators": ["9011"],
-            "modifiers": ["14647"],
+            "classifier": "392",
+            "specifiers": ["958"],
+            "indicators": ["99"],
+            "modifiers": ["368"],
             "errors": []
         }
-        result = self.classifier.classify_composition(["14647", "14905", "9011", "24920"])
+        result = self.classifier.classify_composition(["368", "392", "99", "958"])
         self.assertEqual(expected, result)
 
     def test_classify_composition_with_rendering_markers(self):
         """Test composition classification with rendering markers like '/' and ';'."""
         # Composition may contain "/" and ";" which are rendering markers and should be filtered
-        # After filtering: [14647, 14905, 9011, 24920]
+        # After filtering: [368, 392, 99, 958]
         expected = {
-            "classifier": "14905",
-            "specifiers": ["24920"],
-            "indicators": ["9011"],
-            "modifiers": ["14647"],
+            "classifier": "392",
+            "specifiers": ["958"],
+            "indicators": ["99"],
+            "modifiers": ["368"],
             "errors": []
         }
-        result = self.classifier.classify_composition(["14647", "/", "14905", ";", "9011", "/", "24920"])
+        result = self.classifier.classify_composition(["368", "/", "392", ";", "99", "/", "958"])
         self.assertEqual(expected, result)
 
     def test_classify_composition_indicator_based_rule(self):
         """Test the indicator-based classifier rule: classifier is before first indicator."""
         # When composition has indicators, the symbol immediately before the first
         # indicator should be identified as the classifier
-        # Composition: [14905 (classifier), 9011 (indicator), 24920 (specifier)]
+        # Composition: [392 (classifier), 99 (indicator), 958 (specifier)]
         expected = {
-            "classifier": "14905",
-            "specifiers": ["24920"],
-            "indicators": ["9011"],
+            "classifier": "392",
+            "specifiers": ["958"],
+            "indicators": ["99"],
             "modifiers": [],
             "errors": []
         }
-        result = self.classifier.classify_composition(["14905", "9011", "24920"])
+        result = self.classifier.classify_composition(["392", "99", "958"])
         self.assertEqual(expected, result)
 
 
@@ -240,23 +238,23 @@ class TestBlissAnalyzer(unittest.TestCase):
     def test_get_symbol_glosses(self):
         """Test getting symbol glosses."""
         expected = {
-            "id": 14905,
+            "id": 392,
             "glosses": [
                 "house",
                 "building",
                 "dwelling",
                 "residence"
             ],
-            "explanation": "(foundation + protection: pictograph of the outline of a house.The symbol can also be explained as: combination of enclosure and protection.)  - Character (superimposed)",
+            "explanation": "foundation + protection: pictograph of the outline of a house.The symbol can also be explained as: combination of enclosure and protection.",
             "isCharacter": True
         }
-        result = self.analyzer.get_symbol_glosses(14905)
+        result = self.analyzer.get_symbol_glosses(392)
         self.assertEqual(expected, result)
 
     def test_analyze_composition_with_single_element(self):
         """Test composition analysis."""
         expected = {
-            "classifier": 14905,
+            "classifier": 392,
             "classifier_info": "house",
             "specifiers": [],
             "specifier_info": [],
@@ -264,95 +262,95 @@ class TestBlissAnalyzer(unittest.TestCase):
             "indicators": [],
             "modifiers": []
         }
-        result = self.analyzer.analyze_composition([14905])
+        result = self.analyzer.analyze_composition([392])
         self.assertEqual(expected, result)
 
     def test_analyze_composition_with_all_elements(self):
         """Test composition analysis with a composition of all elements present."""
-        # Composition for "many hospitals": [14647 (modifier), 14905 (classifier), 24920 (specifier), 9011 (indicator)]
+        # Composition for "many hospitals": [368 (modifier), 392 (classifier), 958 (specifier), 99 (indicator)]
         expected = {
-            "classifier": 14905,
+            "classifier": 392,
             "classifier_info": "house",
-            "specifiers": [24920],
+            "specifiers": [958],
             "specifier_info": ["medicine"],
-            "modifiers": [14647],
-            "indicators": [9011],
+            "modifiers": [368],
+            "indicators": [99],
             "semantics": {"NUMBER": "plural", "QUANTIFIER": "many"},
         }
-        result = self.analyzer.analyze_composition([14647, "/", 14905, ";", 9011, "/", 24920])
+        result = self.analyzer.analyze_composition([368, "/", 392, ";", 99, "/", 958])
         self.assertEqual(expected, result)
 
     def test_analyze_composition_with_all_modifiers(self):
         """Test composition analysis with a composition of all modifiers."""
-        # Composition for "no": [15474 (minus, no), 14947 (intensify), 14947 (intensify)]
+        # Composition for "no": [449 (minus, no), 401 (intensify), 401 (intensify)]
         expected = {
-            "classifier": 15474,
+            "classifier": 449,
             "classifier_info": "minus",
-            "modifiers": [14947, 14947],
+            "modifiers": [401, 401],
             "indicators": [],
             "specifiers": [],
             "specifier_info": [],
             "semantics": {"INTENSIFIER": "high"},
         }
-        result = self.analyzer.analyze_composition([15474, "/", 14947, ";", 14947])
+        result = self.analyzer.analyze_composition([449, "/", 401, ";", 401])
         self.assertEqual(expected, result)
 
     def test_lookup_composition_existing(self):
         """Test lookup_composition for existing symbol."""
         # Lookup a composition that exist in dictionary
         expected = {
-            "composition": [14133, 8998, 17717, 23599],
+            "composition": [303, 86, 651, 842],
             "is_existing_symbol": True,
-            "symbol_id": 24924,
-            "explanation": "(oval,ellipse + description indicator)",
+            "symbol_id": 4809,
+            "explanation": "oval,ellipse + description indicator",
             "glosses": ["oval", "elliptic", "elliptical"],
         }
-        result = self.analyzer.lookup_composition([14133, 8998, 17717, 23599], language="en")
+        result = self.analyzer.lookup_composition([303, 86, 651, 842], language="en")
         self.assertEqual(expected, result)
 
     def test_lookup_composition_new(self):
         """Test lookup_composition for new composition."""
         # Try to lookup a composition unlikely to exist
         expected = {
-            "composition": [14647, 14905, 9011, 24920],
+            "composition": [368, 392, 99, 958],
             "is_existing_symbol": False,
-            "classifier": 14905,
+            "classifier": 392,
             "classifier_info": "house",
-            "specifiers": [24920],
+            "specifiers": [958],
             "specifier_info": ["medicine"],
             "semantics": {
                 "NUMBER": "plural",
                 "QUANTIFIER": "many"
             },
-            "indicators": [9011],
-            "modifiers": [14647]
+            "indicators": [99],
+            "modifiers": [368]
         }
-        result = self.analyzer.lookup_composition([14647, 14905, 9011, 24920], language="en")
+        result = self.analyzer.lookup_composition([368, 392, 99, 958], language="en")
         self.assertEqual(expected, result)
 
     def test_lookup_composition_with_rendering_elements(self):
         """Test lookup_composition filters rendering elements."""
         # Composition with rendering markers
         expected = {
-            "composition": [14905, "/", 9011, ";"],
+            "composition": [392, "/", 99, ";"],
             "is_existing_symbol": False,
-            "classifier": 14905,
+            "classifier": 392,
             "classifier_info": "house",
             "specifiers": [],
             "specifier_info": [],
             "semantics": {"NUMBER": "plural"},
-            "indicators": [9011],
+            "indicators": [99],
             "modifiers": []
         }
 
-        result = self.analyzer.lookup_composition([14905, "/", 9011, ";"], language="en")
+        result = self.analyzer.lookup_composition([392, "/", 99, ";"], language="en")
         self.assertEqual(expected, result)
 
     def test_normalize_composition(self):
         """Test normalization of compositions with rendering elements."""
         # Test the normalize_composition helper method
-        expected = ["14905", "9011", "24920"]
-        result = self.analyzer._normalize_composition([14905, "/", 9011, ";", 24920])
+        expected = ["392", "99", "958"]
+        result = self.analyzer._normalize_composition([392, "/", 99, ";", 958])
         self.assertEqual(expected, result)
 
 
@@ -367,19 +365,19 @@ class TestBlissComposer(unittest.TestCase):
 
     def test_find_symbol_by_gloss(self):
         """Test finding symbol by gloss."""
-        expected = "14905"
+        expected = "392"
         result = self.composer._find_symbol_by_gloss("building")
         self.assertEqual(expected, result)
 
     def test_find_symbol_by_gloss_alternative(self):
         """Test finding symbol by alternative gloss."""
-        expected = "14905"
+        expected = "392"
         result = self.composer._find_symbol_by_gloss("house")
         self.assertEqual(expected, result)
 
     def test_find_semantic_symbol(self):
         """Test finding symbol by semantic."""
-        expected = "14647"
+        expected = "368"
         result = self.composer._find_semantic_symbol("QUANTIFIER", "many")
         self.assertEqual(expected, result)
 
@@ -397,7 +395,7 @@ class TestBlissComposer(unittest.TestCase):
                 "specifiers": ["medicine"],
                 "semantics": {"QUANTIFIER": "many"}
             },
-            "composition": ["14905", "24920", "14647"],
+            "composition": ["392", "958", "368"],
             "errors": [],
             "warnings": []
         }
@@ -411,7 +409,7 @@ class TestEdgeCases(unittest.TestCase):
     def setUp(self):
         """Create test Bliss dictionary."""
         self.bliss_dict = {
-            "1": {"pos": "YELLOW"}
+            "1": {"pos": "noun"}
         }
         self.engine = BlissEngine(self.bliss_dict)
 
@@ -468,45 +466,17 @@ class TestLanguageSupport(unittest.TestCase):
     def test_get_glosses_english(self):
         """Test getting glosses in English."""
         expected = {
-            "id": 14905,
+            "id": 392,
             "glosses": [
                 "house",
                 "building",
                 "dwelling",
                 "residence"
             ],
-            "explanation": "(foundation + protection: pictograph of the outline of a house.The symbol can also be explained as: combination of enclosure and protection.)  - Character (superimposed)",
+            "explanation": "foundation + protection: pictograph of the outline of a house.The symbol can also be explained as: combination of enclosure and protection.",
             "isCharacter": True
         }
-        result = self.engine.get_symbol_glosses(14905, language="en")
-        self.assertEqual(expected, result)
-
-    def test_get_glosses_swedish(self):
-        """Test getting glosses in Swedish."""
-        expected = {
-            "id": 14905,
-            "glosses": [
-                "hus",
-                "byggnad"
-            ],
-            "explanation": "(foundation + protection: pictograph of the outline of a house.The symbol can also be explained as: combination of enclosure and protection.)  - Character (superimposed)",
-            "isCharacter": True
-        }
-        result = self.engine.get_symbol_glosses(14905, language="sv")
-        self.assertEqual(expected, result)
-
-    def test_get_glosses_french(self):
-        """Test getting glosses in French."""
-        expected = {
-            "id": 14905,
-            "glosses": [
-                "maison",
-                "bâtiment"
-            ],
-            "explanation": "(foundation + protection: pictograph of the outline of a house.The symbol can also be explained as: combination of enclosure and protection.)  - Character (superimposed)",
-            "isCharacter": True
-        }
-        result = self.engine.get_symbol_glosses(14905, language="fr")
+        result = self.engine.get_symbol_glosses(392, language="en")
         self.assertEqual(expected, result)
 
 
